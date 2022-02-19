@@ -41,7 +41,7 @@
                 <i class="el-icon-s-marketing"></i>饼图
               </div>
             </el-menu-item>
-          </el-submenu>
+          </el-submenu>  
         </el-menu>
       </el-aside>
 
