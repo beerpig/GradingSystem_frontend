@@ -48,7 +48,7 @@
       <el-container>
         <el-main>
           <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/update' }"
+            <el-breadcrumb-item :to="{ path: '/addZip' }"
               >首页</el-breadcrumb-item
             >
             <el-breadcrumb-item

@@ -8,7 +8,7 @@
       label-width="100px"
       style="padding: 30px 0"
     >
-      <el-form-item label="导入方式" prop="importType">
+      <!-- <el-form-item label="导入方式" prop="importType">
         <el-select v-model="form2.importType" placeholder="请选择导入方式">
           <el-option
             v-for="item in importTypeData"
@@ -18,7 +18,7 @@
           >
           </el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="选取文件" prop="fileList">
         <el-upload
           class="upload-demo"
@@ -38,11 +38,12 @@
         </el-upload>
       </el-form-item>
       <el-form-item label="">
-        <el-button type="primary" @click="importFilepost">导入</el-button>
-        <el-button type="primary" @click="onCancel">取消</el-button>
+        <!-- <el-button type="primary" @click="importFilepost">导入</el-button> -->
+        
         <el-button type="primary" @click="centerDialogVisible = true"
-          >Dialog</el-button
+          >导入</el-button
         >
+        <el-button type="primary" @click="onCancel">取消</el-button>
         <el-dialog
           title="协议书"
           :visible.sync="centerDialogVisible"
@@ -107,7 +108,8 @@ export default {
     },
     onSuccess(response, file, fileList) {
       //文件上传成功时的钩子
-      if (response == "successfully") {
+      console.log(response)
+      if (response.stat == "successfully") {
         // if(response.state==1){
         this.$message.success("导入成功");
         this.dialogVisible2 = false;
@@ -170,7 +172,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang='less' scoped>
 </style>
 
 

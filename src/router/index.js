@@ -7,6 +7,9 @@ import Update from "../views/Update";
 import Bar from "../views/Bar";
 import Pie from "../views/Pie";
 import AddZip from "../views/AddZip"
+import Collapse from "../views/Collapse"
+import Memu from "../views/Memu"
+
 
 Vue.use(VueRouter)
 
@@ -46,6 +49,14 @@ const routes = [
         path: '/pie',
         name: '饼图',
         component: Pie
+      },
+      {
+        path: '/collapse',
+        component: Collapse
+      },
+      {
+        path: '/memu',
+        component: Memu
       }
     ]
   }
