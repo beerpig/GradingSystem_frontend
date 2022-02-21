@@ -44,6 +44,7 @@
           >导入</el-button
         >
         <el-button type="primary" @click="onCancel">取消</el-button>
+        <!-- <el-button type="primary" @click="open">Jump</el-button> -->
         <el-dialog
           title="协议书"
           :visible.sync="centerDialogVisible"
@@ -96,7 +97,9 @@ export default {
         //       message: `action: ${ action }`
         //     });
         //   }
+
         });
+        this.$router.push({name: 'Collapse', params: {responses: response}})
       },
     //onChange这里我根据我的业务需求进行修改替换上一次的上传文件了
     onChange(file, fileList) {
@@ -109,7 +112,7 @@ export default {
     onSuccess(response, file, fileList) {
       //文件上传成功时的钩子
       console.log(response)
-      if (response.stat == "successfully") {
+      if (response.msg == "successfully") {
         // if(response.state==1){
         this.$message.success("导入成功");
         this.dialogVisible2 = false;

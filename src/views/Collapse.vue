@@ -2,7 +2,7 @@
 	<div>
 		<el-collapse v-model="activeNames" @change="handleChange"  >
 			<el-collapse-item title="SCORE"    name="1" >
-				<div v-for="item in dic.SCORE">
+				<div v-for="item in dic.SCORE" >
 					{{item}}
 				</div>
 			</el-collapse-item>
@@ -55,11 +55,12 @@
 <script>
 export default {
 	created() {
-		console.log(this.dic)
+		console.log("collapse receive:" + this.dic)
 	},
 	data() {
 		return {
 			activeNames: ["1"],
+			// dic : this.$route.params.responses,
 			dic :{
 				SCORE: {
 					AI: 86.0,
@@ -227,9 +228,13 @@ export default {
 	},
 };
 </script>
-<style scoped>
+<style lang='less' scoped>
  .el-collapse-item__content{
-	 padding-bottom:0px
+	 padding-bottom:100px
  }
-
+	/deep/ .el-collapse-item__content{
+		text-align: left;
+		margin-left: 100px;
+	}
+   
 </style>

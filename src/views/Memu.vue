@@ -31,5 +31,8 @@ export default {
 </script>
 
 <style>
-
+    /deep/ .el-collapse-item__content{
+		text-align: left;
+		margin-left: 100px;
+	}
 </style>

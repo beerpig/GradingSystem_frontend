@@ -52,6 +52,7 @@ const routes = [
       },
       {
         path: '/collapse',
+        name: 'Collapse',
         component: Collapse
       },
       {

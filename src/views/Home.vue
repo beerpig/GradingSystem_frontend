@@ -25,6 +25,11 @@
                 <i class="el-icon-circle-plus"></i>添加作品
               </div>
             </el-menu-item>
+            <el-menu-item index="/Collapse">
+              <div style="position: relative; left: 20px">
+                <i class="el-icon-circle-plus"></i>评分查看
+              </div>
+            </el-menu-item>
           </el-submenu>
 
           <el-submenu :index="1">

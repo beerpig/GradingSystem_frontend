@@ -28,22 +28,10 @@ export default {
  }
 </script>
 
-<style>
-.reply {
-    padding-left: 4px;
-    border-left: 1px solid #eee;
-}
+<style scoped>
 
-ul {
-    padding-left: 20px;
-    list-style: none;
-}
-
-.root { display: none; }
-
-.myfooter{
-    position:absolute;
-    bottom:0;
-    width:100%;
-}
+    /deep/ .el-collapse-item__content{
+		text-align: left;
+		margin-left: 100px;
+	}
 </style>
