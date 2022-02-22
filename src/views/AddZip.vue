@@ -80,12 +80,12 @@ export default {
     };
   },
   created() {
-    let _this = this;
-    axios
-      .get("http://localhost:8181/productCategory/init")
-      .then(function (resp) {
-        _this.options1 = resp.data;
-      });
+    // let _this = this;
+    // axios
+    //   .get("http://localhost:8181/productCategory/init")
+    //   .then(function (resp) {
+    //     _this.options1 = resp.data;
+    //   });
   },
   methods: {
     open(response) {
