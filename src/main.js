@@ -9,12 +9,17 @@ import App from './App'
 import router from './router'
 // import './styles/element-variables.scss'
 
+import SlideVerify from 'vue-monoplasty-slide-verify'
+
 import './mock'
 
 Vue.prototype.$axios = instance
 Vue.config.productionTip = false
-Vue.use(ElementUI)
-    /* eslint-disable no-new */
+Vue.use(SlideVerify).use(ElementUI)
+
+
+// Vue.use(SlideVerify)
+/* eslint-disable no-new */
 
 // const instance = axios.create({
 //     validateStatus: true

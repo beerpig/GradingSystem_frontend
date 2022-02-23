@@ -12,7 +12,8 @@ import Memu from "../views/Memu"
 import Login from "../views/Login"
 import Register from "../views/Register"
 import Homepage from "../views/Homepage"
-import Cookies from "js-cookie"
+import SlideCaptcha from "../views/SlideCaptcha"
+
 
 
 
@@ -78,7 +79,13 @@ const routes = [{
         path: '/homepage',
         name: 'Homepage',
         component: Homepage
-    }
+    },
+    {
+        path: '/captcha',
+        name: 'SlideCaptcha',
+        component: SlideCaptcha
+    },
+
 ]
 
 

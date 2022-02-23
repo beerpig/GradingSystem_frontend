@@ -10,11 +10,13 @@
             <div class="userbox">
               <span class="iconfont">&#xe817;</span>
               <el-form-item prop="name">
-                <input
+                <el-input
                   class="user"
                   id="user"
                   v-model="loginForm.name"
                   placeholder="用户名"
+                  size="small"
+                  style="font-size: 18px"
                 />
               </el-form-item>
             </div>
@@ -83,13 +85,13 @@ export default {
         ],
       },
       action: "/login",
-      user_list: [
-        {
-          id: "1",
-          username: "admin",
-          password: "123",
-        },
-      ],
+    //   user_list: [
+    //     {
+    //       id: "1",
+    //       username: "admin",
+    //       password: "123",
+    //     },
+    //   ],
     };
   },
 
@@ -208,14 +210,14 @@ export default {
   width: 240px;
 }
 .userbox {
-  margin-top: 120px;
-  height: 30px;
+  margin-top: 90px;
+  height: 40px;
   width: 230px;
   display: flex;
   margin-left: 25px;
 }
 .pwdbox {
-  height: 30px;
+  height: 40px;
   width: 225px;
   display: flex;
   margin-left: 25px;
@@ -360,7 +362,7 @@ input:-webkit-autofill::first-line {
 
 .iconfont {
   font-family: "iconfont" !important;
-  font-size: 20px;
+  font-size: 27px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -376,5 +378,9 @@ input:-webkit-autofill::first-line {
 
 .icon-account:before {
   content: "\e817";
+}
+
+/deep/ .el-input__inner {
+  background-color: #8aac9e;
 }
 </style>
