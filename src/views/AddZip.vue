@@ -32,6 +32,7 @@
           :auto-upload="false"
           :v-model="form2.fileList"
           :data="form2"
+          :before-upload="axiosMethod"
         >
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -55,6 +56,7 @@
           <span slot="footer" class="dialog-footer">
             <el-button @click="centerDialogVisible = false">取 消</el-button>
             <el-button type="primary" @click="importFilepost">确 定</el-button>
+            <!-- <el-button type="primary" @click="axiosMethod">确 定</el-button> -->
           </span>
         </el-dialog>
       </el-form-item>
@@ -134,6 +136,11 @@ export default {
       this.form2.fileList = [];
       this.$refs["form2"].resetFields();
       this.$refs["newupload"].clearFiles();
+    },
+    axiosMethod() {
+      this.$axios.post("/tokenAvailable").then(resp => {
+        console.log("tokenAvailable:",resp)
+      })
     },
     importFilepost() {
       //导入提交---

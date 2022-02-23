@@ -91,6 +91,8 @@ const router = new VueRouter({
 
 
 
+
+
 router.beforeEach((to, from, next) => {
     // 登录界面登录成功之后，会把用户信息保存在会话
     // 存在时间为会话生命周期，页面关闭即失效。

@@ -117,7 +117,7 @@ export default {
           //        console.log(error)
           //      })
           
-          this.axios.post("/login", _this.loginForm).then(function (resp) {
+          this.$axios.post("/login", _this.loginForm).then(function (resp) {
               console.log(resp)
             if (resp) {
               let { success, token } = resp.data;
