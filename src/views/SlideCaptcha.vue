@@ -3,7 +3,6 @@
                     <el-button type="text" @click="verificationButton"
                       >点击进行验证</el-button
                     >
-                    //弹出层
                     <el-dialog
                       title="请完成安全验证"
                       :visible.sync="dialogbuttonVisible"
@@ -13,7 +12,7 @@
                         <slide-verify
                           :l="40"
                           :r="10"
-                          :w="280"
+                          :w="370"
                           :h="150"
                           ref="slideblock"
                           @again="onAgain"
@@ -52,7 +51,7 @@ export default {
     onSuccess(times) {
       console.log("验证成功");
       let ms = (times / 1000).toFixed(1);
-      this.msg = "login success, 耗时 " + ms + "s";
+      this.$message.success("login success, 耗时 " + ms + "s");
       setTimeout(()=> {
         this.dialogbuttonVisible = false;
         this.$router.push({name: 'Collapse'})
@@ -60,18 +59,18 @@ export default {
     },
     onFail() {
       console.log("验证不通过");
-      this.msg = "验证不通过";
+      this.$message.error("验证不通过");
     },
     onRefresh() {
       console.log("点击了刷新小图标");
-      this.msg = "";
+      this.$message.success();
     },
     onFulfilled() {
       console.log("刷新成功啦！");
     },
     onAgain() {
       console.log("检测到非人为操作的哦！");
-      this.msg = "try again";
+      this.$message.error("try again");
       // 刷新
       this.$refs.slideblock.reset();
     },

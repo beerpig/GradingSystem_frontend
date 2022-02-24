@@ -16,7 +16,7 @@
                   v-model="loginForm.name"
                   placeholder="用户名"
                   size="small"
-                  style="font-size: 18px"
+                  style="font-size: 18px; width: 195px"
                 />
               </el-form-item>
             </div>
@@ -24,12 +24,15 @@
             <div class="pwdbox">
               <span class="iconfont">&#xe775;</span>
               <el-form-item prop="pwd">
-                <input
+                <el-input
                   class="pwd"
                   id="password"
                   type="password"
                   v-model="loginForm.pwd"
                   placeholder="密码"
+                  size="small"
+                  style="font-size: 18px; width: 195px"
+                  show-password
                 />
               </el-form-item>
             </div>
@@ -37,20 +40,13 @@
           <br />
           <div class="log-box">
             <div class="log-box-text">忘记密码</div>
-            <button type="primary" class="login_btn" @click="login">
+            <button type="primary" class="login_btn" @click="loginF('loginForm')">
               Login
             </button>
-            <el-button
-              type="primary"
-              class="login_button"
-              @click="loginF('loginForm')"
-            >
-              summit
-            </el-button>
           </div>
 
           <br />
-          <div class="warn">@sywh</div>
+          <div class="warn">@beerpig</div>
           <button type="primary" class="register_btn" @click="register">
             若无账号请点击注册
           </button>
@@ -78,10 +74,10 @@ export default {
       },
       fieldRules: {
         name: [
-          { required: true, message: "account needed", trigger: "change" },
+          { required: true, message: "用户名不能为空", trigger: "change" },
         ],
         pwd: [
-          { required: true, message: "password needed", trigger: "change" },
+          { required: true, message: "密码不能为空", trigger: "change" },
         ],
       },
       action: "/login",
@@ -207,7 +203,7 @@ export default {
 }
 .loginbox-in {
   background-color: #89ab9e;
-  width: 240px;
+  width: 280px;
 }
 .userbox {
   margin-top: 90px;
