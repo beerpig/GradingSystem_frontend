@@ -2,9 +2,29 @@
   <el-container class="home_container">
     <el-header>
       <div class="home_title">评分系统</div>
+      <el-col :span="4" class="userinfo">
+        <el-dropdown trigger="hover">
+          <span class="el-dropdown-link userinfo-inner"
+            ><img src="https://s1.ax1x.com/2018/02/08/93yKtU.jpg" style="width: 40px;
+          height: 40px;
+          border-radius: 20px;
+          margin: 10px 0px 10px 10px;
+          float: right;"/>
+            {{ sysUserName }}</span
+          >
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item @click.native="settings"
+              >修改密码</el-dropdown-item
+            >
+            <el-dropdown-item divided @click.native="logout"
+              >退出登录</el-dropdown-item
+            >
+          </el-dropdown-menu>
+        </el-dropdown>
+      </el-col>
     </el-header>
     <el-container>
-      <el-aside width="200px" style="background-color: #a5e7f0">
+      <el-aside width="200px" style="background-color: #83a798">
         <el-menu router>
           <el-submenu :index="0">
             <template slot="title"
@@ -46,7 +66,7 @@
                 <i class="el-icon-s-marketing"></i>饼图
               </div>
             </el-menu-item>
-          </el-submenu>  
+          </el-submenu>
         </el-menu>
       </el-aside>
 
@@ -90,7 +110,7 @@ export default {
 }
 
 .el-header {
-  background-color: #20a0ff;
+  background-color: #485f55;
   color: #333;
   text-align: center;
   display: flex;
@@ -109,7 +129,7 @@ export default {
 }
 
 .el-footer {
-  background-color: #ea7e53;
+  background-color: #bfcfca;
   color: #fff;
   font-size: 22px;
   line-height: 60px;
@@ -129,5 +149,16 @@ export default {
 .home_userinfoContainer {
   display: inline;
   margin-right: 20px;
+}
+
+.userinfo {
+  text-align: right;
+  padding-right: 35px;
+  float: right;
+}
+
+.userinfo-inner {
+  cursor: pointer;
+  color: #fff;
 }
 </style>

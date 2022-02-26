@@ -144,9 +144,9 @@ export default {
       if (value === "") {
         callback(new Error("请输入密码"));
       } else {
-        if (this.registerForm.confirmPwd !== "") {
-          this.$refs.registerForm.validateField("pwd");
-        }
+        // if (this.registerForm.confirmPwd !== "") {
+        //   this.$refs.registerForm.validateField("pwd");
+        // }
         callback();
       }
     };
@@ -165,6 +165,21 @@ export default {
       } else {
         callback();
       }
+    };
+    var validateUserName = (rule, value, callback) => {
+      this.$axios.get("/getUserName", {
+        params: {
+          user: value
+        }
+      }).then((resp) => {
+          console.log("getUserName:", resp);
+          if (resp.data.success !== 'true') {
+            callback(new Error("用户名已被占用！"));
+          }
+          else {
+            callback()
+          }
+      });
     };
     return {
       content: "获取验证码",
@@ -188,6 +203,7 @@ export default {
       fieldRules: {
         name: [
           { required: true, message: "用户名不能为空", trigger: "change" },
+          { validator: validateUserName, trigger: "blur", required: true},
         ],
         pwd: [
           { required: true, message: "密码不能为空", trigger: "blur" },
@@ -232,14 +248,16 @@ export default {
     register(formName) {
       let _this = this;
       this.$refs[formName].validate((valid) => {
-        // console.log(valid);
+        console.log("validate...",valid);
         if (valid) {
           this.$axios
             .post("/register", _this.registerForm)
-            .then(function (resp) {
-              if (resp) {
-                let { success, token } = resp.data;
-                if (token) {
+            .then( (resp) => {
+              console.log("validate....", resp);
+              if (resp.data.code === 10010) {
+                let code = resp.data.code;
+                console.log("code:", code);
+                if (code === 10010) {
                   _this.$alert(
                     "【" + _this.registerForm.name + "】注册成功" + resp.data,
                     "",
@@ -251,6 +269,9 @@ export default {
                     }
                   );
                   sessionStorage.setItem("token", token);
+                }
+                else {
+                  console.log("resp.data.code:", resp.data.code);
                 }
               }
             });

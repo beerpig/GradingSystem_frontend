@@ -1,210 +1,346 @@
 <template>
-  <div class="container">
-    <div class="main">
-    <input  class="name" id="name"   v-model="name" placeholder="请输入姓名">
-    <input  class="stuid" id="stu_id"  v-model="stu_id" placeholder="请输入学号">
-    <input  class="gender" id="gender" v-model="gender" placeholder="请输入性别1为男0为女">
-    <button class="register_btn" @click="add()">增加学生信息</button><br><br>
-
-    <button class="register_btn" @click="danshu(stu_list)">显示学号尾号为单数的学生信息</button>
-    <button class="register_btn" @click="all()">显示全部学生信息</button>
-    <button class="register_btn" @click="shuangshu(stu_list)">显示学号尾号为双数的学生信息</button>
-    <br>
-  <br>
-    <div class="info"><div  v-if="flag_danshu==1"><Studentinfo-com id="1" class="list" v-for="(stu,index1) in new_list_danshu" :key="index1" :card_item="stu" ></Studentinfo-com></div>
-    <div v-else-if="flag_shuangshu==1"><Studentinfo-com id="2" class="list" v-for="(stu,index2) in new_list_shuangshu" :key="index2" :card_item="stu"  ></Studentinfo-com></div>
-    <div v-else-if="flag_all==1"><Studentinfo-com id="3" class="list" v-for="(stu,index3) in stu_list" :key="index3" :card_item="stu"></Studentinfo-com></div> 
-    </div>
-    <button class="register_btn" @click="exit_login">退出登陆</button>
-    </div>
-    
-  </div>
+  <el-row class="container">
+    <el-col :span="24" class="header">
+      <el-col
+        :span="10"
+        class="logo"
+        :class="collapsed ? 'logo-collapse-width' : 'logo-width'"
+      >
+        {{ collapsed ? "" : sysName }}
+      </el-col>
+      <el-col :span="10">
+        <div class="tools" @click.prevent="collapse">
+          <i class="fa fa-align-justify"></i>
+        </div>
+      </el-col>
+      <el-col :span="4" class="userinfo">
+        <el-dropdown trigger="hover">
+          <span class="el-dropdown-link userinfo-inner"
+            ><img src="https://s1.ax1x.com/2018/02/08/93yKtU.jpg" />
+            {{ sysUserName }}</span
+          >
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item @click.native="settings"
+              >修改密码</el-dropdown-item
+            >
+            <el-dropdown-item divided @click.native="logout"
+              >退出登录</el-dropdown-item
+            >
+          </el-dropdown-menu>
+        </el-dropdown>
+      </el-col>
+    </el-col>
+    <el-col :span="24" class="main">
+      <aside :class="collapsed ? 'menu-collapsed' : 'menu-expanded'">
+        <!--导航菜单-->
+        <el-menu
+          :default-active="$route.path"
+          class="el-menu-vertical-demo el-menu-expand"
+          @open="handleopen"
+          @close="handleclose"
+          @select="handleselect"
+          unique-opened
+          router
+          v-if="!collapsed"
+        >
+          <template
+            v-for="(item, index) in $router.options.routes"
+            v-if="!item.hidden"
+          >
+            <el-submenu :index="index + ''" v-if="!item.leaf">
+              <template slot="title"
+                ><i :class="item.iconCls"></i>{{ item.name }}</template
+              >
+              <el-menu-item
+                v-for="child in item.children"
+                :index="child.path"
+                :key="child.path"
+                v-if="!child.hidden"
+                >{{ child.name }}</el-menu-item
+              >
+            </el-submenu>
+            <el-menu-item
+              v-if="item.leaf && item.children.length > 0"
+              :index="item.children[0].path"
+              ><i :class="item.iconCls"></i
+              >{{ item.children[0].name }}</el-menu-item
+            >
+          </template>
+        </el-menu>
+        <!--导航菜单-折叠后-->
+        <ul
+          class="el-menu el-menu-vertical-demo collapsed"
+          v-if="collapsed"
+          ref="menuCollapsed"
+        >
+          <li
+            v-for="(item, index) in $router.options.routes"
+            v-if="!item.hidden"
+            class="el-submenu item"
+          >
+            <template v-if="!item.leaf">
+              <div
+                class="el-submenu__title"
+                style="padding-left: 20px"
+                @mouseover="showMenu(index, true)"
+                @mouseout="showMenu(index, false)"
+              >
+                <i :class="item.iconCls"></i>
+              </div>
+              <ul
+                class="el-menu submenu"
+                :class="'submenu-hook-' + index"
+                @mouseover="showMenu(index, true)"
+                @mouseout="showMenu(index, false)"
+              >
+                <li
+                  v-for="child in item.children"
+                  v-if="!child.hidden"
+                  :key="child.path"
+                  class="el-menu-item"
+                  style="padding-left: 40px"
+                  :class="$route.path == child.path ? 'is-active' : ''"
+                  @click="$router.push(child.path)"
+                >
+                  {{ child.name }}
+                </li>
+              </ul>
+            </template>
+            <template v-else>
+              <li class="el-submenu">
+                <div
+                  class="el-submenu__title el-menu-item"
+                  style="
+                    padding-left: 20px;
+                    height: 56px;
+                    line-height: 56px;
+                    padding: 0 20px;
+                  "
+                  :class="
+                    $route.path == item.children[0].path ? 'is-active' : ''
+                  "
+                  @click="$router.push(item.children[0].path)"
+                >
+                  <i :class="item.iconCls"></i>
+                </div>
+              </li>
+            </template>
+          </li>
+        </ul>
+      </aside>
+      <section class="content-container">
+        <div class="grid-content bg-purple-light">
+          <el-col :span="24" class="breadcrumb-container">
+            <strong class="title">{{ $route.name }}</strong>
+            <el-breadcrumb separator="/" class="breadcrumb-inner">
+              <el-breadcrumb-item
+                v-for="item in $route.matched"
+                :key="item.path"
+              >
+                {{ item.name }}
+              </el-breadcrumb-item>
+            </el-breadcrumb>
+          </el-col>
+          <el-col :span="24" class="content-wrapper">
+            <transition name="fade" mode="out-in">
+              <router-view></router-view>
+            </transition>
+          </el-col>
+        </div>
+      </section>
+      <!--修改密码界面-->
+      <el-dialog
+        title="修改密码"
+        v-model="setpwdFormVisible"
+        :close-on-click-modal="false"
+      >
+        <el-form
+          :model="setpwdForm"
+          label-width="80px"
+          :rules="setpwdFormRules"
+          ref="setpwdForm"
+        >
+          <el-row>
+            <el-form-item label="原密码" prop="oldpass">
+              <el-input
+                type="password"
+                v-model="setpwdForm.oldpass"
+                auto-complete="off"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="新密码" prop="newpass">
+              <el-input
+                type="password"
+                v-model="setpwdForm.newpass"
+                auto-complete="off"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码" prop="confirpass">
+              <el-input
+                type="password"
+                v-model="setpwdForm.confirpass"
+                auto-complete="off"
+              ></el-input>
+            </el-form-item>
+          </el-row>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click.native="setpwdFormVisible = false">取消</el-button>
+          <el-button
+            type="primary"
+            @click.native="editSubmit"
+            :loading="editLoading"
+            >提交</el-button
+          >
+        </div>
+      </el-dialog>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
-import StudentinfoCom from './Studentinfo.vue';
+// import { setpwd } from "../api/api";
 export default {
-  
-  name: "Homepageinfo",
-
-  components: {
-    StudentinfoCom//调用组件
-  },
-  data:function (){
-    return{
-     message:'已登陆',
-     flag_all:1,
-     flag_danshu:0,
-     flag_shuangshu:0,
-     name:'',
-     stu_id:'',
-     gender:'',
-     stu_list:[{
-    "_id" : 1,
-    "name" : "张结晟",
-    "stuId" : 1701030145.0,
-    "gender" : 1
-},
-{
-    "_id" :2,
-    "name" : "江子秋",
-    "stuId" : 1701030053.0,
-    "gender" : 1
-},
-{
-    "_id" : 3,
-    "name" : "何荣浩",
-    "stuId" : 1701030043.0,
-    "gender" : 1
-},
-{
-    "_id" : 4,
-    "name" : "梁煜鑫",
-    "stuId" : 1801030098.0,
-    "gender" : 1
-},
-{
-    "_id" : 5,
-    "name" : "余浩然",
-    "stuId" : 1801030031.0,
-    "gender" : 1
-},
-{
-    "_id" : 6,
-    "name" : "罗小莲",
-    "stuId" : 1801030111.0,
-    "gender" : 0
-},
-{
-    "_id" : 7,
-    "name" : "李建旋",
-    "stuId" : 1801030022.0,
-    "gender" : 0
-},
-{
-    "_id" : 8,
-    "name" : "何慧仪",
-    "stuId" : 1801030047.0,
-    "gender" : 0
-},
-{
-    "_id" : 9,
-    "name" : "吴可欣",
-    "stuId" : 1801030026.0,
-    "gender" : 0
-},
-{
-    "_id" :10,
-    "name" : "孙于琬惠",
-    "stuId" : 1801030151.0,
-    "gender" : 0
-}],
-new_list_danshu:[],
-new_list_shuangshu:[],
-new_list:[],
-    }
-  },
-
-  
-
-  methods:{
-      exit_login(){
-          alert("您已退出登录")
-          
-          this.$router.push({
-            path: '/',
-          }
-        )
+  data() {
+    var validatePass = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入新密码"));
+      } else if (value.length < 8) {
+        callback(new Error("密码长度请大于8"));
+      } else {
+        if (this.setpwdForm.confirpass !== "") {
+          this.$refs.setpwdForm.validateField("confirpass");
+        }
+        callback();
+      }
+    };
+    var validatePass2 = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请再次输入新密码"));
+      } else if (value !== this.setpwdForm.newpass) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
+      }
+    };
+    return {
+      sysName: "vueadmin",
+      collapsed: false,
+      sysUserName: "",
+      form: {
+        name: "",
+        region: "",
+        date1: "",
+        date2: "",
+        delivery: false,
+        type: [],
+        resource: "",
+        desc: "",
       },
-    add:function(){
-    if(this.name==''||this.stu_id==''||this.gender==''){
-      alert('请完善信息');
-      }
-      else{
-        var item ={};
-        item.stuId=this.stu_id;
-        item.name=this.name;
-        item.gender=this.gender;
-        this.stu_list.push(item);
-        alert('添加成功');
-      }
-    },
-    danshu (stu_list) {
-      this.new_list_danshu=[];
-       stu_list.forEach((item) => {
-         if(item.stuId%2!=0)
-         this.new_list_danshu.push(item);//符合条件则加进用来存储单数信息的json数组
-         }
-      )
-      // alert(this.new_list[1]);
-      this.flag_all=0; //显示全部
-      this.flag_danshu=1;//显示单数
-      this.flag_shuangshu=0;//显示双数
-    },
-    shuangshu (stu_list) {
-      this.new_list_shuangshu=[];
-       stu_list.forEach((item) => {
-         if(item.stuId%2==0)
-         this.new_list_shuangshu.push(item);//符合条件则加进用来存储单数信息的json数组
-         }
-      )
-      // alert(this.new_list[1]);
-      this.flag_all=0; //显示全部
-      this.flag_danshu=0;//显示单数
-      this.flag_shuangshu=1;//显示双数
-    },
-    all () {
-      //this.new_list=stu_list;
-      this.flag_all=1; //显示全部
-      this.flag_danshu=0;//显示单数
-      this.flag_shuangshu=0;//显示双数
-    },
 
-  }
-}
+      setpwdFormVisible: false,
+      editLoading: false,
+      setpwdFormRules: {
+        oldpass: [{ required: true, message: "请输入旧密码", trigger: "blur" }],
+        newpass: [{ validator: validatePass, trigger: "blur" }],
+        confirpass: [{ validator: validatePass2, trigger: "blur" }],
+      },
+      setpwdForm: {
+        oldpass: "",
+        newpass: "",
+        confirpass: "",
+      },
+    };
+  },
+  methods: {
+    onSubmit() {
+      console.log("submit!");
+    },
+    handleopen() {
+      //console.log('handleopen');
+    },
+    handleclose() {
+      //console.log('handleclose');
+    },
+    handleselect: function (a, b) {},
+    //退出登录
+    logout: function () {
+      var _this = this;
+      this.$confirm("确认退出吗?", "提示", {
+        //type: 'warning'
+      })
+        .then(() => {
+          sessionStorage.removeItem("token");
+          _this.$router.push("/login");
+        })
+        .catch(() => {});
+    },
+    //修改密码
+    settings: function () {
+      this.setpwdFormVisible = true;
+    },
+    editSubmit: function () {
+      this.$refs.setpwdForm.validate((valid) => {
+        if (valid) {
+          this.$confirm("确认修改吗？", "提示", {}).then(() => {
+            this.editLoading = true;
+            let para = Object.assign({}, this.setpwdForm);
+            setpwd(para).then((res) => {
+              this.editLoading = false;
+              let { code, msg } = res.data;
+              if (code !== 200) {
+                this.$message({
+                  message: msg,
+                  type: "error",
+                });
+              } else {
+                this.$message({
+                  message: msg,
+                  type: "success",
+                });
+              }
+              this.$refs["setpwdForm"].resetFields();
+              this.setpwdFormVisible = false;
+            });
+          });
+        }
+      });
+    },
+    //折叠导航栏
+    collapse: function () {
+      this.collapsed = !this.collapsed;
+    },
+    showMenu(i, status) {
+      this.$refs.menuCollapsed.getElementsByClassName(
+        "submenu-hook-" + i
+      )[0].style.display = status ? "block" : "none";
+    },
+  },
+  // mounted() {
+  //   var token = sessionStorage.getItem("token");
+  //   var user = sessionStorage.getItem("name");
+  //   if (token && user) {
+  //     user = JSON.parse(user);
+  //     this.sysUserName = user || "";
+  //   } else {
+  //     sessionStorage.removeItem("token");
+  //     this.$router.push("/login");
+  //   }
+  // }
+};
 </script>
 
 <style scoped>
-.register_btn{
-    background-color: #5f8276; /* Green */
-    border: none;
-    color: #FAFAFA;
-    padding: 7px 35px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 13px;
-    border-radius: 20px;
-    outline:none;
-    margin-top:10px;
+.userinfo {
+  text-align: right;
+  padding-right: 35px;
+  float: right;
 }
-.register_btn:hover{
-    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-    cursor: pointer;
-     background-color: #0b5137;
-    transition: all 0.2s ease-in;
+.userinfo-inner {
+  cursor: pointer;
+  color: #fff;
 }
-.list{
-   
-  width: 250px;
-  height: 80px;
-  padding:10px;
-  background-color: #fff;
-  background: linear-gradient(#f8f8f8, #fff);
-  box-shadow: 0 8px 16px -8px rgba(0,0,0,0.4);
-  border-radius: 6px;
-  margin: 1.5rem;
-  margin:10px;
-  display:inline-block;
-} 
-
-.main{
-    position:absolute;
-    width:1000px;
-    height:700px;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    box-shadow: 0 12px 16px 0  rgba(0,0,0,0.24), 0 17px 50px 0 #4E655D;
-}
-
+.logo-width {
+      width: 230px;
+    }
 </style>
