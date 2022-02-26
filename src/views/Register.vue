@@ -264,11 +264,11 @@ export default {
                     {
                       confirmButtonText: "确定",
                       callback: (action) => {
-                        _this.$router.push({ path: "/addZip" });
+                        _this.$router.push({ path: "/login" });
                       },
                     }
                   );
-                  sessionStorage.setItem("token", token);
+                  // sessionStorage.setItem("token", token);
                 }
                 else {
                   console.log("resp.data.code:", resp.data.code);

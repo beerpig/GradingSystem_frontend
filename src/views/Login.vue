@@ -117,10 +117,11 @@ export default {
           
           this.$axios.post("/login", _this.loginForm).then(function (resp) {
               console.log(resp)
-            if (resp) {
-              let { success, token } = resp.data;
-              console.log(success);
-              if (token) {
+            if (resp.data.code === 10000) {
+              // let { success, token } = resp.data;
+              // console.log(success);
+                sessionStorage.setItem('username', _this.loginForm.name)
+                sessionStorage.setItem('token', resp.data.token);
                 _this.$alert(
                   "【" + _this.loginForm.name + "】添加成功" + resp.data,
                   "",
@@ -132,8 +133,8 @@ export default {
                   }
                 );
                 // _this.$router.push({path: "addZip"})
-                sessionStorage.setItem('token', token)
-              }
+              // if (token) {
+              // }
             }
           })
           .catch(function (error) {

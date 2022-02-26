@@ -5,11 +5,13 @@ instance.interceptors.request.use(
     config => {
         console.log('发送请求')
         let token = sessionStorage.getItem('token')
+        let username = sessionStorage.getItem('username')
         config.headers.token = token
+        config.headers.username = username
             // console.log(localStorage.getItem('token'))
-        if (localStorage.getItem('token')) {
+        if (sessionStorage.getItem('token')) {
             // console.log('请求头加入token')
-            config.headers.token = localStorage.getItem('token')
+            config.headers.token = sessionStorage.getItem('token')
         }
 
         return config
