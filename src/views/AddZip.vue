@@ -32,7 +32,6 @@
           :auto-upload="false"
           :v-model="form2.fileList"
           :data="form2"
-          :before-upload="axiosMethod"
         >
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -40,7 +39,7 @@
       </el-form-item>
       <el-form-item label="">
         <!-- <el-button type="primary" @click="importFilepost">导入</el-button> -->
-        
+
         <el-button type="primary" @click="centerDialogVisible = true"
           >导入</el-button
         >
@@ -91,18 +90,17 @@ export default {
   },
   methods: {
     open(response) {
-        this.$alert("后端返回:" + response, '评分结果', {
-          confirmButtonText: '确定',
+      this.$alert("后端返回:" + response, "评分结果", {
+        confirmButtonText: "确定",
         //   callback: action => {
         //     this.$message({
         //       type: 'info',
         //       message: `action: ${ action }`
         //     });
         //   }
-
-        });
-        this.$router.push({name: 'Collapse', params: {responses: response}})
-      },
+      });
+      this.$router.push({ name: "Collapse", params: { responses: response } });
+    },
     //onChange这里我根据我的业务需求进行修改替换上一次的上传文件了
     onChange(file, fileList) {
       //文件状态改变时的钩子函数
@@ -113,12 +111,15 @@ export default {
     },
     onSuccess(response, file, fileList) {
       //文件上传成功时的钩子
-      console.log(response)
-      if (response.msg == "successfully") {
+      console.log("onSuccess:", response);
+      if (response.code === 10000) {
         // if(response.state==1){
         this.$message.success("导入成功");
         this.dialogVisible2 = false;
-        this.open(response)
+        this.open(response);
+      } else if (response.code === 10100) {
+        this.$message.error("验证失败，请重新登录！");
+        // this.$$router.push({path: "/login"});
       } else {
         this.$message.error("导入失败");
       }
@@ -126,21 +127,22 @@ export default {
       this.$refs["form2"].resetFields();
       this.$refs["newupload"].clearFiles();
     },
-    uplaodFile(response) {
-      if (response.state == 1) {
-        this.$message.success("导入成功");
-        this.dialogVisible2 = false;
-      } else {
-        this.$message.error("导入失败");
-      }
-      this.form2.fileList = [];
-      this.$refs["form2"].resetFields();
-      this.$refs["newupload"].clearFiles();
-    },
+    // uplaodFile(response) {
+    //   if (resp.data.code === 10000) {
+    //     this.$message.success("导入成功");
+    //     this.dialogVisible2 = false;
+    //   }
+    //   else {
+    //     this.$message.error("导入失败");
+    //   }
+    //   this.form2.fileList = [];
+    //   this.$refs["form2"].resetFields();
+    //   this.$refs["newupload"].clearFiles();
+    // },
     axiosMethod() {
-      this.$axios.post("/tokenAvailable").then(resp => {
-        console.log("tokenAvailable:",resp)
-      })
+      this.$axios.post("/tokenAvailable").then((resp) => {
+        console.log("tokenAvailable:", resp);
+      });
     },
     importFilepost() {
       //导入提交---
@@ -159,10 +161,26 @@ export default {
       if (this.centerDialogVisible) {
         this.centerDialogVisible = false;
       }
+      // let formData = new FormData();
+      // formData.append('file', this.form2.fileList[0]);
+      // let config = {
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data'
+      //   }
+      // };
       this.$refs.form2.validate((valid) => {
         if (valid) {
-          //触发组件的action
-          this.$refs.newupload.submit(); //主要是这里
+          this.$axios.post("/tokenAvailable").then((resp) => {
+            console.log("tokenAvailable:", resp);
+            if (resp.data.code === 10000) {
+              //触发组件的action
+              this.$refs.newupload.submit(); //主要是这里
+            }
+          });
+          
+          // this.$axios.post("/handler", formData, config).then(resp => {
+          //   console.log("from handler:", resp);
+          // })
         } else {
           console.log("error submit!!");
           return false;
