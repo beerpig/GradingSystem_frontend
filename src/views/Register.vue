@@ -17,7 +17,7 @@
                   v-model="registerForm.name"
                   placeholder="用户名"
                   size="small"
-                  style="font-size: 18px; width: 195px"
+                  style="font-size: 18px; width: 188px"
                 />
               </el-form-item>
             </div>
@@ -104,7 +104,7 @@
 
         <!-- 右侧的注册盒子 -->
         <div class="background">
-          <div class="title">Welcome to WH System Management Center</div>
+          <div class="title">Welcome to AI Grading System</div>
           <button type="primary" class="returnLogin" @click="login" style="margin-left:16px; text-align:left; text-align:left; margin-top:15px">已有账号？请登录</button>
         </div>
       </div>
@@ -274,7 +274,7 @@ export default {
                   this.$message.error("注册失败，验证码错误！");
                 }
                 else if (resp.data.code === 11000) {
-                  this.$message.error("注册失败，手机号已经注册！");
+                  this.$message.error("注册失败，手机号！");
                 }
                 else {
                   this.$message.error("注册失败！");

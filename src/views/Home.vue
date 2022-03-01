@@ -5,11 +5,16 @@
       <el-col :span="4" class="userinfo">
         <el-dropdown trigger="hover">
           <span class="el-dropdown-link userinfo-inner"
-            ><img src="https://s1.ax1x.com/2018/02/08/93yKtU.jpg" style="width: 40px;
-          height: 40px;
-          border-radius: 20px;
-          margin: 10px 0px 10px 10px;
-          float: right;"/>
+            ><img
+              src="https://s1.ax1x.com/2018/02/08/93yKtU.jpg"
+              style="
+                width: 40px;
+                height: 40px;
+                border-radius: 20px;
+                margin: 10px 0px 10px 10px;
+                float: right;
+              "
+            />
             {{ sysUserName }}</span
           >
           <el-dropdown-menu slot="dropdown">
@@ -25,7 +30,7 @@
     </el-header>
     <el-container>
       <el-aside width="200px" style="background-color: #83a798">
-        <el-menu router>
+        <el-menu :default-active="activatePath" router>
           <el-submenu :index="0">
             <template slot="title"
               ><i class="el-icon-goods"></i>个人管理</template
@@ -47,12 +52,12 @@
             </el-menu-item>
             <el-menu-item index="/Collapse">
               <div style="position: relative; left: 20px">
-                <i class="el-icon-circle-plus"></i>评分查看
+                <i class="el-icon-finished"></i>评分查看
               </div>
             </el-menu-item>
           </el-submenu>
 
-          <el-submenu :index="1">
+          <!-- <el-submenu :index="1">
             <template slot="title"
               ><i class="el-icon-finished"></i>数据统计</template
             >
@@ -66,7 +71,7 @@
                 <i class="el-icon-s-marketing"></i>饼图
               </div>
             </el-menu-item>
-          </el-submenu>
+          </el-submenu> -->
         </el-menu>
       </el-aside>
 
@@ -82,7 +87,7 @@
           </el-breadcrumb>
           <router-view></router-view>
         </el-main>
-        <el-footer>@V1.0-Flask + Element UI</el-footer>
+        <el-footer>@CopyRight</el-footer>
       </el-container>
     </el-container>
   </el-container>
@@ -96,6 +101,13 @@ export default {
   name: "Home",
   components: {
     HelloWorld,
+  },
+  methods: {
+    logout() {
+      sessionStorage.removeItem("username");
+      sessionStorage.removeItem("token");
+      this.$router.push({ path: "/login" });
+    },
   },
 };
 </script>

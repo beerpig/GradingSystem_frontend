@@ -56,7 +56,7 @@ const routes = [{
             },
             {
                 path: '/collapse',
-                name: 'Collapse',
+                name: '评分查看',
                 component: Collapse
             },
             {

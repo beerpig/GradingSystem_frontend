@@ -54,7 +54,7 @@
         <!-- </form> -->
         <!-- 右侧的注册盒子 -->
         <div class="background">
-          <div class="title">Welcome to WH System Management Center</div>
+          <div class="title">Welcome to AI Grading System</div>
         </div>
       </div>
     </div>
@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import mock from "../mock.js";
+
 export default {
   name: "Login",
 
