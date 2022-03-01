@@ -270,8 +270,14 @@ export default {
                   );
                   // sessionStorage.setItem("token", token);
                 }
+                else if (resp.data.code === 10011) {
+                  this.$message.error("注册失败，验证码错误！");
+                }
+                else if (resp.data.code === 11000) {
+                  this.$message.error("注册失败，手机号已经注册！");
+                }
                 else {
-                  console.log("resp.data.code:", resp.data.code);
+                  this.$message.error("注册失败！");
                 }
               }
             });
@@ -305,9 +311,7 @@ export default {
         // this.$router.push({path: "/addZip"})
         this.$axios.post("/captchaLaunch", _this.registerForm).then((resp) => {
           if (resp) {
-            let { success, token } = resp.data;
-            console.log(success);
-            if (success === "true") {
+            if (resp.data.code === 10110) {
               this.$message.success("发送验证码成功！");
               _this.canClick = false;
               let timer = window.setInterval(() => {
@@ -320,8 +324,9 @@ export default {
                   _this.canClick = true; //这里重新开启
                 }
               }, 1000);
-            } else {
-              alert(resp)
+            }
+            else if (resp.data.code === 10111) {
+              this.$message.error("验证码发送失败，请重试！");
             }
           }
         });
