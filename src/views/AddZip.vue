@@ -127,18 +127,6 @@ export default {
       this.$refs["form2"].resetFields();
       this.$refs["newupload"].clearFiles();
     },
-    // uplaodFile(response) {
-    //   if (resp.data.code === 10000) {
-    //     this.$message.success("导入成功");
-    //     this.dialogVisible2 = false;
-    //   }
-    //   else {
-    //     this.$message.error("导入失败");
-    //   }
-    //   this.form2.fileList = [];
-    //   this.$refs["form2"].resetFields();
-    //   this.$refs["newupload"].clearFiles();
-    // },
     axiosMethod() {
       this.$axios.post("/tokenAvailable").then((resp) => {
         console.log("tokenAvailable:", resp);

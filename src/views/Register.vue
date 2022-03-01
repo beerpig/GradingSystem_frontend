@@ -38,7 +38,7 @@
             </div>
             <br />
             <div class="pwdbox">
-              <span class="iconfont">&#xe775;</span>
+              <span class="iconfont">&#xe824;</span>
               <el-form-item prop="repwd">
                 <el-input
                   class="repwd"
@@ -55,7 +55,7 @@
             <br />
 
             <div class="pwdbox">
-              <span class="iconfont">&#xe775;</span>
+              <span class="iconfont">&#xe79a;</span>
               <el-form-item prop="phone">
                 <el-input
                   class="phone"
@@ -71,7 +71,7 @@
             <br />
 
             <div class="pwdbox">
-              <span class="iconfont">&#xe775;</span>
+              <span class="iconfont">&#xe7e9;</span>
               <el-form-item prop="code">
                 <el-input
                   class="captcha"
@@ -169,11 +169,11 @@ export default {
     var validateUserName = (rule, value, callback) => {
       this.$axios.get("/getUserName", {
         params: {
-          user: value
+          username: value
         }
       }).then((resp) => {
           console.log("getUserName:", resp);
-          if (resp.data.success !== 'true') {
+          if (resp.data.code == 10101) {
             callback(new Error("用户名已被占用！"));
           }
           else {
@@ -259,7 +259,7 @@ export default {
                 console.log("code:", code);
                 if (code === 10010) {
                   _this.$alert(
-                    "【" + _this.registerForm.name + "】注册成功" + resp.data,
+                    "【" + _this.registerForm.name + "】注册成功",
                     "",
                     {
                       confirmButtonText: "确定",
@@ -518,7 +518,7 @@ input:-webkit-autofill::first-line {
 
 .iconfont {
   font-family: "iconfont" !important;
-  font-size: 20px;
+  font-size: 27px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
