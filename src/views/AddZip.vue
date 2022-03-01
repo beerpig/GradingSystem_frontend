@@ -109,15 +109,15 @@ export default {
         this.form2.fileList = [fileList[fileList.length - 1]]; // 这一步，是 展示最后一次选择的文件
       }
     },
-    onSuccess(response, file, fileList) {
+    onSuccess(response) {
       //文件上传成功时的钩子
       console.log("onSuccess:", response);
-      if (response.code === 10000) {
+      if (response.data.code === 10000) {
         // if(response.state==1){
         this.$message.success("导入成功");
         this.dialogVisible2 = false;
         this.open(response);
-      } else if (response.code === 10100) {
+      } else if (response.data.code === 10100) {
         this.$message.error("验证失败，请重新登录！");
         // this.$$router.push({path: "/login"});
       } else {
@@ -161,26 +161,24 @@ export default {
       if (this.centerDialogVisible) {
         this.centerDialogVisible = false;
       }
-      // let formData = new FormData();
-      // formData.append('file', this.form2.fileList[0]);
-      // let config = {
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data'
-      //   }
-      // };
+      // 解决 this.$refs.newupload.submit() 不走拦截器的bug
+      let file = this.$refs.newupload.uploadFiles.pop().raw;
+
+      let formData = new FormData();
+      formData.append('file', file);
+      // this.$axios.post("/handler", formData).then( resp => {
+      //   console.log("formData resp:", resp)
+      // });
       this.$refs.form2.validate((valid) => {
         if (valid) {
-          this.$axios.post("/tokenAvailable").then((resp) => {
-            console.log("tokenAvailable:", resp);
-            if (resp.data.code === 10000) {
-              //触发组件的action
-              this.$refs.newupload.submit(); //主要是这里
-            }
+          this.$axios.post("/handler", formData).then((resp) => {
+            // if (resp.data.code === 10000) {
+            //   //触发组件的action
+            //   // this.$refs.newupload.submit(); //主要是这里
+            //   this.onSuccess(resp);
+            // }
+            this.onSuccess(resp);
           });
-          
-          // this.$axios.post("/handler", formData, config).then(resp => {
-          //   console.log("from handler:", resp);
-          // })
         } else {
           console.log("error submit!!");
           return false;
