@@ -105,16 +105,6 @@ export default {
       let _this = this;
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          //    service({url: '/login',method: 'post',data: qs.stringify(this.loginData)})
-          //      .then(response => {
-          //        const { data } = response
-          //        //Cookies.set('Authorization',data.data.token)
-          //        alert('submit!!!' +'\n'+ data.msg)
-          //      })
-          //      .catch(error => {
-          //        console.log(error)
-          //      })
-          
           this.$axios.post("/login", _this.loginForm).then(function (resp) {
               console.log(resp)
             if (resp.data.code === 10000) {
@@ -122,19 +112,27 @@ export default {
               // console.log(success);
                 sessionStorage.setItem('username', _this.loginForm.name)
                 sessionStorage.setItem('token', resp.data.token);
-                _this.$alert(
-                  "【" + _this.loginForm.name + "】添加成功" + resp.data,
-                  "",
-                  {
-                    confirmButtonText: "确定",
-                    callback: (action) => {
-                      _this.$router.push({path: "/addZip"});
-                    },
-                  }
-                );
+                console.log("loginning....");
+                _this.$router.push({ path: "/addZip"});
+                // _this.$alert(
+                //   "【" + _this.loginForm.name + "】添加成功" + resp.data,
+                //   "",
+                //   {
+                //     confirmButtonText: "确定",
+                //     callback: (action) => {
+                //       _this.$router.push({path: "/addZip"});
+                //     },
+                //   }
+                // );
                 // _this.$router.push({path: "addZip"})
               // if (token) {
               // }
+            }
+            else if (resp.data.code === 10001) {
+              _this.$message.error("用户名或密码错误，请重新输入！");
+            }
+            else {
+              _this.$message.error("登录失败！");
             }
           })
           .catch(function (error) {
@@ -223,6 +221,7 @@ export default {
 .background {
   width: 570px;
   background-image: url("./img/Christmas_Trees.png");
+  /* background-image: url("./img/uI85JA.jpeg"); */
   background-size: cover;
   font-family: sans-serif;
 }

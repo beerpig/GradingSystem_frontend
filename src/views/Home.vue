@@ -1,7 +1,7 @@
 <template>
   <el-container class="home_container">
     <el-header>
-      <div class="home_title">评分系统</div>
+      <el-link type="primary" :underline="false" class="home_title" @click="jumpAddZip">远见元智能科创目评价系统</el-link>
       <el-col :span="4" class="userinfo">
         <el-dropdown trigger="hover">
           <span class="el-dropdown-link userinfo-inner"
@@ -30,7 +30,7 @@
     </el-header>
     <el-container>
       <el-aside width="200px" style="background-color: #83a798">
-        <el-menu :default-active="activatePath" router>
+        <el-menu :default-active="$route.path" router>
           <el-submenu :index="0">
             <template slot="title"
               ><i class="el-icon-goods"></i>个人管理</template
@@ -103,6 +103,9 @@ export default {
     HelloWorld,
   },
   methods: {
+    jumpAddZip() {
+      this.$router.push({ path: "/addZip"});
+    },
     logout() {
       sessionStorage.removeItem("username");
       sessionStorage.removeItem("token");
