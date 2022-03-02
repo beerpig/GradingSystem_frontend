@@ -46,8 +46,8 @@
         
         
       </el-form-item label="协议">
-      <el-form-item>
-        <el-checkbox v-model="form2.isAgree">勾选表示同意并接受下方协议书</el-checkbox>
+      <el-form-item style="margin-bottom: -10px">
+        <el-checkbox v-model="form2.isAgree" >勾选表示同意并接受下方协议书</el-checkbox>
          
           <el-dialog
   title="云智能科创项目评价系统服务协议"
