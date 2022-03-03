@@ -1,7 +1,7 @@
 <template>
   <el-container class="home_container">
     <el-header>
-      <el-link type="primary" :underline="false" class="home_title" @click="jumpAddZip">远见元智能科创目评价系统</el-link>
+      <el-link type="primary" :underline="false" class="home_title" @click="jumpAddZip" style="font-size: 30px; color: #fff">远见元智能科创目评价系统</el-link>
       <el-col :span="4" class="userinfo">
         <el-dropdown trigger="hover">
           <span class="el-dropdown-link userinfo-inner"
@@ -29,7 +29,7 @@
       </el-col>
     </el-header>
     <el-container>
-      <el-aside width="200px" style="background-color: #83a798">
+      <el-aside width="200px" style="background-color: #449aff">
         <el-menu :default-active="$route.path" router>
           <el-submenu :index="0">
             <template slot="title"
@@ -125,7 +125,7 @@ export default {
 }
 
 .el-header {
-  background-color: #485f55;
+  background-color: #449aff;
   color: #333;
   text-align: center;
   display: flex;
@@ -144,7 +144,7 @@ export default {
 }
 
 .el-footer {
-  background-color: #bfcfca;
+  background-color: #449aff;
   color: #fff;
   font-size: 22px;
   line-height: 60px;

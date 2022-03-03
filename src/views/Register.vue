@@ -472,7 +472,7 @@ input:-webkit-autofill::first-line {
   text-align: center;
   text-decoration: none;
   font-size: 13px;
-  border-radius: 20px;
+  border-radius: 5px;
   outline: none;
 }
 

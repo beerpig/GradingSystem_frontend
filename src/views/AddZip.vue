@@ -47,10 +47,10 @@
         
       </el-form-item label="协议">
       <el-form-item style="margin-bottom: -10px">
-        <el-checkbox v-model="form2.isAgree" >勾选表示同意并接受下方协议书</el-checkbox>
-         
+        <el-checkbox v-model="form2.isAgree" >同意并接受</el-checkbox>
+        <el-link type="primary" @click="showDialog()"> 云智能科创项目评价系统服务协议</el-link>
           <el-dialog
-  title="云智能科创项目评价系统服务协议"
+  title=""
   :visible.sync="dialogVisible"
   width="600px"
   custom-class="userDig">
@@ -166,9 +166,6 @@
   </span>
 </el-dialog>
       </el-form-item>
-      <el-form-item>
-        <el-link type="primary" @click="dialogVisible = true">云智能科创项目评价系统服务协议<i class="el-icon-view el-icon--right"></i> </el-link>
-      </el-form-item>
     </el-form>
   </div>
 </template>
@@ -201,6 +198,9 @@ export default {
     //   });
   },
   methods: {
+    showDialog() {
+      this.dialogVisible = true;
+    },
     handleClose(done) {
       this.$confirm("确认关闭？")
         .then((_) => {
