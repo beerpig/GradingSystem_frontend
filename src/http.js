@@ -34,7 +34,10 @@ instance.interceptors.response.use(
             sessionStorage.removeItem('username');
             sessionStorage.removeItem('token');
             Message.error("验证已过期，请重新登录！");
-            router.push({ path: "/" });
+            setTimeout(() => {
+                router.push({ path: "/" });
+            }, 2000)
+
         }
         // console.log("overdue");
         return response;

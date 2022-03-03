@@ -104,8 +104,8 @@
 
         <!-- 右侧的注册盒子 -->
         <div class="background">
-          <div class="title">Welcome to AI Grading System</div>
-          <button type="primary" class="returnLogin" @click="login" style="margin-left:16px; text-align:left; text-align:left; margin-top:15px">已有账号？请登录</button>
+          <div class="title">远见元智能科创顶目评价系统</div>
+          <button type="primary" class="returnLogin" @click="login" style="margin-left:16px; text-align:left; text-align:left; margin-top:285px">已有账号？请登录</button>
         </div>
       </div>
     </div>
@@ -292,11 +292,11 @@ export default {
 
       let _this = this;
       this.$refs[formName].validateField("phone", (valid) => {
-        if (valid !== "请输入手机号" && _this.canClick) {
+        if (valid !== "手机号格式错误" && _this.canClick) {
           console.log("valid:", valid);
           this.dialogbuttonVisible = true;
         } else {
-          console.log("unvalid!");
+          this.$message.error("请输入正确手机号！");
         }
       });
     },
@@ -365,8 +365,9 @@ export default {
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 #4e655d;
 }
 .loginbox-in {
-  background-color: #89ab9e;
+  background-color: rgb(225,225,230);
   width: 280px;
+  opacity: 0.7;
 }
 .userbox {
   margin-top: 50px;
@@ -384,24 +385,25 @@ export default {
 
 .background {
   width: 570px;
-  background-image: url("./img/Christmas_Trees.png");
+  margin-top: 50px;
+  background-image: url("./img/bg_2.jpeg");
   background-size: cover;
   font-family: sans-serif;
 }
 .title {
-  margin-top: 320px;
+  margin-top: -10px;
   font-weight: bold;
-  font-size: 20px;
-  color: #4e655d;
+  font-size: 30px;
+  color: rgb(22,115,156);
 }
-.title:hover {
+/* .title:hover {
   font-size: 21px;
   transition: all 0.4s ease-in-out;
   cursor: pointer;
-}
-.uesr-text {
+} */
+/* .uesr-text {
   position: left;
-}
+} */
 input {
   outline-style: none;
   border: 0;
@@ -410,7 +412,7 @@ input {
   height: 20px;
   font-family: sans-serif;
   font-size: 15px;
-  color: #445b53;
+  color: #fff;
   font-weight: bold;
 }
 /* input::-webkit-input-placeholder{
@@ -457,10 +459,13 @@ input:-webkit-autofill::first-line {
 .log-box-text {
   color: #4e655d;
   font-size: 12px;
-  text-decoration: underline;
+  text-decoration: none;
+  position: absolute;
+  margin-left: 152px;
+  margin-top: 174px;
 }
 .register_btn {
-  background-color: #5f8276; /* Green */
+  background-color: rgb(122,177,242); /* Green */
   border: none;
   color: #fafafa;
   padding: 7px 35px;
@@ -494,7 +499,7 @@ input:-webkit-autofill::first-line {
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
     0 17px 50px 0 rgba(0, 0, 0, 0.19);
   cursor: pointer;
-  background-color: #0b5137;
+  background-color: #5F82D0;
   transition: all 0.2s ease-in;
 }
 
@@ -542,6 +547,6 @@ input:-webkit-autofill::first-line {
 }
 
 /deep/ .el-input__inner {
-  background-color: #8aac9e;
+  background-color: #fff;
 }
 </style>

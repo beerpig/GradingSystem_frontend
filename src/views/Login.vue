@@ -16,7 +16,7 @@
                   v-model="loginForm.name"
                   placeholder="用户名"
                   size="small"
-                  style="font-size: 18px; width: 195px"
+                  style="font-size: 14px; width: 175px"
                 />
               </el-form-item>
             </div>
@@ -31,7 +31,7 @@
                   v-model="loginForm.pwd"
                   placeholder="密码"
                   size="small"
-                  style="font-size: 18px; width: 195px"
+                  style="font-size: 14px; width: 175px"
                   show-password
                 />
               </el-form-item>
@@ -41,20 +41,20 @@
           <div class="log-box">
             <div class="log-box-text">忘记密码</div>
             <button type="primary" class="login_btn" @click="loginF('loginForm')">
-              Login
+              登录
             </button>
           </div>
 
           <br />
-          <div class="warn">@beerpig</div>
+          <div class="warn"></div>
           <button type="primary" class="register_btn" @click="register">
-            若无账号请点击注册
+            注册
           </button>
         </div>
         <!-- </form> -->
         <!-- 右侧的注册盒子 -->
         <div class="background">
-          <div class="title">Welcome to AI Grading System</div>
+          <div class="title">远见元智能科创顶目评价系统</div>
         </div>
       </div>
     </div>
@@ -201,8 +201,9 @@ export default {
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 #4e655d;
 }
 .loginbox-in {
-  background-color: #89ab9e;
+  background-color: rgb(225,225,230);
   width: 280px;
+  opacity: 0.7;
 }
 .userbox {
   margin-top: 90px;
@@ -220,25 +221,27 @@ export default {
 
 .background {
   width: 570px;
-  background-image: url("./img/Christmas_Trees.png");
+  margin-top: 50px;
+
+  background-image: url("./img/bg_2.jpeg");
   /* background-image: url("./img/uI85JA.jpeg"); */
   background-size: cover;
   font-family: sans-serif;
 }
 .title {
-  margin-top: 320px;
+  margin-top: -10px;
   font-weight: bold;
-  font-size: 20px;
-  color: #4e655d;
+  font-size: 30px;
+  color: rgb(22,115,156);
 }
-.title:hover {
+/* .title:hover {
   font-size: 21px;
   transition: all 0.4s ease-in-out;
   cursor: pointer;
-}
-.uesr-text {
-  position: left;
-}
+} */
+/*.uesr-text {*/
+/*  position: left;*/
+/*}*/
 input {
   outline-style: none;
   border: 0;
@@ -247,7 +250,7 @@ input {
   height: 20px;
   font-family: sans-serif;
   font-size: 15px;
-  color: #445b53;
+  color: #ffffff;
   font-weight: bold;
 }
 /* input::-webkit-input-placeholder{
@@ -298,31 +301,37 @@ input:-webkit-autofill::first-line {
 .log-box-text {
   color: #4e655d;
   font-size: 12px;
-  text-decoration: underline;
+  text-decoration: none;
+  position: absolute;
+  margin-left: 152px;
+  margin-top: 174px;
 }
 .login_btn {
-  background-color: #5f8276; /* Green */
+  background-color: rgb(122,177,242); /* Green */
   border: none;
   color: #fafafa;
-  padding: 5px 22px;
+  padding: 5px 74px;
   text-align: center;
   text-decoration: none;
   font-size: 13px;
-  border-radius: 20px;
+  border-radius: 5px;
   outline: none;
+  position: absolute;
+  left: 58px;
+  top: 241px;
 }
 .login_btn:hover {
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
     0 17px 50px 0 rgba(0, 0, 0, 0.19);
   cursor: pointer;
-  background-color: #0b5137;
+  background-color: #5F82D0;
   transition: all 0.2s ease-in;
 }
 
 .warn {
   margin-top: 60px;
   /* margin-right:120px; */
-  margin-left: -120px;
+  margin-left: 28px;
   margin-bottom: 5px;
   font-weight: bold;
   font-size: 17px;
@@ -335,10 +344,9 @@ input:-webkit-autofill::first-line {
   font-size: 12px;
   /* border-radius: 20px;   */
   color: #4e655d;
-  font-size: 12px;
-  text-decoration: underline;
   display: flex;
-  margin-left: 25px;
+  margin-left: 52px;
+  margin-top: 3px;
   outline: none;
 }
 .register_btn:hover {
@@ -358,14 +366,14 @@ input:-webkit-autofill::first-line {
 
 .iconfont {
   font-family: "iconfont" !important;
-  font-size: 27px;
+  font-size: 24px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 22px;
-  color: #4e655d;
+  color: black;
   margin-right: 10px;
-  margin-top: 3px;
+  margin-top: 8px;
 }
 
 .icon-key:before {
@@ -377,6 +385,6 @@ input:-webkit-autofill::first-line {
 }
 
 /deep/ .el-input__inner {
-  background-color: #8aac9e;
+  background-color: #ffffff;
 }
 </style>
