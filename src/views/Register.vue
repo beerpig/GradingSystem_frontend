@@ -17,7 +17,7 @@
                   v-model="registerForm.name"
                   placeholder="用户名"
                   size="small"
-                  style="font-size: 18px; width: 188px"
+                  style="font-size: 14px; width: 188px"
                 />
               </el-form-item>
             </div>
@@ -32,7 +32,7 @@
                   size="small"
                   show-password
                   placeholder="密码"
-                  style="font-size: 18px"
+                  style="font-size: 14px; width: 188px"
                 ></el-input>
               </el-form-item>
             </div>
@@ -47,7 +47,7 @@
                   size="small"
                   show-password
                   placeholder="确认密码"
-                  style="font-size: 18px"
+                  style="font-size: 14px; width: 188px"
                 ></el-input>
               </el-form-item>
             </div>
@@ -62,7 +62,7 @@
                   id="phone_num"
                   v-model="registerForm.phone"
                   size="small"
-                  style="font-size: 18px"
+                  style="font-size: 14px; width: 188px"
                   placeholder="输入手机号"
                 ></el-input>
               </el-form-item>
@@ -78,7 +78,7 @@
                   id="captcha_slide"
                   v-model="registerForm.code"
                   size="small"
-                  style="font-size: 18px"
+                  style="font-size: 14px; width: 188px"
                   placeholder="输入验证码"
                 ></el-input>
               </el-form-item>
@@ -528,7 +528,7 @@ input:-webkit-autofill::first-line {
 
 .iconfont {
   font-family: "iconfont" !important;
-  font-size: 27px;
+  font-size: 24px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
