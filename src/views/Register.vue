@@ -5,7 +5,7 @@
       <div class="loginbox">
         <!-- 左侧的注册盒子 -->
         <div class="loginbox-in">
-          <el-form ref="registerForm" :model="registerForm" :rules="fieldRules">
+          <el-form ref="registerForm" :model="registerForm" :rules="fieldRules" :inline="true">
             <div class="userbox">
               <!-- <el-form-item label="用户名" prop="username"> -->
               <span class="iconfont">&#xe817;</span>
@@ -17,7 +17,7 @@
                   v-model="registerForm.name"
                   placeholder="用户名"
                   size="small"
-                  style="font-size: 14px; width: 188px"
+                  style="font-size: 14px; width: 193px"
                 />
               </el-form-item>
             </div>
@@ -32,7 +32,7 @@
                   size="small"
                   show-password
                   placeholder="密码"
-                  style="font-size: 14px; width: 188px"
+                  style="font-size: 14px; width: 193px"
                 ></el-input>
               </el-form-item>
             </div>
@@ -47,14 +47,14 @@
                   size="small"
                   show-password
                   placeholder="确认密码"
-                  style="font-size: 14px; width: 188px"
+                  style="font-size: 14px; width: 193px"
                 ></el-input>
               </el-form-item>
             </div>
 
             <br />
 
-            <div class="pwdbox">
+            <!-- <div class="pwdbox">
               <span class="iconfont">&#xe79a;</span>
               <el-form-item prop="phone">
                 <el-input
@@ -66,37 +66,50 @@
                   placeholder="输入手机号"
                 ></el-input>
               </el-form-item>
-            </div>
+            </div> -->
 
-            <br />
 
             <div class="pwdbox">
-              <span class="iconfont">&#xe7e9;</span>
-              <el-form-item prop="code">
+              <span class="iconfont">&#xe776;</span>
+              <el-form-item prop="code" style="display: inline-block !important;">
                 <el-input
                   class="captcha"
                   id="captcha_slide"
                   v-model="registerForm.code"
                   size="small"
-                  style="font-size: 14px; width: 188px"
+                  style="font-size: 14px; width: 102px"
                   placeholder="输入验证码"
                 ></el-input>
+              </el-form-item>
+              <el-form-item style="display: inline-block !important; margin-top: 5px">
+                <el-image
+                  :src="'data:image/png;base64,' + captcha_img"
+                  :fit="fit"
+                  style="width: 80px; height: 30px"
+                  @click="get_captcha_img"
+                >
+                  <div slot="error" class="image-slot">
+                    <i class="el-icon-picture-outline"></i>
+                  </div>
+                </el-image>
               </el-form-item>
             </div>
           </el-form>
 
           <br />
-          <button
+          <!-- <button
             type="primary"
             class="register_btn"
             @click="get_captcha('registerForm')"
           >
             {{ content }}
-          </button>
+          </button> -->
+
           <button
             type="primary"
             class="register_btn"
             @click="register('registerForm')"
+            style="margin-left: 140px"
           >
             注册
           </button>
@@ -105,7 +118,19 @@
         <!-- 右侧的注册盒子 -->
         <div class="background">
           <div class="title">远见元智能科创顶目评价系统</div>
-          <button type="primary" class="returnLogin" @click="login" style="margin-left:16px; text-align:left; text-align:left; margin-top:285px">已有账号？请登录</button>
+          <button
+            type="primary"
+            class="returnLogin"
+            @click="login"
+            style="
+              margin-left: 16px;
+              text-align: left;
+              text-align: left;
+              margin-top: 285px;
+            "
+          >
+            已有账号？请登录
+          </button>
         </div>
       </div>
     </div>
@@ -160,28 +185,34 @@ export default {
       }
     };
     var validatePhone = (rule, value, callback) => {
-      if (/^1(3\d|4[5-9]|5[0-35-9]|6[2567]|7[0-8]|8\d|9[0-35-9])\d{8}$/.test(value) == false) {
+      if (
+        /^1(3\d|4[5-9]|5[0-35-9]|6[2567]|7[0-8]|8\d|9[0-35-9])\d{8}$/.test(
+          value
+        ) == false
+      ) {
         callback(new Error("手机号格式错误"));
       } else {
         callback();
       }
     };
     var validateUserName = (rule, value, callback) => {
-      this.$axios.get("/getUserName", {
-        params: {
-          username: value
-        }
-      }).then((resp) => {
+      this.$axios
+        .get("/getUserName", {
+          params: {
+            username: value,
+          },
+        })
+        .then((resp) => {
           console.log("getUserName:", resp);
           if (resp.data.code == 10101) {
             callback(new Error("用户名已被占用！"));
+          } else {
+            callback();
           }
-          else {
-            callback()
-          }
-      });
+        });
     };
     return {
+      captcha_img: "",
       content: "获取验证码",
       totalTime: 60,
       canClick: true,
@@ -203,7 +234,7 @@ export default {
       fieldRules: {
         name: [
           { required: true, message: "用户名不能为空", trigger: "change" },
-          { validator: validateUserName, trigger: "blur", required: true},
+          { validator: validateUserName, trigger: "blur", required: true },
         ],
         pwd: [
           { required: true, message: "密码不能为空", trigger: "blur" },
@@ -241,46 +272,50 @@ export default {
       },
     };
   },
+  mounted() {
+    this.get_captcha_img();
+  },
   methods: {
+    get_captcha_img() {
+      this.$axios.get("/testGetCaptcha").then((resp) => {
+        console.log("geet_captcha_img=>", resp);
+        this.captcha_img = resp.data.img;
+      });
+    },
     login() {
       this.$router.push("/login");
     },
     register(formName) {
       let _this = this;
       this.$refs[formName].validate((valid) => {
-        console.log("validate...",valid);
+        console.log("validate...", valid);
         if (valid) {
-          this.$axios
-            .post("/register", _this.registerForm)
-            .then( (resp) => {
-              console.log("validate....", resp);
-              if (resp.data.code === 10010) {
-                let code = resp.data.code;
-                console.log("code:", code);
-                if (code === 10010) {
-                  _this.$alert(
-                    "【" + _this.registerForm.name + "】注册成功",
-                    "",
-                    {
-                      confirmButtonText: "确定",
-                      callback: (action) => {
-                        _this.$router.push({ path: "/login" });
-                      },
-                    }
-                  );
-                  // sessionStorage.setItem("token", token);
-                }
-                else if (resp.data.code === 10011) {
-                  this.$message.error("注册失败，验证码错误！");
-                }
-                else if (resp.data.code === 11000) {
-                  this.$message.error("注册失败，手机号！");
-                }
-                else {
-                  this.$message.error("注册失败！");
-                }
+          this.$axios.post("/register", _this.registerForm).then((resp) => {
+            console.log("validate....", resp);
+            if (resp.data.code === 10010) {
+              let code = resp.data.code;
+              console.log("code:", code);
+              if (code === 10010) {
+                _this.$alert(
+                  "【" + _this.registerForm.name + "】注册成功",
+                  "",
+                  {
+                    confirmButtonText: "确定",
+                    callback: (action) => {
+                      _this.$router.push({ path: "/login" });
+                    },
+                  }
+                );
+                // sessionStorage.setItem("token", token);
+              } else if (resp.data.code === 10011) {
+                this.$message.error("注册失败，验证码错误！");
+              } else if (resp.data.code === 11000) {
+                this.$message.error("注册失败，手机号！");
+              } else {
+                this.$message.error("注册失败！");
               }
-            });
+            }
+          });
         }
       });
     },
@@ -324,8 +359,7 @@ export default {
                   _this.canClick = true; //这里重新开启
                 }
               }, 1000);
-            }
-            else if (resp.data.code === 10111) {
+            } else if (resp.data.code === 10111) {
               this.$message.error("验证码发送失败，请重试！");
             }
           }
@@ -365,7 +399,7 @@ export default {
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 #4e655d;
 }
 .loginbox-in {
-  background-color: rgb(225,225,230);
+  background-color: rgb(225, 225, 230);
   width: 280px;
   opacity: 0.7;
 }
@@ -394,7 +428,7 @@ export default {
   margin-top: -10px;
   font-weight: bold;
   font-size: 30px;
-  color: rgb(22,115,156);
+  color: rgb(22, 115, 156);
 }
 /* .title:hover {
   font-size: 21px;
@@ -465,7 +499,7 @@ input:-webkit-autofill::first-line {
   margin-top: 174px;
 }
 .register_btn {
-  background-color: rgb(122,177,242); /* Green */
+  background-color: rgb(122, 177, 242); /* Green */
   border: none;
   color: #fafafa;
   padding: 7px 35px;
@@ -499,7 +533,7 @@ input:-webkit-autofill::first-line {
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
     0 17px 50px 0 rgba(0, 0, 0, 0.19);
   cursor: pointer;
-  background-color: #5F82D0;
+  background-color: #5f82d0;
   transition: all 0.2s ease-in;
 }
 

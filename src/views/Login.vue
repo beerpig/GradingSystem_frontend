@@ -16,7 +16,7 @@
                   v-model="loginForm.name"
                   placeholder="用户名"
                   size="small"
-                  style="font-size: 14px; width: 175px"
+                  style="font-size: 14px; width: 193px"
                 />
               </el-form-item>
             </div>
@@ -31,23 +31,51 @@
                   v-model="loginForm.pwd"
                   placeholder="密码"
                   size="small"
-                  style="font-size: 14px; width: 175px"
+                  style="font-size: 14px; width: 193px"
                   show-password
                 />
+              </el-form-item>
+            </div>
+
+            <br/>
+            <div class="pwdbox">
+              <span class="iconfont">&#xe776;</span>
+              <el-form-item prop="code" style="display: inline-block !important;">
+                <el-input
+                  class="captcha"
+                  id="captcha_slide"
+                  v-model="loginForm.code"
+                  size="small"
+                  style="font-size: 14px; width: 102px"
+                  placeholder="输入验证码"
+                ></el-input>
+              </el-form-item>
+              <el-form-item style="display: inline-block !important; margin-top: 5px; width: 200px">
+                <el-image
+                  :src="'data:image/png;base64,' + captcha_img"
+                  :fit="fit"
+                  style="width: 80px; height: 30px"
+                  @click="get_captcha_img"
+                >
+                  <div slot="error" class="image-slot">
+                    <i class="el-icon-picture-outline"></i>
+                  </div>
+                </el-image>
               </el-form-item>
             </div>
           </el-form>
           <br />
           <div class="log-box">
-            <div class="log-box-text">忘记密码</div>
-            <button type="primary" class="login_btn" @click="loginF('loginForm')">
+            <div class="log-box-text" style="margin-top: 181px">忘记密码</div>
+            <button type="primary" class="login_btn" @click="loginF('loginForm')" style="margin-top: 30px">
               登录
             </button>
+            <!-- <button type="primary" class="login_wechat" @click="setWxerwma">微信登录</button> -->
           </div>
 
           <br />
           <div class="warn"></div>
-          <button type="primary" class="register_btn" @click="register">
+          <button type="primary" class="register_btn" @click="register" >
             注册
           </button>
         </div>
@@ -68,9 +96,12 @@ export default {
 
   data: function () {
     return {
+      captcha_img: "",
+      urltest: "",
       loginForm: {
         name: "",
         pwd: "",
+        code: ""
       },
       fieldRules: {
         name: [
@@ -90,10 +121,44 @@ export default {
     //   ],
     };
   },
-
+  mounted() {
+    this.get_captcha_img();
+  },
   methods: {
+    get_captcha_img() {
+      this.$axios.get("/testGetCaptcha").then((resp) => {
+        console.log("get_captcha_img=>", resp);
+        this.captcha_img = resp.data.img;
+      });
+    },
     register() {
       this.$router.push("/register");
+    },
+    // 设置微信二维码函数
+    setWxerwma () {
+      const s = document.createElement('script')
+      s.type = 'text/javascript'
+      s.src = 'https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js'
+      const wxElement = document.body.appendChild(s)
+      console.log("wxElement =>", wxElement);
+      // const uri = `${window.location.origin}callback/wx/` // 这里是你的回调uri
+      const uri = encodeURIComponent("127.0.0.1:8080")
+      wxElement.onload = () => {
+        const obj = new WxLogin({
+          id: 'wx_login_container', // 需要显示的容器id
+          appid: "wx398a330716af094a", // appid wx*******
+          scope: 'snsapi_login', // 网页默认即可
+          redirect_uri: encodeURIComponent(uri), // 授权成功后回调的url
+          state: Math.ceil(Math.random() * 1000), // 可设置为简单的随机数加session用来校验
+          style: 'black', // 提供"black"、"white"可选。二维码的样式
+          href: "data:text/css;base64,QGNoYXJzZXQgIlVURi04IjsNCi5pbXBvd2VyQm94IC50aXRsZSB7ZGlzcGxheTogbm9uZTt9DQouaW1wb3dlckJveCAuaW5mbyB7ZGlzcGxheTogbm9uZTt9DQouc3RhdHVzX2ljb24ge2Rpc3BsYXk6IG5vbmV9DQouaW1wb3dlckJveCAuc3RhdHVzIHt0ZXh0LWFsaWduOiBjZW50ZXI7fSANCg=="
+
+        })
+        if (!obj) {
+          console.error('wx-error')
+        }
+      }
+      
     },
 
     // getParams: function () {
@@ -190,6 +255,10 @@ export default {
 </script>
 
 <style scoped>
+.impowerBox .title {display: none;}
+.impowerBox .info {display: none;}
+.status_icon {display: none}
+.impowerBox .status {text-align: center;} 
 .loginbox {
   display: flex;
   position: absolute;
