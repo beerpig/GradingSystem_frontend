@@ -105,15 +105,23 @@
         </el-main>
       </el-container>
       <el-dialog title="邮箱验证" :visible.sync="dialogFormVisible">
-        <el-form :model="form">
-          <el-form-item label="邮箱地址" :label-width="formLabelWidth">
+        <el-form :model="form" ref="form" :rules="fieldRules">
+          <el-form-item
+            label="邮箱地址"
+            :label-width="formLabelWidth"
+            prop="email"
+          >
             <el-input
               v-model="form.email"
               autocomplete="off"
               placeholder="请填写邮箱地址"
             ></el-input>
           </el-form-item>
-          <el-form-item label="邮箱验证码" :label-width="formLabelWidth">
+          <el-form-item
+            label="邮箱验证码"
+            :label-width="formLabelWidth"
+            prop="code"
+          >
             <el-input
               v-model="form.code"
               autocomplete="off"
@@ -122,14 +130,12 @@
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisible = false"
-            >确 定</el-button
-          >
+          <el-button type="primary" @click="sendEmailCode('form')">校验</el-button>
+          <el-button type="primary" @click="sendEmail('form')">发送验证码</el-button>
         </div>
       </el-dialog>
 
-        <el-input :value="dialogFormVisible"></el-input>
+      <!-- <el-input :value="dialogFormVisible"></el-input> -->
     </el-container>
     <el-footer
       >远见（无锡）大数据科技有限公司2022 © ALL Rights Reserved</el-footer
@@ -144,19 +150,80 @@ import HelloWorld from "@/components/HelloWorld.vue";
 export default {
   name: "Home",
   data() {
+    var validateEmail = (rule, value, callback) => {
+      if (!value) {
+        callback();
+      } else {
+        if (
+          /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+            value
+          ) == false
+        ) {
+          callback(new Error("邮箱格式错误"));
+        } else {
+          callback();
+        }
+      }
+    };
     return {
-      dialogFormVisible: this.$store.state.toDialogFormVisible,
+      // dialogFormVisible: this.$store.state.toDialogFormVisible,
+      dialogFormVisible: true,
       form: {
         email: "",
         code: "",
       },
       formLabelWidth: "120px",
+      fieldRules: {
+        email: [{ validator: validateEmail, trigger: "blur" }],
+        code: [
+          {
+            min: 4,
+            max: 4,
+            message: "请输入4位验证码",
+            trigger: "change",
+          },
+        ],
+      },
     };
   },
   components: {
     HelloWorld,
   },
   methods: {
+    sendEmailCode(formName) {
+      let _this = this;
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.$axios.post("/emailValidate", _this.form).then(resp => {
+            if (resp) {
+              if (resp.data.code === 11011) {
+                _this.$message.success("emailValidate success!");
+              }
+            }
+          })
+        }
+      })
+    },
+    sendEmail(formName) {
+      let _this = this;
+      this.$refs[formName].validateField("email", (valid) => {
+        if (valid !== "邮箱格式错误") {
+          this.$axios
+            .get("/sendMail", {
+              params: {
+                email: _this.form.email,
+              },
+            })
+            .then((resp) => {
+              if (resp.data.code === 11010) {
+                _this.$message.success("发送邮箱验证码成功！");
+              }
+            });
+        } else {
+          this.$message.error("请输入正确邮箱地址！");
+        }
+      });
+    },
     jumpAddZip() {
       this.$router.push({ path: "/addZip" });
     },
