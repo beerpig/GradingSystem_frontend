@@ -178,7 +178,7 @@ export default {
                 sessionStorage.setItem('username', _this.loginForm.name)
                 sessionStorage.setItem('token', resp.data.token);
                 console.log("loginning....");
-                _this.$router.push({ path: "/addZip"});
+                _this.$router.push({ path: "/"});
                 // _this.$alert(
                 //   "【" + _this.loginForm.name + "】添加成功" + resp.data,
                 //   "",

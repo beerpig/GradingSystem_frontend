@@ -13,6 +13,7 @@ import Login from "../views/Login"
 import Register from "../views/Register"
 import Homepage from "../views/Homepage"
 import SlideCaptcha from "../views/SlideCaptcha"
+import Welcome from "../views/Welcome"
 
 
 
@@ -23,11 +24,16 @@ const routes = [{
         path: '/',
         name: 'Home',
         component: Home,
-        // redirect: '/productManage',
+        redirect: '/welcome',
         children: [{
                 path: '/productManage',
                 name: '提交管理',
                 component: ProductManage
+            },
+            {
+                path: '/welcome',
+                name: '欢迎体验',
+                component: Welcome
             },
             {
                 path: '/add',
@@ -56,7 +62,7 @@ const routes = [{
             },
             {
                 path: '/collapse',
-                name: '评分查看',
+                name: '查看评分',
                 component: Collapse
             },
             {
@@ -110,7 +116,7 @@ router.beforeEach((to, from, next) => {
     } else if (to.path === '/login') {
         // 如果是访问登录界面，如果用户会话信息存在，代表已登录过，跳转到主页
         if (token) {
-            next({ path: '/addZip' })
+            next({ path: '/' })
         } else {
             next()
         }

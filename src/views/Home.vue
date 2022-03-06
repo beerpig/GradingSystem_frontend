@@ -50,9 +50,9 @@
                 <i class="el-icon-circle-plus"></i>添加作品
               </div>
             </el-menu-item>
-            <el-menu-item index="/Collapse">
+            <el-menu-item index="/collapse">
               <div style="position: relative; left: 20px">
-                <i class="el-icon-finished"></i>评分查看
+                <i class="el-icon-finished"></i>查看评分
               </div>
             </el-menu-item>
           </el-submenu>
@@ -85,7 +85,7 @@
               v-text="this.$router.currentRoute.name"
             ></el-breadcrumb-item>
           </el-breadcrumb>
-          <div class="welcome">
+          <!-- <div class="welcome">
             <div class="content">
 
               <div class="sub-title">欢迎体验</div>
@@ -93,13 +93,13 @@
               <div class="desc">- 基于Vue + ElementUI + Flask</div>
             </div>
             <div class="img"></div>
-          </div>
+          </div> -->
           <router-view></router-view>
         </el-main>
         
       </el-container>
     </el-container>
-    <el-footer>@CopyRight</el-footer>
+    <el-footer>远见（无锡）大数据科技有限公司2022 © ALL Rights Reserved</el-footer>
   </el-container>
 </template>
 

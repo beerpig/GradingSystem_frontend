@@ -25,7 +25,7 @@
           drag
           ref="newupload"
           :action="action"
-          accept=".zip,.rar, .docx, .7zip"
+          accept=".zip,.rar, .docx, .7zip, .pdf"
           :on-change="onChange"
           :on-success="onSuccess"
           :file-list="form2.fileList"
@@ -218,7 +218,7 @@ export default {
         //     });
         //   }
       });
-      this.$router.push({ name: "评分查看", params: { responses: response } });
+      this.$router.push({ name: "查看评分", params: { responses: response } });
     },
     //onChange这里我根据我的业务需求进行修改替换上一次的上传文件了
     onChange(file, fileList) {
@@ -236,7 +236,7 @@ export default {
         this.$message.success("导入成功");
         this.dialogVisible2 = false;
         // this.open(response);
-        this.$router.push({ name: "评分查看", params: { responses: response } });
+        this.$router.push({ name: "查看评分", params: { responses: response } });
       } else if (response.data.code === 10100) {
         this.$message.error("验证失败，请重新登录！");
         // this.$$router.push({path: "/login"});
