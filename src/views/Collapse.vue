@@ -1,46 +1,13 @@
 <template>
   <div>
     <el-collapse v-model="activeNames" @change="handleChange">
-      <el-collapse-item title="SCORE" name="1">
-        <div v-for="item in dic.SCORE" style="font-size: 25px">
-          {{ item }}
+      <el-collapse-item name="1">
+        <div v-for="item in dic.SCORE" style="font-size: 30px">
+          SCORE : {{ item }}
         </div>
       </el-collapse-item>
     </el-collapse>
-    <el-collapse v-model="activeNames" @change="handleChange">
-      <el-collapse-item title="FILES" name="2">
-        <div v-for="(item, index) in dic.FILES" :key="index">
-          <el-collapse-item :title="item.NAME" :name="item.index">
-            <div v-for="(item2, key) in item.LABELS">
-              <el-collapse-item :title="key" :name="item2.index">
-                <div v-for="(item3, index) in item2.items">
-                  {{ item3 }}
-                </div>
-                {{ item2.score }}
-              </el-collapse-item>
-            </div>
-
-            <el-collapse-item title="ENTITY" :name="item.index">
-              <div v-for="(item1, key) in item.ENTITYS">
-                <!--<div  v-for="(item3,index) in item1.items">-->
-                <!--	{{item3}}-->
-                <!--</div>-->
-                {{ item1.name }}
-                {{ item1.score }}
-                <!--score = {{ item2.score }}-->
-              </div>
-            </el-collapse-item>
-          </el-collapse-item>
-        </div>
-
-        <!--<el-collapse v-model="activeNames" @change="handleChange" v-for="(item1,index) in item1" :key="index" >-->
-        <!--	<el-collapse-item  :title=item.NAME  :name=item.index>-->
-        <!--		11-->
-        <!--	</el-collapse-item>-->
-        <!--</el-collapse>-->
-      </el-collapse-item>
-    </el-collapse>
-	<div style="text-align: left; margin-left: 0px"> 词云展示</div>
+	<div style="text-align: left; margin-left: 0px"> 评分画像</div>
     <div id="word-img">
       <el-image :src="'data:image/png;base64,' + pic" :fit="fit">
         <div slot="error" class="image-slot">
@@ -220,110 +187,7 @@ export default {
 	// 	]
 	// },
     //   dic :{
-    //   	'SCORE': {'AI': 86.0},
-    //     	FILES: [
-    //     		{
-    //     			NAME: "互联网+商业计划书 初赛",
-    //     			LABELS: {
-    //     				__label__ACADEMIC: {
-    //     					items: [
-    //     						"研究员",
-    //     						"教授",
-    //     						"知名人士",
-    //     						"研究生",
-    //     						"副教授",
-    //     						"专业人士",
-    //     						"副校长",
-    //     						"学院",
-    //     						"大学",
-    //     						"博士",
-    //     						"讲师"
-    //     					]
-    //     				},
-    //     				__label__INDUSTRIAL: {
-    //     					items: [
-    //     						"业界"
-    //     					]
-    //     				},
-    //     				__label__BUSINESS: {
-    //     					items: [
-    //     						"预测",
-    //     						"现状",
-    //     						"前景",
-    //     						"市场潜力",
-    //     						"工业",
-    //     						"营业额",
-    //     						"市场前景",
-    //     						"分析",
-    //     						"营收",
-    //     						"产业",
-    //     						"前瞻性",
-    //     						"销售额",
-    //     						"发展潜力",
-    //     						"规模",
-    //     						"净利润"
-    //     					]
-    //     				},
-    //     				__label__INVESTMENT: {
-    //     					items: [
-    //     						"资源整合",
-    //     						"资金",
-    //     						"投资",
-    //     						"融资",
-    //     						"合作意向",
-    //     						"投融资"
-    //     					]
-    //     				},
-    //     				__label__PATENTS: {
-    //     					items: [
-    //     						"知识产权",
-    //     						"专利",
-    //     						"专利申请",
-    //     						"一等奖",
-    //     						"发明人"
-    //     					]
-    //     				}
-    //     			},
-    //     			ENTITYS: [
-    //     				{
-    //     					name: "南京航空航天大学"
-    //     				},
-    //     				{
-    //     					name: "董事长"
-    //     				},
-    //     				{
-    //     					name: "上海大学"
-    //     				},
-    //     				{
-    //     					name: "校长"
-    //     				}
-    //     			]
-    //     		},
-    //     		{
-    //     			NAME: "备赛报名表Application form 青空计划",
-    //     			LABELS: {
-    //     				__label__BUSINESS: {
-    //     					items: [
-    //     						"产业"
-    //     					]
-    //     				},
-    //     				__label__INVESTMENT: {
-    //     					items: []
-    //     				},
-    //     				__label__PATENTS: {
-    //     					items: [
-    //     						"一等奖"
-    //     					]
-    //     				}
-    //     			},
-    //     			ENTITYS: [
-    //     				{
-    //     					name: "一等奖",
-    //     					score: 2
-    //     				}
-    //     			]
-    //     		}
-    //     	]
+    //   	'SCORE': {'AI': 86.0}
     //     }
     };
   },

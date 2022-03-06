@@ -1,7 +1,14 @@
 <template>
   <el-container class="home_container">
     <el-header>
-      <el-link type="primary" :underline="false" class="home_title" @click="jumpAddZip" style="font-size: 30px; color: #fff">远见元智能科创目评价系统</el-link>
+      <el-link
+        type="primary"
+        :underline="false"
+        class="home_title"
+        @click="jumpAddZip"
+        style="font-size: 30px; color: #fff"
+        >远见元智能科创项目评价系统</el-link
+      >
       <el-col :span="4" class="userinfo">
         <el-dropdown trigger="hover">
           <span class="el-dropdown-link userinfo-inner"
@@ -96,10 +103,37 @@
           </div> -->
           <router-view></router-view>
         </el-main>
-        
       </el-container>
+      <el-dialog title="邮箱验证" :visible.sync="dialogFormVisible">
+        <el-form :model="form">
+          <el-form-item label="邮箱地址" :label-width="formLabelWidth">
+            <el-input
+              v-model="form.email"
+              autocomplete="off"
+              placeholder="请填写邮箱地址"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="邮箱验证码" :label-width="formLabelWidth">
+            <el-input
+              v-model="form.code"
+              autocomplete="off"
+              placeholder="请填写邮箱验证码"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="dialogFormVisible = false"
+            >确 定</el-button
+          >
+        </div>
+      </el-dialog>
+
+        <el-input :value="dialogFormVisible"></el-input>
     </el-container>
-    <el-footer>远见（无锡）大数据科技有限公司2022 © ALL Rights Reserved</el-footer>
+    <el-footer
+      >远见（无锡）大数据科技有限公司2022 © ALL Rights Reserved</el-footer
+    >
   </el-container>
 </template>
 
@@ -109,12 +143,22 @@ import HelloWorld from "@/components/HelloWorld.vue";
 
 export default {
   name: "Home",
+  data() {
+    return {
+      dialogFormVisible: this.$store.state.toDialogFormVisible,
+      form: {
+        email: "",
+        code: "",
+      },
+      formLabelWidth: "120px",
+    };
+  },
   components: {
     HelloWorld,
   },
   methods: {
     jumpAddZip() {
-      this.$router.push({ path: "/addZip"});
+      this.$router.push({ path: "/addZip" });
     },
     logout() {
       sessionStorage.removeItem("username");
@@ -154,7 +198,7 @@ export default {
 }
 .welcome .img {
   margin-left: 105px;
-  background-image: url('./img/welcome.png');
+  background-image: url("./img/welcome.png");
   width: 371px;
   height: 438px;
 }

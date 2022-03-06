@@ -5,7 +5,12 @@
       <div class="loginbox">
         <!-- 左侧的注册盒子 -->
         <div class="loginbox-in">
-          <el-form ref="registerForm" :model="registerForm" :rules="fieldRules" :inline="true">
+          <el-form
+            ref="registerForm"
+            :model="registerForm"
+            :rules="fieldRules"
+            :inline="true"
+          >
             <div class="userbox">
               <!-- <el-form-item label="用户名" prop="username"> -->
               <span class="iconfont">&#xe817;</span>
@@ -67,11 +72,27 @@
                 ></el-input>
               </el-form-item>
             </div> -->
+            <div class="pwdbox">
+              <span class="iconfont">&#xe79a;</span>
+              <el-form-item prop="email">
+                <el-input
+                  class="email"
+                  id="email"
+                  v-model="registerForm.email"
+                  size="small"
+                  style="font-size: 14px; width: 193px"
+                  placeholder="输入邮箱(可选)"
+                ></el-input>
+              </el-form-item>
+            </div>
 
-
+            <br />
             <div class="pwdbox">
               <span class="iconfont">&#xe776;</span>
-              <el-form-item prop="code" style="display: inline-block !important;">
+              <el-form-item
+                prop="code"
+                style="display: inline-block !important"
+              >
                 <el-input
                   class="captcha"
                   id="captcha_slide"
@@ -81,7 +102,9 @@
                   placeholder="输入验证码"
                 ></el-input>
               </el-form-item>
-              <el-form-item style="display: inline-block !important; margin-top: 5px">
+              <el-form-item
+                style="display: inline-block !important; margin-top: 5px"
+              >
                 <el-image
                   :src="'data:image/png;base64,' + captcha_img"
                   :fit="fit"
@@ -117,7 +140,7 @@
 
         <!-- 右侧的注册盒子 -->
         <div class="background">
-          <div class="title">远见元智能科创顶目评价系统</div>
+          <div class="title">远见元智能科创项目评价系统</div>
           <button
             type="primary"
             class="returnLogin"
@@ -195,6 +218,21 @@ export default {
         callback();
       }
     };
+    var validateEmail = (rule, value, callback) => {
+      if (!value) {
+        callback();
+      } else {
+        if (
+          /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+            value
+          ) == false
+        ) {
+          callback(new Error("邮箱格式错误"));
+        } else {
+          callback();
+        }
+      }
+    };
     var validateUserName = (rule, value, callback) => {
       this.$axios
         .get("/getUserName", {
@@ -227,8 +265,9 @@ export default {
         name: "",
         pwd: "",
         repwd: "",
-        phone: "",
+        // phone: "",
         code: "",
+        email: "",
       },
 
       fieldRules: {
@@ -256,10 +295,11 @@ export default {
           },
           { validator: validatePass2, trigger: "blur", required: true },
         ],
-        phone: [
-          { required: true, message: "请输入手机号", trigger: "blur" },
-          { validator: validatePhone, trigger: "blur", required: true },
-        ],
+        email: [{ validator: validateEmail, trigger: "blur" }],
+        // phone: [
+        //   { required: true, message: "请输入手机号", trigger: "blur" },
+        //   { validator: validatePhone, trigger: "blur", required: true },
+        // ],
         code: [
           { required: true, message: "请输入验证码", trigger: "blur" },
           {
@@ -278,7 +318,7 @@ export default {
   methods: {
     get_captcha_img() {
       this.$axios.get("/testGetCaptcha").then((resp) => {
-        console.log("geet_captcha_img=>", resp);
+        console.log("get_captcha_img=>", resp);
         this.captcha_img = resp.data.img;
       });
     },
@@ -307,13 +347,13 @@ export default {
                   }
                 );
                 // sessionStorage.setItem("token", token);
-              } else if (resp.data.code === 10011) {
-                this.$message.error("注册失败，验证码错误！");
-              } else if (resp.data.code === 11000) {
-                this.$message.error("注册失败，手机号！");
-              } else {
-                this.$message.error("注册失败！");
               }
+            } else if (resp.data.code === 10011) {
+              this.$message.error("注册失败，验证码错误！");
+            } else if (resp.data.code === 11000) {
+              this.$message.error("注册失败，手机号！");
+            } else {
+              this.$message.error("注册失败！");
             }
           });
         }

@@ -110,6 +110,15 @@ export default {
         pwd: [
           { required: true, message: "密码不能为空", trigger: "change" },
         ],
+        code: [
+          { required: true, message: "请输入验证码", trigger: "blur" },
+          {
+            min: 4,
+            max: 4,
+            message: "请输入4位验证码",
+            trigger: "change",
+          },
+        ]
       },
       action: "/login",
     //   user_list: [
@@ -179,6 +188,7 @@ export default {
                 sessionStorage.setItem('token', resp.data.token);
                 console.log("loginning....");
                 _this.$router.push({ path: "/"});
+                _this.$store.commit('setDialogFormVisible');
                 // _this.$alert(
                 //   "【" + _this.loginForm.name + "】添加成功" + resp.data,
                 //   "",
@@ -195,6 +205,9 @@ export default {
             }
             else if (resp.data.code === 10001) {
               _this.$message.error("用户名或密码错误，请重新输入！");
+            }
+            else if (resp.data.code === 11001) {
+              _this.$message.error("验证码错误，请重新输入！");
             }
             else {
               _this.$message.error("登录失败！");
