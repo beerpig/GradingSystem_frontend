@@ -73,7 +73,7 @@
               </el-form-item>
             </div> -->
             <div class="pwdbox">
-              <span class="iconfont">&#xe79a;</span>
+              <span class="iconfont">&#xe812;</span>
               <el-form-item prop="email">
                 <el-input
                   class="email"

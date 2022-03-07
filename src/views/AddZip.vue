@@ -7,6 +7,7 @@
       :model="form2"
       label-width="100px"
       style="padding: 30px 0"
+      
     >
       <!-- <el-form-item label="导入方式" prop="importType">
         <el-select v-model="form2.importType" placeholder="请选择导入方式">
@@ -37,12 +38,18 @@
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         </el-upload>
       </el-form-item>
-      <el-form-item label="">
+      <el-form-item label="" >
         <!-- <el-button type="primary" @click="importFilepost">导入</el-button> -->
 
         <!-- <el-button type="primary" @click="centerDialogVisible = true">导入</el-button> -->
-        <el-button type="primary" @click="importFilepost">导入</el-button>
+        <el-button type="primary" @click="importFilepost" :disabled="isImportContentDisable">{{ importContent }}</el-button>
         <el-button type="primary" @click="onCancel">取消</el-button>
+        <!-- <el-button
+          type="primary"
+          @click="openFullScreen1"
+          v-loading.fullscreen.lock="fullscreenLoading">
+          指令方式
+        </el-button> -->
         
         
       </el-form-item label="协议">
@@ -182,6 +189,9 @@ export default {
         isAgree: false,
       },
       dialogVisible: false,
+      importContent: "导入",
+      isImportContentDisable: false,
+      // fullscreanLoading: false,
       rules2: {
         fileList: [{ required: true, message: "请选择文件", trigger: "blur" }],
       },
@@ -198,6 +208,12 @@ export default {
     //   });
   },
   methods: {
+    // openFullScreen1() {
+    //   this.fullscreenLoading = true;
+    //   setTimeout(() => {
+    //     this.fullscreenLoading = false;
+    //   }, 2000);
+    // },
     showDialog() {
       this.dialogVisible = true;
     },
@@ -231,24 +247,33 @@ export default {
     onSuccess(response) {
       //文件上传成功时的钩子
       console.log("onSuccess:", response);
-      if (response.data.code === 10000) {
-        // if(response.state==1){
-        this.$message.success("导入成功");
-        this.dialogVisible2 = false;
-        // this.open(response);
-        this.$router.push({ name: "查看评分", params: { responses: response } });
-      } else if (response.data.code === 11100) {
-        this.$message.error("文件不合法，请重新上传！");
+      debugger;
+      if (response) {
+        if (response.data.code === 10000) {
+          // if(response.state==1){
+          this.$message.success("导入成功");
+          this.dialogVisible2 = false;
+          // this.open(response);
+          this.$router.push({
+            name: "查看评分",
+            params: { responses: response },
+          });
+        } else if (response.data.code === 11100) {
+          this.$message.error("文件不合法，请重新上传！");
+        } else if (response.data.code === 10100) {
+          this.$message.error("验证失败，请重新登录！");
+          // this.$$router.push({path: "/login"});
+        } else {
+          this.$message.error("导入失败");
+        }
       }
-       else if (response.data.code === 10100) {
-        this.$message.error("验证失败，请重新登录！");
-        // this.$$router.push({path: "/login"});
-      } else {
-        this.$message.error("导入失败");
-      }
+
       this.form2.fileList = [];
       this.$refs["form2"].resetFields();
       this.$refs["newupload"].clearFiles();
+      debugger;
+      this.importContent = "导入";
+      this.isImportContentDisable = false;
     },
     axiosMethod() {
       this.$axios.post("/tokenAvailable").then((resp) => {
@@ -276,31 +301,41 @@ export default {
       // this.$axios.post("/handler", formData).then( resp => {
       //   console.log("formData resp:", resp)
       // });
-      this.$refs.form2.validate((valid) => {
-        if (valid) {
-          // 解决 this.$refs.newupload.submit() 不走拦截器的bug
-          let file = this.$refs.newupload.uploadFiles.pop().raw;
+      if (this.form2.isAgree === false) {
+        this.$message.error("请勾选下方协议书！");
+      } else {
+        this.$refs.form2.validate((valid) => {
+          if (valid) {
+            // 解决 this.$refs.newupload.submit() 不走拦截器的bug
+            let file = this.$refs.newupload.uploadFiles.pop().raw;
 
-          let formData = new FormData();
-          formData.append("file", file);
-          console.log("valid:", valid);
-          if (this.form2.isAgree === false) {
-            this.$message.error("请勾选下方协议书！");
+            let formData = new FormData();
+            formData.append("file", file);
+            console.log("valid:", valid);
+            if (this.form2.isAgree === false) {
+              this.$message.error("请勾选下方协议书！");
+              // debugger;
+            } else {
+              // setTimeout(() => {}, 5000);
+              this.$message.success("结果评审中，请稍等....");
+              this.importContent = "评审中";
+              this.isImportContentDisable = true;
+              this.$axios.post("/handler", formData).then((resp) => {
+                // if (resp.data.code === 10000) {
+                //   //触发组件的action
+                //   // this.$refs.newupload.submit(); //主要是这里
+                //   this.onSuccess(resp);
+                // }
+
+                this.onSuccess(resp);
+              });
+            }
           } else {
-            this.$axios.post("/handler", formData).then((resp) => {
-              // if (resp.data.code === 10000) {
-              //   //触发组件的action
-              //   // this.$refs.newupload.submit(); //主要是这里
-              //   this.onSuccess(resp);
-              // }
-              this.onSuccess(resp);
-            });
+            console.log("error submit!!");
+            return false;
           }
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
+        });
+      }
     },
     onCancel() {
       //取消

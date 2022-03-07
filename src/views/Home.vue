@@ -37,10 +37,10 @@
     </el-header>
     <el-container>
       <el-aside width="200px" style="background-color: #fff">
-        <el-menu :default-active="$route.path" router>
-          <el-submenu :index="0">
+        <el-menu :default-active="$route.path" router >
+          <el-submenu :index="0" style="text-align: left">
             <template slot="title"
-              ><i class="el-icon-goods"></i>个人管理</template
+              ><i class="el-icon-goods"></i>评分系统</template
             >
             <!-- <el-menu-item index="/productManage">
               <div style="position: relative;left: 20px;">
@@ -59,7 +59,7 @@
             </el-menu-item>
             <el-menu-item index="/collapse">
               <div style="position: relative; left: 20px">
-                <i class="el-icon-finished"></i>查看评分
+                <i class="el-icon-finished"></i>历史评分
               </div>
             </el-menu-item>
           </el-submenu>
