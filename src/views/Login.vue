@@ -66,10 +66,12 @@
           </el-form>
           <br />
           <div class="log-box">
-            <div class="log-box-text" style="margin-top: 181px">忘记密码</div>
+            <div class="log-box-text" style="margin-top: 128px">忘记密码</div>
             <button type="primary" class="login_btn" @click="loginF('loginForm')" style="margin-top: 30px">
               登录
             </button>
+            <span style="margin-top: 50px">测试账号: demo</span>
+            <span style="margin-top: 50px">测试密码: test123</span>
             <!-- <button type="primary" class="login_wechat" @click="setWxerwma">微信登录</button> -->
           </div>
 
@@ -188,7 +190,10 @@ export default {
                 sessionStorage.setItem('token', resp.data.token);
                 console.log("loginning....");
                 _this.$router.push({ path: "/"});
-                _this.$store.commit('setDialogFormVisible');
+                if (resp.data.usertype === 0) {
+                  _this.$store.commit('setDialogFormVisible');
+                  _this.$store.commit('setDialogFormEmail', {data: resp});
+                }
                 // _this.$alert(
                 //   "【" + _this.loginForm.name + "】添加成功" + resp.data,
                 //   "",
@@ -428,7 +433,7 @@ input:-webkit-autofill::first-line {
   color: #4e655d;
   display: flex;
   margin-left: 52px;
-  margin-top: 3px;
+  margin-top: -60px;
   outline: none;
 }
 .register_btn:hover {

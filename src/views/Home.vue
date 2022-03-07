@@ -166,11 +166,13 @@ export default {
       }
     };
     return {
-      // dialogFormVisible: this.$store.state.toDialogFormVisible,
-      dialogFormVisible: true,
+      dialogFormVisible: this.$store.state.toDialogFormVisible,
+      dialogFormEmail: this.$store.state.toDialogFormEmail,
+      // dialogFormVisible: true,
       form: {
-        email: "",
+        email: this.$store.state.toDialogFormEmail,
         code: "",
+        username: sessionStorage.getItem('username')
       },
       formLabelWidth: "120px",
       fieldRules: {
@@ -197,7 +199,11 @@ export default {
           this.$axios.post("/emailValidate", _this.form).then(resp => {
             if (resp) {
               if (resp.data.code === 11011) {
-                _this.$message.success("emailValidate success!");
+                _this.$message.success("邮箱验证码成功!");
+                console.log("dialogFormVisible=>", this.dialogFormVisible)
+                this.dialogFormVisible = false;
+              } else if (resp.data.code === 11100) {
+                _this.$message.error("邮箱验证码错误！");
               }
             }
           })
@@ -208,6 +214,7 @@ export default {
       let _this = this;
       this.$refs[formName].validateField("email", (valid) => {
         if (valid !== "邮箱格式错误") {
+          this.$message.success("邮箱发送中...");
           this.$axios
             .get("/sendMail", {
               params: {

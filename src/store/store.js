@@ -6,6 +6,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     state: {
         toDialogFormVisible: false,
+        toDialogFormEmail: ''
     },
     getters: {
 
@@ -14,6 +15,10 @@ const store = new Vuex.Store({
         setDialogFormVisible(state) {
             state.toDialogFormVisible = true;
             console.log("toDialogFormVisible=>", state.toDialogFormVisible);
+        },
+        setDialogFormEmail(state, { data }) {
+            state.toDialogFormEmail = data.data.email
+            console.log("toDialogFormEmail=>", data)
         }
     },
     actions: {

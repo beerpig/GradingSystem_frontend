@@ -237,7 +237,10 @@ export default {
         this.dialogVisible2 = false;
         // this.open(response);
         this.$router.push({ name: "查看评分", params: { responses: response } });
-      } else if (response.data.code === 10100) {
+      } else if (response.data.code === 11100) {
+        this.$message.error("文件不合法，请重新上传！");
+      }
+       else if (response.data.code === 10100) {
         this.$message.error("验证失败，请重新登录！");
         // this.$$router.push({path: "/login"});
       } else {
