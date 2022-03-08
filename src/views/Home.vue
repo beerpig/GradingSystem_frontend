@@ -9,21 +9,23 @@
         style="font-size: 30px; color: #fff"
         >远见元智能科创项目评价系统</el-link
       >
-      <el-col :span="4" class="userinfo">
+      <el-col :span="6" class="userinfo">
         <el-dropdown trigger="hover">
-          <span class="el-dropdown-link userinfo-inner"
-            ><img
+          <span class="el-dropdown-link userinfo-inner" style="">
+            <span @click="setEmail" style="font-size: 20px; color: #fff">{{sysUserName}}</span>
+            <img
               src="https://s1.ax1x.com/2018/02/08/93yKtU.jpg"
               style="
                 width: 40px;
                 height: 40px;
                 border-radius: 20px;
                 margin: 10px 0px 10px 10px;
-                float: right;
+                vertical-align: middle
               "
             />
-            {{ sysUserName }}</span
-          >
+            
+          </span>
+          
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item @click.native="settings"
               >修改密码</el-dropdown-item
@@ -37,7 +39,7 @@
     </el-header>
     <el-container>
       <el-aside width="200px" style="background-color: #fff">
-        <el-menu :default-active="$route.path" router >
+        <el-menu :default-active="$route.path" router>
           <el-submenu :index="0" style="text-align: left">
             <template slot="title"
               ><i class="el-icon-goods"></i>评分系统</template
@@ -101,6 +103,7 @@
             </div>
             <div class="img"></div>
           </div> -->
+
           <router-view></router-view>
         </el-main>
       </el-container>
@@ -130,8 +133,12 @@
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="sendEmailCode('form')">校验</el-button>
-          <el-button type="primary" @click="sendEmail('form')">发送验证码</el-button>
+          <el-button type="primary" @click="sendEmailCode('form')"
+            >校验</el-button
+          >
+          <el-button type="primary" @click="sendEmail('form')"
+            >发送验证码</el-button
+          >
         </div>
       </el-dialog>
 
@@ -166,13 +173,14 @@ export default {
       }
     };
     return {
+      sysUserName: "未验证邮箱，点击验证",
       dialogFormVisible: this.$store.state.toDialogFormVisible,
       dialogFormEmail: this.$store.state.toDialogFormEmail,
       // dialogFormVisible: true,
       form: {
         email: this.$store.state.toDialogFormEmail,
         code: "",
-        username: sessionStorage.getItem('username')
+        username: sessionStorage.getItem("username"),
       },
       formLabelWidth: "120px",
       fieldRules: {
@@ -192,23 +200,37 @@ export default {
     HelloWorld,
   },
   methods: {
+    setEmail() {
+      let _this = this;
+      this.$axios.get("/getEmail", {params: {
+            username: sessionStorage.getItem("username"),
+          }}).then((resp) => {
+        if (resp) {
+          console.log("email=>", resp.data.email);
+          this.form.email = resp.data.email;
+          this.dialogFormVisible = true;
+          // _this.$store.commit('setDialogFormVisible');
+          // _this.$store.commit('setDialogFormEmail', {data: resp});
+        }
+      });
+    },
     sendEmailCode(formName) {
       let _this = this;
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$axios.post("/emailValidate", _this.form).then(resp => {
+          this.$axios.post("/emailValidate", _this.form).then((resp) => {
             if (resp) {
               if (resp.data.code === 11011) {
                 _this.$message.success("邮箱验证码成功!");
-                console.log("dialogFormVisible=>", this.dialogFormVisible)
+                console.log("dialogFormVisible=>", this.dialogFormVisible);
                 this.dialogFormVisible = false;
               } else if (resp.data.code === 11100) {
                 _this.$message.error("邮箱验证码错误！");
               }
             }
-          })
+          });
         }
-      })
+      });
     },
     sendEmail(formName) {
       let _this = this;

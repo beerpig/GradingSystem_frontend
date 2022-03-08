@@ -254,6 +254,9 @@ export default {
           this.$message.success("导入成功");
           this.dialogVisible2 = false;
           // this.open(response);
+          // this.$store.commit('setCollapse', {data: response});
+          sessionStorage.setItem('collapsedata', response.data.msg);
+          sessionStorage.setItem('pic', response.data.pic);
           this.$router.push({
             name: "查看评分",
             params: { responses: response },

@@ -2,9 +2,11 @@
   <div>
     <el-collapse v-model="activeNames" @change="handleChange">
       <el-collapse-item name="1">
-        <div v-for="item in dic.SCORE" style="font-size: 30px">
-          SCORE : {{ item }}
-        </div>
+		  <span style="font-size: 26px">score : </span>
+		  <span style="font-size: 36px; color: red">{{dic}}</span>
+        <!-- <span v-for="item in dic.SCORE" style="font-size: 36px; color: red">
+          {{ item }}
+        </span> -->
       </el-collapse-item>
     </el-collapse>
 	<div style="text-align: left; margin-left: 0px"> 评分画像</div>
@@ -26,8 +28,11 @@ export default {
   data() {
     return {
       activeNames: ["1"],
-      dic: this.$route.params.responses.data.msg,
-      pic: this.$route.params.responses.data.wordcloud,
+    //   dic: this.$route.params.responses.data.msg,
+	// dic: this.$store.state.toCollapseData,
+	dic: '',
+    // pic: this.$route.params.responses.data.wordcloud,
+	pic: ''
 	// dic :{
 	// 	SCORE: {
 	// 		AI: 86.0,
@@ -190,6 +195,16 @@ export default {
     //   	'SCORE': {'AI': 86.0}
     //     }
     };
+  },
+  mounted() {
+	//   var _this = this;
+    // _this.dic = this.$store.state.toCollapseData;
+  },
+  created() {
+	  if (sessionStorage.getItem('collapsedata')) {
+		  this.dic = sessionStorage.getItem('collapsedata');
+		  this.pic = sessionStorage.getItem('pic');
+	  }
   },
   methods: {
     handleChange(val) {

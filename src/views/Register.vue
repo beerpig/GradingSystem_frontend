@@ -81,7 +81,7 @@
                   v-model="registerForm.email"
                   size="small"
                   style="font-size: 14px; width: 193px"
-                  placeholder="输入邮箱(可选)"
+                  placeholder="输入邮箱"
                 ></el-input>
               </el-form-item>
             </div>
@@ -132,7 +132,7 @@
             type="primary"
             class="register_btn"
             @click="register('registerForm')"
-            style="margin-left: 140px"
+            style="margin-left: 18px; width:200px"
           >
             注册
           </button>
@@ -295,7 +295,8 @@ export default {
           },
           { validator: validatePass2, trigger: "blur", required: true },
         ],
-        email: [{ validator: validateEmail, trigger: "blur" }],
+        email: [{ validator: validateEmail, trigger: "blur" },
+                { required: true, message: "请输入邮箱", trigger: "blur" }],
         // phone: [
         //   { required: true, message: "请输入手机号", trigger: "blur" },
         //   { validator: validatePhone, trigger: "blur", required: true },

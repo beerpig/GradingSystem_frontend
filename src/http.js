@@ -2,7 +2,7 @@ import axios from "axios";
 import { Message } from "element-ui";
 import router from "./router";
 // 创建axios实例
-const instance = axios.create({ timeout: 1000 * 12 });
+const instance = axios.create({ timeout: 10000 * 12 });
 instance.interceptors.request.use(
     config => {
         console.log('发送请求')
