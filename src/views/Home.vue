@@ -12,7 +12,9 @@
       <el-col :span="6" class="userinfo">
         <el-dropdown trigger="hover">
           <span class="el-dropdown-link userinfo-inner" style="">
-            <span @click="setEmail" style="font-size: 20px; color: #fff">{{sysUserName}}</span>
+            <span @click="setEmail" style="font-size: 20px; color: #fff">{{
+              sysUserName
+            }}</span>
             <img
               src="https://s1.ax1x.com/2018/02/08/93yKtU.jpg"
               style="
@@ -20,14 +22,13 @@
                 height: 40px;
                 border-radius: 20px;
                 margin: 10px 0px 10px 10px;
-                vertical-align: middle
+                vertical-align: middle;
               "
             />
-            
           </span>
-          
+
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item @click.native="settings"
+            <el-dropdown-item @click.native="dialogPasswordFormVisible = true"
               >修改密码</el-dropdown-item
             >
             <el-dropdown-item divided @click.native="logout"
@@ -37,12 +38,51 @@
         </el-dropdown>
       </el-col>
     </el-header>
+    <el-dialog title="修改密码" :visible.sync="dialogPasswordFormVisible">
+      <el-form :model="pwdForm" ref="pwdForm" :rules="fieldRules">
+        <el-form-item label="旧密码" :label-width="formLabelWidth" prop="pwd">
+          <el-input
+            v-model="pwdForm.pwd"
+            autocomplete="off"
+            show-password
+            placeholder="请填写旧密码"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          label="新密码"
+          :label-width="formLabelWidth"
+          prop="pwdNew"
+        >
+          <el-input
+            v-model="pwdForm.pwdNew"
+            autocomplete="off"
+            show-password
+            placeholder="请填写新密码"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          label="确认新密码"
+          :label-width="formLabelWidth"
+          prop="repwd"
+        >
+          <el-input
+            v-model="pwdForm.repwd"
+            autocomplete="off"
+            show-password
+            placeholder="请确认新密码"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="sendPwd('pwdForm')">确认修改</el-button>
+      </div>
+    </el-dialog>
     <el-container>
       <el-aside width="200px" style="background-color: #fff">
         <el-menu :default-active="$route.path" router>
           <el-submenu :index="0" style="text-align: left">
             <template slot="title"
-              ><i class="el-icon-goods"></i>评分系统</template
+              ><i class="el-icon-goods"></i>项目评分</template
             >
             <!-- <el-menu-item index="/productManage">
               <div style="position: relative;left: 20px;">
@@ -61,7 +101,7 @@
             </el-menu-item>
             <el-menu-item index="/collapse">
               <div style="position: relative; left: 20px">
-                <i class="el-icon-finished"></i>历史评分
+                <i class="el-icon-finished"></i>评分结果
               </div>
             </el-menu-item>
           </el-submenu>
@@ -144,9 +184,7 @@
 
       <!-- <el-input :value="dialogFormVisible"></el-input> -->
     </el-container>
-    <el-footer
-      >远见（无锡）大数据科技有限公司2022 © ALL Rights Reserved</el-footer
-    >
+    <el-footer>远见（无锡）大数据科技有限公司 2022 © ALL Rights Reserved</el-footer>
   </el-container>
 </template>
 
@@ -172,15 +210,51 @@ export default {
         }
       }
     };
+    var validatePass = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入密码"));
+      }
+      else {
+        // if (this.registerForm.confirmPwd !== "") {
+        //   this.$refs.registerForm.validateField("pwd");
+        // }
+        callback();
+      }
+    };
+    var validatePass1 = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (value === this.pwdForm.pwd) {
+        callback(new Error("新旧密码不能相同!"));
+      } else {
+        callback();
+      }
+    };
+    var validatePass2 = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (value !== this.pwdForm.pwdNew) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
+      }
+    };
     return {
-      sysUserName: "未验证邮箱，点击验证",
+      sysUserName: "",
       dialogFormVisible: this.$store.state.toDialogFormVisible,
       dialogFormEmail: this.$store.state.toDialogFormEmail,
+      dialogPasswordFormVisible: false,
       // dialogFormVisible: true,
       form: {
         email: this.$store.state.toDialogFormEmail,
         code: "",
         username: sessionStorage.getItem("username"),
+      },
+      pwdForm: {
+        user: "",
+        pwd: "",
+        pwdNew: "",
+        repwd: "",
       },
       formLabelWidth: "120px",
       fieldRules: {
@@ -193,26 +267,73 @@ export default {
             trigger: "change",
           },
         ],
+        pwd: [
+          { required: true, message: "旧密码不能为空", trigger: "blur" },
+          {
+            min: 6,
+            max: 16,
+            message: "长度在 6 到 16 个字符",
+            trigger: "blur",
+          },
+          { validator: validatePass, trigger: "blur" },
+        ],
+        pwdNew: [
+          { required: true, message: "新密码不能为空", trigger: "blur" },
+          {
+            min: 6,
+            max: 16,
+            message: "长度在 6 到 16 个字符",
+            trigger: "blur",
+          },
+          { validator: validatePass1, trigger: "blur" },
+        ],
+        repwd: [
+          { required: true, message: "请确认密码", trigger: "blur" },
+          {
+            min: 6,
+            max: 16,
+            message: "长度在 6 到 16 个字符",
+            trigger: "blur",
+          },
+          { validator: validatePass2, trigger: "blur", required: true },
+        ],
       },
     };
   },
   components: {
     HelloWorld,
   },
+  created() {
+    var user = sessionStorage.getItem("username");
+    var usertype = sessionStorage.getItem("usertype");
+    console.log("usertype=>", usertype);
+    if (usertype === "1") {
+      this.sysUserName = "欢迎，" + user;
+    } else {
+      this.sysUserName = "未验证邮箱，点击验证";
+    }
+  },
   methods: {
     setEmail() {
       let _this = this;
-      this.$axios.get("/getEmail", {params: {
+      if (sessionStorage.getItem("usertype") === "1") {
+        return;
+      }
+      this.$axios
+        .get("/getEmail", {
+          params: {
             username: sessionStorage.getItem("username"),
-          }}).then((resp) => {
-        if (resp) {
-          console.log("email=>", resp.data.email);
-          this.form.email = resp.data.email;
-          this.dialogFormVisible = true;
-          // _this.$store.commit('setDialogFormVisible');
-          // _this.$store.commit('setDialogFormEmail', {data: resp});
-        }
-      });
+          },
+        })
+        .then((resp) => {
+          if (resp) {
+            console.log("email=>", resp.data.email);
+            this.form.email = resp.data.email;
+            this.dialogFormVisible = true;
+            // _this.$store.commit('setDialogFormVisible');
+            // _this.$store.commit('setDialogFormEmail', {data: resp});
+          }
+        });
     },
     sendEmailCode(formName) {
       let _this = this;
@@ -221,14 +342,19 @@ export default {
           this.$axios.post("/emailValidate", _this.form).then((resp) => {
             if (resp) {
               if (resp.data.code === 11011) {
-                _this.$message.success("邮箱验证码成功!");
+                _this.$message.success("邮箱验证成功!");
                 console.log("dialogFormVisible=>", this.dialogFormVisible);
+                this.sysUserName =
+                  "欢迎，" + sessionStorage.getItem("username");
+                sessionStorage.setItem("usertype", "1");
                 this.dialogFormVisible = false;
               } else if (resp.data.code === 11100) {
                 _this.$message.error("邮箱验证码错误！");
               }
             }
           });
+        } else {
+          this.$message.error("error");
         }
       });
     },
@@ -255,6 +381,22 @@ export default {
     },
     jumpAddZip() {
       this.$router.push({ path: "/addZip" });
+    },
+    sendPwd(formName) {
+      let _this = this;
+      this.pwdForm.user = sessionStorage.getItem("username");
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$axios.post("/resetPwd", _this.pwdForm).then((resp) => {
+            if (resp) {
+              if (resp.data.code === 11101) {
+                this.$message.success("密码修改成功！");
+                this.dialogPasswordFormVisible = false;
+              }
+            }
+          });
+        }
+      });
     },
     logout() {
       sessionStorage.removeItem("username");

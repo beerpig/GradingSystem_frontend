@@ -14,6 +14,7 @@ import Register from "../views/Register"
 import Homepage from "../views/Homepage"
 import SlideCaptcha from "../views/SlideCaptcha"
 import Welcome from "../views/Welcome"
+import Forget from "../views/Forget"
 
 
 
@@ -91,7 +92,11 @@ const routes = [{
         name: 'SlideCaptcha',
         component: SlideCaptcha
     },
-
+    {
+        path: '/forget',
+        name: 'ForgetPass',
+        component: Forget
+    }
 ]
 
 
@@ -111,7 +116,7 @@ router.beforeEach((to, from, next) => {
     // 存在时间为会话生命周期，页面关闭即失效。
     let token = sessionStorage.getItem('token')
         // let userName = sessionStorage.getItem('user')
-    if (to.path === '/register') {
+    if (to.path === '/register' | to.path === '/forget') {
         next()
     } else if (to.path === '/login') {
         // 如果是访问登录界面，如果用户会话信息存在，代表已登录过，跳转到主页

@@ -66,7 +66,7 @@
           </el-form>
           <br />
           <div class="log-box">
-            <div class="log-box-text" style="margin-top: 128px">忘记密码</div>
+            <button type="primary" class="log-box-text" style="margin-top: 128px" @click="forgetPass">忘记密码</button>
             <button type="primary" class="login_btn" @click="loginF('loginForm')" style="margin-top: 30px">
               登录
             </button>
@@ -145,6 +145,9 @@ export default {
     register() {
       this.$router.push("/register");
     },
+    forgetPass() {
+      this.$router.push("/forget")
+    },
     // 设置微信二维码函数
     setWxerwma () {
       const s = document.createElement('script')
@@ -188,6 +191,7 @@ export default {
               // console.log(success);
                 sessionStorage.setItem('username', _this.loginForm.name)
                 sessionStorage.setItem('token', resp.data.token);
+                sessionStorage.setItem('usertype', resp.data.usertype);
                 console.log("loginning....");
                 _this.$router.push({ path: "/"});
                 if (resp.data.usertype === 0) {
@@ -437,6 +441,20 @@ input:-webkit-autofill::first-line {
   outline: none;
 }
 .register_btn:hover {
+  font-weight: bold;
+  cursor: pointer;
+}
+.log-box-text {
+  background-color: transparent; /* Green */
+  border: none;
+  text-decoration: none;
+  font-size: 12px;
+  /* border-radius: 20px;   */
+  color: #4e655d;
+  display: flex;
+  outline: none;
+}
+.log-box-text:hover {
   font-weight: bold;
   cursor: pointer;
 }

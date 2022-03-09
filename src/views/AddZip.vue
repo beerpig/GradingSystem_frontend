@@ -26,7 +26,7 @@
           drag
           ref="newupload"
           :action="action"
-          accept=".zip,.rar, .docx, .7zip, .pdf"
+          accept=".zip,.rar, .docx, .pdf"
           :on-change="onChange"
           :on-success="onSuccess"
           :file-list="form2.fileList"
@@ -36,6 +36,7 @@
         >
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+          <div style="font-size: 8px">请上传不超过10M大小的文件，支持*.docx、*.zip、*.rar、*.pdf</div>
         </el-upload>
       </el-form-item>
       <el-form-item label="" >
@@ -214,6 +215,17 @@ export default {
     //     this.fullscreenLoading = false;
     //   }, 2000);
     // },
+    beforeAvatarUpload(file) {
+      const isLt2M = file.size / 1024 < 10;
+      console.log("isLt2M=>", isLt2M);
+      if (!isLt2M) {
+        this.$message({
+          message: "上传文件大小不能超过 10MB!",
+          type: "warning",
+        });
+      }
+      return isLt2M;
+    },
     showDialog() {
       this.dialogVisible = true;
     },
@@ -243,11 +255,20 @@ export default {
       if (fileList.length > 0) {
         this.form2.fileList = [fileList[fileList.length - 1]]; // 这一步，是 展示最后一次选择的文件
       }
+      const isLt2M = file.size / 1024 / 1024 < 10;
+      if (!isLt2M) {
+        this.$message({
+          message: "上传文件大小不能超过 10MB!",
+          type: "warning",
+        });
+        this.form2.fileList = [];
+        return false;
+      }
+      return isLt2M;
     },
     onSuccess(response) {
       //文件上传成功时的钩子
       console.log("onSuccess:", response);
-      debugger;
       if (response) {
         if (response.data.code === 10000) {
           // if(response.state==1){
@@ -255,26 +276,22 @@ export default {
           this.dialogVisible2 = false;
           // this.open(response);
           // this.$store.commit('setCollapse', {data: response});
-          sessionStorage.setItem('collapsedata', response.data.msg);
-          sessionStorage.setItem('pic', response.data.pic);
+          sessionStorage.setItem("collapsedata", response.data.msg);
+          sessionStorage.setItem("pic", response.data.pic);
           this.$router.push({
             name: "查看评分",
             params: { responses: response },
           });
         } else if (response.data.code === 11100) {
           this.$message.error("文件不合法，请重新上传！");
-        } else if (response.data.code === 10100) {
-          this.$message.error("验证失败，请重新登录！");
-          // this.$$router.push({path: "/login"});
         } else {
-          this.$message.error("导入失败");
+          this.$message.error("抱谦，您上传的文档无法正确识别！");
         }
       }
 
       this.form2.fileList = [];
       this.$refs["form2"].resetFields();
       this.$refs["newupload"].clearFiles();
-      debugger;
       this.importContent = "导入";
       this.isImportContentDisable = false;
     },

@@ -3,7 +3,7 @@
     <el-collapse v-model="activeNames" @change="handleChange">
       <el-collapse-item name="1">
 		  <span style="font-size: 26px">score : </span>
-		  <span style="font-size: 36px; color: red">{{dic}}</span>
+		  <span style="font-size: 54px; color: red; font-weight: bold">{{dic}}</span>
         <!-- <span v-for="item in dic.SCORE" style="font-size: 36px; color: red">
           {{ item }}
         </span> -->
@@ -220,5 +220,9 @@ export default {
 /deep/ .el-collapse-item__content {
   text-align: left;
   margin-left: 100px;
+}
+/deep/ .el-image__inner {
+	width: 80%;
+	height: 80%;
 }
 </style>
