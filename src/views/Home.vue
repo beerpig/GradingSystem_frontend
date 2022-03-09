@@ -12,19 +12,26 @@
       <el-col :span="6" class="userinfo">
         <el-dropdown trigger="hover">
           <span class="el-dropdown-link userinfo-inner" style="">
-            <span @click="setEmail" style="font-size: 20px; color: #fff">{{
-              sysUserName
-            }}</span>
-            <img
+            <div style="display: inline;">
+            </div>
+            <div style="display: inline">
+              <span style="font-size: 16px; color: #fff;float: left; margin-right:100px; margin-top: 10px">{{welcomeUser}}
+              </span>
+              <br/>
+              <span @click="setEmail" style="float:left">{{sysUserName}}</span>
+            </div>
+            <div style="display: inline;">
+              <img
               src="https://s1.ax1x.com/2018/02/08/93yKtU.jpg"
               style="
                 width: 40px;
                 height: 40px;
                 border-radius: 20px;
-                margin: 10px 0px 10px 10px;
+                margin: -30px 0px -5px 20px;
                 vertical-align: middle;
               "
             />
+            </div>
           </span>
 
           <el-dropdown-menu slot="dropdown">
@@ -241,6 +248,7 @@ export default {
     };
     return {
       sysUserName: "",
+      welcomeUser: "欢迎，" + sessionStorage.getItem('username'),
       dialogFormVisible: this.$store.state.toDialogFormVisible,
       dialogFormEmail: this.$store.state.toDialogFormEmail,
       dialogPasswordFormVisible: false,
@@ -308,7 +316,7 @@ export default {
     var usertype = sessionStorage.getItem("usertype");
     console.log("usertype=>", usertype);
     if (usertype === "1") {
-      this.sysUserName = "欢迎，" + user;
+      this.sysUserName = "已验证";
     } else {
       this.sysUserName = "未验证邮箱，点击验证";
     }

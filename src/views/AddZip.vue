@@ -284,7 +284,7 @@ export default {
           });
         } else if (response.data.code === 11100) {
           this.$message.error("文件不合法，请重新上传！");
-        } else {
+        } else if (response.data.code === 11111) {
           this.$message.error("抱谦，您上传的文档无法正确识别！");
         }
       }

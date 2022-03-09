@@ -2,8 +2,10 @@
   <div>
     <el-collapse v-model="activeNames" @change="handleChange">
       <el-collapse-item name="1">
-		  <span style="font-size: 26px">score : </span>
-		  <span style="font-size: 54px; color: red; font-weight: bold">{{dic}}</span>
+		  <div style="margin-left: 400px">
+			<span style="font-size: 30px">score : </span>
+			<span style="font-size: 62px; color: red; font-weight: bold">{{dic}}</span>
+		  </div>
         <!-- <span v-for="item in dic.SCORE" style="font-size: 36px; color: red">
           {{ item }}
         </span> -->
