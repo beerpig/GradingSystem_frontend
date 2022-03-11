@@ -215,17 +215,6 @@ export default {
     //     this.fullscreenLoading = false;
     //   }, 2000);
     // },
-    beforeAvatarUpload(file) {
-      const isLt2M = file.size / 1024 < 10;
-      console.log("isLt2M=>", isLt2M);
-      if (!isLt2M) {
-        this.$message({
-          message: "上传文件大小不能超过 10MB!",
-          type: "warning",
-        });
-      }
-      return isLt2M;
-    },
     showDialog() {
       this.dialogVisible = true;
     },
@@ -251,19 +240,32 @@ export default {
     //onChange这里我根据我的业务需求进行修改替换上一次的上传文件了
     onChange(file, fileList) {
       //文件状态改变时的钩子函数
-      this.$refs.form2.clearValidate("fileList");
-      if (fileList.length > 0) {
-        this.form2.fileList = [fileList[fileList.length - 1]]; // 这一步，是 展示最后一次选择的文件
+      // this.$refs.form2.clearValidate("fileList");
+      // if (fileList.length > 0) {
+      //   this.form2.fileList = [fileList[fileList.length - 1]]; // 这一步，是 展示最后一次选择的文件
+      // }
+      var sizeTotal = 0;
+      for (var i = 0; i < fileList.length; i ++) {
+        sizeTotal += fileList[i].size;
+        console.log("f=>", fileList[i].size);
       }
-      const isLt2M = file.size / 1024 / 1024 < 10;
+      console.log("sizeTotal=>", sizeTotal);
+      var isLt2M = sizeTotal / 1024 / 1024 < 10;
       if (!isLt2M) {
         this.$message({
           message: "上传文件大小不能超过 10MB!",
           type: "warning",
         });
-        this.form2.fileList = [];
+        // this.form2.fileList = [];
+        // sizeTotal -= fileList[fileList.length - 1].size;
+        console.log("sizeTotal:", sizeTotal);
+        fileList.splice(fileList.length - 1, 1);
         return false;
       }
+      for (var i = 0; i < fileList.length; i ++) {
+        this.form2.fileList = fileList;
+      }
+      console.log("fileList.length=>", fileList.length, this.form2.fileList.length);
       return isLt2M;
     },
     onSuccess(response) {
@@ -326,11 +328,18 @@ export default {
       } else {
         this.$refs.form2.validate((valid) => {
           if (valid) {
-            // 解决 this.$refs.newupload.submit() 不走拦截器的bug
-            let file = this.$refs.newupload.uploadFiles.pop().raw;
-
+            let files = [];
             let formData = new FormData();
-            formData.append("file", file);
+            // 解决 this.$refs.newupload.submit() 不走拦截器的bug
+            for (var i = 0; i < this.form2.fileList.length; i ++) {
+              let file = this.$refs.newupload.uploadFiles.pop().raw;
+              // files.push(file);
+              formData.append('files', file);
+            }
+            // let file = this.$refs.newupload.uploadFiles.pop().raw;
+            // let formData = new FormData();
+
+            // formData.append("file", file);
             console.log("valid:", valid);
             if (this.form2.isAgree === false) {
               this.$message.error("请勾选下方协议书！");
