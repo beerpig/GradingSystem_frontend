@@ -39,24 +39,9 @@
           <div style="font-size: 8px">请上传不超过10M大小的文件，支持*.docx、*.zip、*.rar、*.pdf</div>
         </el-upload>
       </el-form-item>
-      <el-form-item label="" >
-        <!-- <el-button type="primary" @click="importFilepost">导入</el-button> -->
-
-        <!-- <el-button type="primary" @click="centerDialogVisible = true">导入</el-button> -->
-        <el-button type="primary" @click="importFilepost" :disabled="isImportContentDisable">{{ importContent }}</el-button>
-        <el-button type="primary" @click="onCancel">取消</el-button>
-        <!-- <el-button
-          type="primary"
-          @click="openFullScreen1"
-          v-loading.fullscreen.lock="fullscreenLoading">
-          指令方式
-        </el-button> -->
-        
-        
-      </el-form-item label="协议">
       <el-form-item style="margin-bottom: -10px">
         <el-checkbox v-model="form2.isAgree" >同意并接受</el-checkbox>
-        <el-link type="primary" @click="showDialog()"> 元智能科创项目评价系统服务协议</el-link>
+        <el-link type="primary" @click="showDialog()" style="font-size: 18px"><span style="">元智能科创项目评价系统服务协议</span></el-link>
           <el-dialog
   title=""
   :visible.sync="dialogVisible"
@@ -174,6 +159,22 @@
   </span>
 </el-dialog>
       </el-form-item>
+      <el-form-item label="" style="margin-top: 20px">
+        <!-- <el-button type="primary" @click="importFilepost">导入</el-button> -->
+
+        <!-- <el-button type="primary" @click="centerDialogVisible = true">导入</el-button> -->
+        <el-button type="primary" @click="importFilepost" :disabled="isImportContentDisable">{{ importContent }}</el-button>
+        <el-button type="primary" @click="onCancel">取消</el-button>
+        <!-- <el-button
+          type="primary"
+          @click="openFullScreen1"
+          v-loading.fullscreen.lock="fullscreenLoading">
+          指令方式
+        </el-button> -->
+        
+        
+      </el-form-item label="协议">
+      
     </el-form>
   </div>
 </template>
@@ -245,28 +246,43 @@ export default {
       //   this.form2.fileList = [fileList[fileList.length - 1]]; // 这一步，是 展示最后一次选择的文件
       // }
       var sizeTotal = 0;
-      for (var i = 0; i < fileList.length; i ++) {
-        sizeTotal += fileList[i].size;
-        console.log("f=>", fileList[i].size);
-      }
-      console.log("sizeTotal=>", sizeTotal);
-      var isLt2M = sizeTotal / 1024 / 1024 < 10;
-      if (!isLt2M) {
+      console.log("fileList.length=>", fileList.length);
+      if (fileList.length > 10) {
         this.$message({
-          message: "上传文件大小不能超过 10MB!",
+          message: "上传文件数量不能超过 10个!",
           type: "warning",
         });
-        // this.form2.fileList = [];
-        // sizeTotal -= fileList[fileList.length - 1].size;
-        console.log("sizeTotal:", sizeTotal);
         fileList.splice(fileList.length - 1, 1);
-        return false;
       }
+      for (var i = 0; i < fileList.length; i ++) {
+        // sizeTotal += fileList[i].size;
+        // console.log("f=>", fileList[i].size);
+        if (fileList[i].size / 1024 / 1024 > 10) {
+          this.$message({
+            message: "上传文件大小不能超过 10MB!",
+            type: "warning",
+          });
+          fileList.splice(fileList.length - 1, 1);
+        }
+      }
+      // console.log("sizeTotal=>", sizeTotal);
+      // var isLt2M = sizeTotal / 1024 / 1024 < 10;
+      // if (!isLt2M) {
+      //   this.$message({
+      //     message: "上传文件大小不能超过 10MB!",
+      //     type: "warning",
+      //   });
+      //   // this.form2.fileList = [];
+      //   // sizeTotal -= fileList[fileList.length - 1].size;
+      //   console.log("sizeTotal:", sizeTotal);
+      //   fileList.splice(fileList.length - 1, 1);
+      //   return false;
+      // }
       for (var i = 0; i < fileList.length; i ++) {
         this.form2.fileList = fileList;
       }
       console.log("fileList.length=>", fileList.length, this.form2.fileList.length);
-      return isLt2M;
+      return true;
     },
     onSuccess(response) {
       //文件上传成功时的钩子
@@ -280,6 +296,10 @@ export default {
           // this.$store.commit('setCollapse', {data: response});
           sessionStorage.setItem("collapsedata", response.data.msg);
           sessionStorage.setItem("pic", response.data.pic);
+          var dataStr = JSON.stringify(response.data);
+          console.log("dataStr=>", dataStr);
+          // console.log("dataStr[0]=>", dataStr[0]);
+          sessionStorage.setItem("scoredata", dataStr);
           this.$router.push({
             name: "查看评分",
             params: { responses: response },
