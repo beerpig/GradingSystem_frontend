@@ -1,15 +1,24 @@
 <template>
   <div>
-    <el-collapse v-model="activeNames" @change="handleChange" >
+    <el-collapse v-model="activeNames" @change="handleChange">
       <div>
-        <el-collapse-item v-for="(p, index) in plan" :name="index" :title="p.name" style="">
-          <div style="margin-left: 400px">
+        <el-collapse-item
+          v-for="(p, index) in plan"
+          :name="index"
+          :title="p.name"
+          style=""
+        >
+          <div style="margin-left: 0px">
             <span style="font-size: 30px">score : </span>
-            <span :style="scoreComputed">{{ p.msg }}</span>
+            <span :style="scoreComputed(p.msg)" style="margin-left: 280px">{{ p.msg }}</span>
           </div>
-          <div style="text-align: center; margin-left: -150px">评分画像</div>
+          <div style="font-size: 18px">评分画像：</div>
           <div id="word-img">
-            <el-image :src="'data:image/png;base64,' + p.pic" :fit="fit">
+            <el-image
+              :src="'data:image/png;base64,' + p.pic"
+              :fit="fit"
+              style="text-align: center"
+            >
               <div slot="error" class="image-slot">
                 <i class="el-icon-picture-outline"></i>
               </div>
@@ -31,11 +40,13 @@ export default {
   },
   computed: {
     scoreComputed() {
+      return function (s) {
+        if (s >= 80) {
+          return "font-size: 62px; color: red; font-weight: bold";
+        }
+        return "font-size: 62px; color: green; font-weight: bold";
+      };
       //   var score_ = this.dic * 1;
-      if (this.dic >= 80) {
-        return "font-size: 62px; color: red; font-weight: bold";
-      }
-      return "font-size: 62px; color: green; font-weight: bold";
     },
   },
   data() {

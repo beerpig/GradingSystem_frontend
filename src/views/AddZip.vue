@@ -36,7 +36,7 @@
         >
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-          <div style="font-size: 8px">请上传不超过10M大小的文件，支持*.docx、*.zip、*.rar、*.pdf</div>
+          <div style="font-size: 8px">请上传不超过30M大小的文件，支持*.docx、*.zip、*.rar、*.pdf</div>
         </el-upload>
       </el-form-item>
       <el-form-item style="margin-bottom: -10px">
@@ -257,9 +257,9 @@ export default {
       for (var i = 0; i < fileList.length; i ++) {
         // sizeTotal += fileList[i].size;
         // console.log("f=>", fileList[i].size);
-        if (fileList[i].size / 1024 / 1024 > 10) {
+        if (fileList[i].size / 1024 / 1024 > 30) {
           this.$message({
-            message: "上传文件大小不能超过 10MB!",
+            message: "上传文件大小不能超过 30MB!",
             type: "warning",
           });
           fileList.splice(fileList.length - 1, 1);
