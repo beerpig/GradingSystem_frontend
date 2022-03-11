@@ -9,6 +9,7 @@ import App from './App'
 import router from './router'
 import store from './store/store'
 // import './styles/element-variables.scss'
+// import 'normalize.css'
 
 import SlideVerify from 'vue-monoplasty-slide-verify'
 
