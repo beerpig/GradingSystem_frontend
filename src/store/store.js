@@ -7,7 +7,8 @@ const store = new Vuex.Store({
     state: {
         toDialogFormVisible: false,
         toDialogFormEmail: '',
-        toCollapseData: ''
+        toCollapseData: '',
+        // mutilAddForms: [],
     },
     getters: {
 

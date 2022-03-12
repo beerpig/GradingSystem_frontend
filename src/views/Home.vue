@@ -111,6 +111,11 @@
                 <i class="el-icon-finished"></i>评分结果
               </div>
             </el-menu-item>
+            <el-menu-item index="/mutilAdd">
+              <div style="position: relative; left: 20px">
+                <i class="el-icon-finished"></i>批量添加
+              </div>
+            </el-menu-item>
           </el-submenu>
 
           <!-- <el-submenu :index="1">

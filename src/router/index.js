@@ -15,6 +15,7 @@ import Homepage from "../views/Homepage"
 import SlideCaptcha from "../views/SlideCaptcha"
 import Welcome from "../views/Welcome"
 import Forget from "../views/Forget"
+import MutilAdd from "../views/MutilADD"
 
 
 
@@ -45,6 +46,11 @@ const routes = [{
                 path: '/addZip',
                 name: '添加作品',
                 component: AddZip
+            },
+            {
+                path: '/mutilAdd',
+                name: '批量上传',
+                component: MutilAdd
             },
             {
                 path: '/update',
