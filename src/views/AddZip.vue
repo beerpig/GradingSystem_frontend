@@ -241,48 +241,45 @@ export default {
     //onChange这里我根据我的业务需求进行修改替换上一次的上传文件了
     onChange(file, fileList) {
       //文件状态改变时的钩子函数
-      // this.$refs.form2.clearValidate("fileList");
-      // if (fileList.length > 0) {
-      //   this.form2.fileList = [fileList[fileList.length - 1]]; // 这一步，是 展示最后一次选择的文件
-      // }
-      var sizeTotal = 0;
-      console.log("fileList.length=>", fileList.length);
-      if (fileList.length > 10) {
-        this.$message({
-          message: "上传文件数量不能超过 10个!",
-          type: "warning",
-        });
-        fileList.splice(fileList.length - 1, 1);
+      this.$refs.form2.clearValidate("fileList");
+      if (fileList.length > 0) {
+        this.form2.fileList = [fileList[fileList.length - 1]]; // 这一步，是 展示最后一次选择的文件
       }
-      for (var i = 0; i < fileList.length; i ++) {
-        // sizeTotal += fileList[i].size;
-        // console.log("f=>", fileList[i].size);
-        if (fileList[i].size / 1024 / 1024 > 30) {
-          this.$message({
-            message: "上传文件大小不能超过 30MB!",
-            type: "warning",
-          });
-          fileList.splice(fileList.length - 1, 1);
-        }
-      }
-      // console.log("sizeTotal=>", sizeTotal);
-      // var isLt2M = sizeTotal / 1024 / 1024 < 10;
-      // if (!isLt2M) {
+      // var sizeTotal = 0;
+      // console.log("fileList.length=>", fileList.length);
+      // if (fileList.length > 10) {
       //   this.$message({
-      //     message: "上传文件大小不能超过 10MB!",
+      //     message: "上传文件数量不能超过 10个!",
       //     type: "warning",
       //   });
-      //   // this.form2.fileList = [];
-      //   // sizeTotal -= fileList[fileList.length - 1].size;
-      //   console.log("sizeTotal:", sizeTotal);
       //   fileList.splice(fileList.length - 1, 1);
-      //   return false;
       // }
-      for (var i = 0; i < fileList.length; i ++) {
-        this.form2.fileList = fileList;
+      // for (var i = 0; i < fileList.length; i ++) {
+      //   // sizeTotal += fileList[i].size;
+      //   // console.log("f=>", fileList[i].size);
+      //   if (fileList[i].size / 1024 / 1024 > 30) {
+      //     this.$message({
+      //       message: "上传文件大小不能超过 30MB!",
+      //       type: "warning",
+      //     });
+      //     fileList.splice(fileList.length - 1, 1);
+      //   }
+      // }
+      // console.log("sizeTotal=>", sizeTotal);
+      // var isLt2M = sizeTotal / 1024 / 1024 < 10;
+      const isLt2M = file.size / 1024 / 1024 < 30;
+      if (!isLt2M) {
+        this.$message({
+          message: "上传文件大小不能超过 30MB!",
+          type: "warning",
+        });
+        this.form2.fileList = [];
+        return false;
       }
-      console.log("fileList.length=>", fileList.length, this.form2.fileList.length);
-      return true;
+      // for (var i = 0; i < fileList.length; i ++) {
+      //   this.form2.fileList = fileList;
+      // }
+      return isLt2M;
     },
     onSuccess(response) {
       //文件上传成功时的钩子

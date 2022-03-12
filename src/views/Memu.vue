@@ -30,9 +30,9 @@ export default {
 }
 </script>
 
-<style>
-    /deep/ .el-collapse-item__content{
-		text-align: left;
-		margin-left: 100px;
-	}
+<style lang='less' scoped>
+/deep/ .el-collapse-item__content{
+  text-align: right;
+  margin-left: 200px;
+}
 </style>

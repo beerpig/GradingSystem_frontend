@@ -28,10 +28,10 @@ export default {
  }
 </script>
 
-<style scoped>
+<style lang='less'scoped>
 
-    /deep/ .el-collapse-item__content{
-		text-align: left;
-		margin-left: 100px;
-	}
+/deep/ .el-collapse-item__content{
+    text-align: left;
+    margin-left: 100px;
+}
 </style>
