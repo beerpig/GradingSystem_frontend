@@ -51,7 +51,7 @@ export default {
   },
   data() {
     return {
-      activeNames: ["1"],
+      activeNames: [0],
       //   dic: this.$route.params.responses.data.msg,
       // dic: this.$store.state.toCollapseData,
       dic: "",

@@ -113,7 +113,7 @@
             </el-menu-item>
             <el-menu-item index="/mutilAdd">
               <div style="position: relative; left: 20px">
-                <i class="el-icon-finished"></i>批量上传
+                <i class="el-icon-folder-add"></i>批量上传
               </div>
             </el-menu-item>
           </el-submenu>

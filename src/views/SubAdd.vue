@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <el-tag type="success" style="display: inline; float: left">{{tags[idx]}}</el-tag>
     <el-form
       :inline="false"
       ref="form2"
@@ -9,7 +10,12 @@
       style="padding: 30px 0"
     >
       <div class="container" style="text-align: right">
-        <el-button type="danger" icon="el-icon-delete" circle @click="del"></el-button>
+        <el-button
+          type="danger"
+          icon="el-icon-delete"
+          circle
+          @click="del"
+        ></el-button>
       </div>
       <el-form-item label="项目名称" prop="planName">
         <el-input v-model="form2.planName" style="width: 80%"></el-input>
@@ -30,7 +36,11 @@
           style="margin-left: 10%"
         >
           <el-button size="small" type="primary"> 点击上传 </el-button>
-          <span slot="tip" class="el-upload__tip" style="font-size: 8px">
+          <span
+            slot="tip"
+            class="el-upload__tip"
+            style="font-size: 8px; margin-left: 5%"
+          >
             请上传不超过30M大小的文件，支持*.docx、*.zip、*.rar、*.pdf
           </span>
         </el-upload>
@@ -45,6 +55,7 @@
 export default {
   data() {
     return {
+      tags: ["项目一", "项目二", "项目三", "项目四", "项目五"],
       form2: {
         fileList: [],
         idx: "",

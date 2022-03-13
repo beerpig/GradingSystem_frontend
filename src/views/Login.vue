@@ -276,7 +276,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .impowerBox .title {display: none;}
 .impowerBox .info {display: none;}
 .status_icon {display: none}

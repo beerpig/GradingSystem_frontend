@@ -428,7 +428,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .loginbox {
   display: flex;
   position: absolute;
