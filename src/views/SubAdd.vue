@@ -8,13 +8,15 @@
       label-width="100px"
       style="padding: 30px 0"
     >
+      <div class="container" style="text-align: right">
+        <el-button type="danger" icon="el-icon-delete" circle @click="del"></el-button>
+      </div>
       <el-form-item label="项目名称" prop="planName">
         <el-input v-model="form2.planName" style="width: 80%"></el-input>
       </el-form-item>
-      <el-form-item label="选取文件" prop="fileList">
+      <el-form-item label="选取文件" prop="fileList" style="text-align: left">
         <el-upload
           class="upload-demo"
-          drag
           ref="newupload"
           :action="action"
           accept=".zip,.rar, .docx, .pdf"
@@ -25,20 +27,16 @@
           :auto-upload="false"
           :v-model="form2.fileList"
           :data="form2"
+          style="margin-left: 10%"
         >
-          <i class="el-icon-upload"></i>
-          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-          <div style="font-size: 8px">
+          <el-button size="small" type="primary"> 点击上传 </el-button>
+          <span slot="tip" class="el-upload__tip" style="font-size: 8px">
             请上传不超过30M大小的文件，支持*.docx、*.zip、*.rar、*.pdf
-          </div>
+          </span>
         </el-upload>
       </el-form-item>
     </el-form>
-    <div class="container" style="text-align: right">
-      <span>我是组件1</span>
-      <el-button type="danger" @click="del">删除项目</el-button>
-    </div>
-    <br />
+
     <div class="tableLine"><span class="midText">分割线</span></div>
     <br />
   </div>

@@ -16,12 +16,12 @@
           @fromSubAddFileRemove="removeFile"
         ></component>
       </div>
-      <div  style="text-align: left; display: inline-block">
+      <div  style="float: right; display: inline-block">
         <el-button type="primary" class="zujianBtn" @click="zujian"
           >新增项目</el-button
         >
       </div>
-      <div style="text-align: right; display: inline-block">
+      <div style="float: left; display: inline-block">
         <el-button type="primary" @click="mutilHandler">开始评分</el-button>
       </div>
     </div>

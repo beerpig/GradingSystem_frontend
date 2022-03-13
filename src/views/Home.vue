@@ -86,8 +86,8 @@
     </el-dialog>
     <el-container>
       <el-aside width="200px" style="background-color: #fff">
-        <el-menu :default-active="$route.path" router>
-          <el-submenu :index="0" style="text-align: left">
+        <el-menu :default-active="$route.path" router :default-openeds="openeds">
+          <el-submenu index="0" style="text-align: left">
             <template slot="title"
               ><i class="el-icon-goods"></i>项目评分</template
             >
@@ -252,6 +252,8 @@ export default {
       }
     };
     return {
+      openeds: ['1'],
+      uniqueOpened: false,
       sysUserName: "",
       welcomeUser: "欢迎，" + sessionStorage.getItem('username'),
       dialogFormVisible: this.$store.state.toDialogFormVisible,
