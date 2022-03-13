@@ -1,17 +1,9 @@
 <template>
   <div class="home">
     <div class="container">
-      <div class="addZujian">
-        <div>
-          <span>组件库</span>
-          <span style="color: #bbb; margin-left: 10px; font-size: 14px"
-            >点击使用</span
-          >
-        </div>
-        <div class="zujianBtn" @click="zujian">添加组件1</div>
-      </div>
+      <div class="addZujian"></div>
       <div class="zujianContent">
-        <div>组件展示区</div>
+        <div>请添加项目</div>
         <!-- Vue提供了 component ,来展示对应名称的组件 -->
         <!-- component 是一个占位符, :is 属性,可以用来指定要展示的组件的名称 -->
         <component
@@ -21,8 +13,16 @@
           :idx="index"
           @func="getContent(index)"
           @fromSubAddFileInfo="saveFile"
+          @fromSubAddFileRemove="removeFile"
         ></component>
-        <el-button type="primary" @click="mutilHandler">批量添加</el-button>
+      </div>
+      <div  style="text-align: left; display: inline-block">
+        <el-button type="primary" class="zujianBtn" @click="zujian"
+          >新增项目</el-button
+        >
+      </div>
+      <div style="text-align: right; display: inline-block">
+        <el-button type="primary" @click="mutilHandler">开始评分</el-button>
       </div>
     </div>
   </div>
@@ -45,11 +45,21 @@ export default {
   methods: {
     // 添加组件1
     zujian() {
+        if (this.comName.length > 4) {
+            this.$message.error("只能上传5个项目！");
+            return;
+        }
       ++this.num;
+      console.log("this.num=>", this.num);
       this.comName.push({
         name: "SubAdd",
         id: this.num,
       });
+    },
+    // remove文件后删除组件
+    removeFile(idx) {
+        this.fileList.splice(idx, 1);
+        console.log("removeFile=>", this.fileList.length);
     },
     // 删除组件
     getContent(index) {
@@ -65,9 +75,11 @@ export default {
       var file = fileInfo.file;
       console.log("saveFile.file=>", file);
       var idx = fileInfo.idx;
+      var planName = fileInfo.planName;
 
       if (idx < this.fileList.length) {
         this.fileList[idx].file = file;
+        this.fileList[idx].planName = planName;
       } else {
         this.fileList.push(fileInfo);
       }
@@ -87,11 +99,19 @@ export default {
     },
     mutilHandler() {
       //   this.formData.append("fileList", this.fileList);
+      if (this.fileList.length === 0) {
+          this.$message.error("请至少上传一个文件！");
+          return;
+      }
       for (var i = 0; i < this.fileList.length; i++) {
         console.log(i);
         this.formData.append("files", this.fileList[i].file);
+        this.formData.append("planName", this.fileList[i].planName);
       }
       console.log("mutil=>", this.formData.getAll("files"));
+      console.log("mutil=>", this.formData.getAll("planName"));
+      this.comName = [];
+      this.fileList = [];
       this.$axios
         .post("/handler", this.formData, {
           headers: { "Content-Type": "multipart/form-data" },

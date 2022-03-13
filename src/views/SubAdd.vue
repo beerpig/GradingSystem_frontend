@@ -8,6 +8,9 @@
       label-width="100px"
       style="padding: 30px 0"
     >
+      <el-form-item label="项目名称" prop="planName">
+        <el-input v-model="form2.planName" style="width: 80%"></el-input>
+      </el-form-item>
       <el-form-item label="选取文件" prop="fileList">
         <el-upload
           class="upload-demo"
@@ -31,10 +34,13 @@
         </el-upload>
       </el-form-item>
     </el-form>
-    <div class="container">
+    <div class="container" style="text-align: right">
       <span>我是组件1</span>
-      <span class="del" @click="del">删除组件</span>
+      <el-button type="danger" @click="del">删除项目</el-button>
     </div>
+    <br />
+    <div class="tableLine"><span class="midText">分割线</span></div>
+    <br />
   </div>
 </template>
 <script>
@@ -44,6 +50,7 @@ export default {
       form2: {
         fileList: [],
         idx: "",
+        planName: "",
       },
       dialogVisible: false,
       importContent: "导入",
@@ -59,10 +66,11 @@ export default {
     del() {
       console.log("props.idx=>", this.idx);
       // 子组件向父组件传值（此处传递一个空值） - 父组件将执行getContent方法
-      this.$emit("func", '');
+      this.$emit("func", "");
     },
     onRemove(file, fileList) {
-        console.log("onRemove");
+      this.$emit("fromSubAddFileRemove", this.idx);
+      console.log("onRemove");
     },
     //onChange这里我根据我的业务需求进行修改替换上一次的上传文件了
     onChange(file, fileList) {
@@ -80,15 +88,16 @@ export default {
         this.form2.fileList = [];
         return false;
       }
-    //   let formData = new FormData();
+      //   let formData = new FormData();
       let f = this.$refs.newupload.uploadFiles.pop().raw;
-    //   formData.append("files", f);
-    let fileInfo = {
+      //   formData.append("files", f);
+      let fileInfo = {
         file: f,
-        idx: this.idx
-    }
-      this.$emit('fromSubAddFileInfo', fileInfo);
-    //   console.log("fromSubAddFileIdx=>", this.idx);
+        idx: this.idx,
+        planName: this.form2.planName,
+      };
+      this.$emit("fromSubAddFileInfo", fileInfo);
+      //   console.log("fromSubAddFileIdx=>", this.idx);
       return isLt2M;
     },
     onSuccess(response) {
@@ -163,3 +172,22 @@ export default {
   },
 };
 </script>
+<style scoped>
+.tableLine {
+  position: relative;
+  margin: 0 auto;
+  width: 100%;
+  height: 1px;
+  background-color: #d4d4d4;
+  text-align: center;
+  font-size: 16px;
+  color: rgba(101, 101, 101, 1);
+}
+.midText {
+  position: absolute;
+  left: 50%;
+  background-color: #ffffff;
+  padding: 0 15px;
+  transform: translateX(-50%) translateY(-50%);
+}
+</style>
