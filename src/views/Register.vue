@@ -130,9 +130,18 @@
 
           <button
             type="primary"
+            class="returnLogin"
+            @click="login"
+            style="
+            "
+          >
+            已有账号？请登录
+          </button>
+          <button
+            type="primary"
             class="register_btn"
             @click="register('registerForm')"
-            style="margin-left: 18px; width:200px"
+            style=""
           >
             注册
           </button>
@@ -141,19 +150,6 @@
         <!-- 右侧的注册盒子 -->
         <div class="background">
           <div class="title">远见元智能科创项目评价系统</div>
-          <button
-            type="primary"
-            class="returnLogin"
-            @click="login"
-            style="
-              margin-left: 16px;
-              text-align: left;
-              text-align: left;
-              margin-top: 285px;
-            "
-          >
-            已有账号？请登录
-          </button>
         </div>
       </div>
     </div>
@@ -295,8 +291,10 @@ export default {
           },
           { validator: validatePass2, trigger: "blur", required: true },
         ],
-        email: [{ validator: validateEmail, trigger: "blur" },
-                { required: true, message: "请输入邮箱", trigger: "blur" }],
+        email: [
+          { validator: validateEmail, trigger: "blur" },
+          { required: true, message: "请输入邮箱", trigger: "blur" },
+        ],
         // phone: [
         //   { required: true, message: "请输入手机号", trigger: "blur" },
         //   { validator: validatePhone, trigger: "blur", required: true },
@@ -549,6 +547,9 @@ input:-webkit-autofill::first-line {
   font-size: 13px;
   border-radius: 5px;
   outline: none;
+  display: inline;
+  float: right;
+  margin-right: 20px;
 }
 
 .returnLogin {
@@ -560,8 +561,7 @@ input:-webkit-autofill::first-line {
   color: #4e655d;
   font-size: 12px;
   text-decoration: underline;
-  display: flex;
-  margin-left: 25px;
+  display: inline;
   outline: none;
 }
 
@@ -619,6 +619,20 @@ input:-webkit-autofill::first-line {
 
 .icon-account:before {
   content: "\e817";
+}
+
+@media screen and (max-width: 600px) {
+  .background {
+    display: none;
+  }
+
+  .loginbox {
+    width: 280px;
+  }
+  .log-box-text {
+    margin-left: 60%;
+    margin-top: -7%;
+  }
 }
 
 /deep/ .el-input__inner {

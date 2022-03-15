@@ -1,6 +1,15 @@
 <template>
   <div class="home">
+      <!-- <el-checkbox style="display: inline; float: left; padding-right: 20px"></el-checkbox> -->
     <el-tag type="success" style="display: inline; float: left">{{tags[idx]}}</el-tag>
+    <div class="container" style="text-align: right;">
+        <el-button
+          type="danger"
+          icon="el-icon-delete"
+          circle
+          @click="del"
+        ></el-button>
+      </div>
     <el-form
       :inline="false"
       ref="form2"
@@ -9,14 +18,7 @@
       label-width="100px"
       style="padding: 30px 0"
     >
-      <div class="container" style="text-align: right">
-        <el-button
-          type="danger"
-          icon="el-icon-delete"
-          circle
-          @click="del"
-        ></el-button>
-      </div>
+      
       <el-form-item label="项目名称" prop="planName">
         <el-input v-model="form2.planName" style="width: 80%"></el-input>
       </el-form-item>

@@ -87,7 +87,7 @@
             </div>
 
             <br />
-            <div class="pwdbox">
+            <div class="pwdbox" style="width: 250px">
               <span class="iconfont">&#xe776;</span>
               <el-form-item
                 prop="code"
@@ -98,11 +98,21 @@
                   id="captcha_slide"
                   v-model="registerForm.code"
                   size="small"
-                  style="font-size: 14px; width: 193px"
+                  style="font-size: 14px; width: 108px; float: left"
                   placeholder="输入验证码"
                 ></el-input>
+                <button
+                  type="primary"
+                  class="register_btn"
+                  @click="sendEmail('registerForm')"
+                  style="display: inline; float: right; margin-top: 4px"
+                >
+                  发送验证码
+                </button>
               </el-form-item>
-              <el-form-item style="display: inline-block !important; margin-top: 5px">
+              <el-form-item
+                style="display: inline-block !important; margin-top: 5px"
+              >
               </el-form-item>
             </div>
           </el-form>
@@ -117,17 +127,19 @@
           </button> -->
           <button
             type="primary"
-            class="register_btn"
-            @click="sendEmail('registerForm')"
-            style="margin-left: 18px; width:100px"
+            class="returnLogin"
+            @click="toRegister"
+            style="
+              display: inline;
+            "
           >
-            发送验证码
+            没账号？请点击注册
           </button>
           <button
             type="primary"
             class="register_btn"
             @click="updatePass('registerForm')"
-            style="margin-left: 18px; width:100px"
+            style="float: right; width: 85px; margin-right: 22px"
           >
             确定
           </button>
@@ -136,19 +148,6 @@
         <!-- 右侧的注册盒子 -->
         <div class="background">
           <div class="title">远见元智能科创项目评价系统</div>
-          <button
-            type="primary"
-            class="returnLogin"
-            @click="toRegister"
-            style="
-              margin-left: 16px;
-              text-align: left;
-              text-align: left;
-              margin-top: 285px;
-            "
-          >
-            没账号？请点击注册
-          </button>
         </div>
       </div>
     </div>
@@ -290,8 +289,10 @@ export default {
           },
           { validator: validatePass2, trigger: "blur", required: true },
         ],
-        email: [{ validator: validateEmail, trigger: "blur" },
-                { required: true, message: "请输入邮箱", trigger: "blur" }],
+        email: [
+          { validator: validateEmail, trigger: "blur" },
+          { required: true, message: "请输入邮箱", trigger: "blur" },
+        ],
         // phone: [
         //   { required: true, message: "请输入手机号", trigger: "blur" },
         //   { validator: validatePhone, trigger: "blur", required: true },
@@ -326,8 +327,7 @@ export default {
                 _this.$router.push({ path: "/login" });
               } else if (resp.data.code === 11110) {
                 _this.$message.error("用户名或邮箱错误！");
-              }
-              else if (resp.data.code === 11100) {
+              } else if (resp.data.code === 11100) {
                 _this.$message.error("验证码错误！");
               }
             }
@@ -658,6 +658,20 @@ input:-webkit-autofill::first-line {
 
 .icon-account:before {
   content: "\e817";
+}
+
+@media screen and (max-width: 600px) {
+  .background {
+    display: none;
+  }
+
+  .loginbox {
+    width: 280px;
+  }
+  .log-box-text {
+    margin-left: 60%;
+    margin-top: -7%;
+  }
 }
 
 /deep/ .el-input__inner {

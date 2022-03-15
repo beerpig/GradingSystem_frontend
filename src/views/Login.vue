@@ -37,10 +37,13 @@
               </el-form-item>
             </div>
 
-            <br/>
+            <br />
             <div class="pwdbox">
               <span class="iconfont">&#xe776;</span>
-              <el-form-item prop="code" style="display: inline-block !important;">
+              <el-form-item
+                prop="code"
+                style="display: inline-block !important"
+              >
                 <el-input
                   class="captcha"
                   id="captcha_slide"
@@ -50,7 +53,13 @@
                   placeholder="输入验证码"
                 ></el-input>
               </el-form-item>
-              <el-form-item style="display: inline-block !important; margin-top: 5px; width: 200px">
+              <el-form-item
+                style="
+                  display: inline-block !important;
+                  margin-top: 5px;
+                  width: 200px;
+                "
+              >
                 <el-image
                   :src="'data:image/png;base64,' + captcha_img"
                   :fit="fit"
@@ -66,8 +75,12 @@
           </el-form>
           <br />
           <div class="log-box">
-            <button type="primary" class="log-box-text" style="margin-top: 128px" @click="forgetPass">忘记密码</button>
-            <button type="primary" class="login_btn" @click="loginF('loginForm')" style="margin-top: 30px">
+            <button
+              type="primary"
+              class="login_btn"
+              @click="loginF('loginForm')"
+              style="margin-top: 30px"
+            >
               登录
             </button>
             <span style="margin-top: 50px">测试账号: demo</span>
@@ -77,8 +90,11 @@
 
           <br />
           <div class="warn"></div>
-          <button type="primary" class="register_btn" @click="register" >
+          <button type="primary" class="register_btn" @click="register">
             注册
+          </button>
+          <button type="primary" class="log-box-text" @click="forgetPass">
+            忘记密码
           </button>
         </div>
         <!-- </form> -->
@@ -92,7 +108,6 @@
 </template>
 
 <script>
-
 export default {
   name: "Login",
 
@@ -103,15 +118,13 @@ export default {
       loginForm: {
         name: "",
         pwd: "",
-        code: ""
+        code: "",
       },
       fieldRules: {
         name: [
           { required: true, message: "用户名不能为空", trigger: "change" },
         ],
-        pwd: [
-          { required: true, message: "密码不能为空", trigger: "change" },
-        ],
+        pwd: [{ required: true, message: "密码不能为空", trigger: "change" }],
         code: [
           { required: true, message: "请输入验证码", trigger: "blur" },
           {
@@ -120,16 +133,16 @@ export default {
             message: "请输入4位验证码",
             trigger: "change",
           },
-        ]
+        ],
       },
       action: "/login",
-    //   user_list: [
-    //     {
-    //       id: "1",
-    //       username: "admin",
-    //       password: "123",
-    //     },
-    //   ],
+      //   user_list: [
+      //     {
+      //       id: "1",
+      //       username: "admin",
+      //       password: "123",
+      //     },
+      //   ],
     };
   },
   mounted() {
@@ -146,33 +159,31 @@ export default {
       this.$router.push("/register");
     },
     forgetPass() {
-      this.$router.push("/forget")
+      this.$router.push("/forget");
     },
     // 设置微信二维码函数
-    setWxerwma () {
-      const s = document.createElement('script')
-      s.type = 'text/javascript'
-      s.src = 'https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js'
-      const wxElement = document.body.appendChild(s)
+    setWxerwma() {
+      const s = document.createElement("script");
+      s.type = "text/javascript";
+      s.src = "https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js";
+      const wxElement = document.body.appendChild(s);
       console.log("wxElement =>", wxElement);
       // const uri = `${window.location.origin}callback/wx/` // 这里是你的回调uri
-      const uri = encodeURIComponent("127.0.0.1:8080")
+      const uri = encodeURIComponent("127.0.0.1:8080");
       wxElement.onload = () => {
         const obj = new WxLogin({
-          id: 'wx_login_container', // 需要显示的容器id
+          id: "wx_login_container", // 需要显示的容器id
           appid: "wx398a330716af094a", // appid wx*******
-          scope: 'snsapi_login', // 网页默认即可
+          scope: "snsapi_login", // 网页默认即可
           redirect_uri: encodeURIComponent(uri), // 授权成功后回调的url
           state: Math.ceil(Math.random() * 1000), // 可设置为简单的随机数加session用来校验
-          style: 'black', // 提供"black"、"white"可选。二维码的样式
-          href: "data:text/css;base64,QGNoYXJzZXQgIlVURi04IjsNCi5pbXBvd2VyQm94IC50aXRsZSB7ZGlzcGxheTogbm9uZTt9DQouaW1wb3dlckJveCAuaW5mbyB7ZGlzcGxheTogbm9uZTt9DQouc3RhdHVzX2ljb24ge2Rpc3BsYXk6IG5vbmV9DQouaW1wb3dlckJveCAuc3RhdHVzIHt0ZXh0LWFsaWduOiBjZW50ZXI7fSANCg=="
-
-        })
+          style: "black", // 提供"black"、"white"可选。二维码的样式
+          href: "data:text/css;base64,QGNoYXJzZXQgIlVURi04IjsNCi5pbXBvd2VyQm94IC50aXRsZSB7ZGlzcGxheTogbm9uZTt9DQouaW1wb3dlckJveCAuaW5mbyB7ZGlzcGxheTogbm9uZTt9DQouc3RhdHVzX2ljb24ge2Rpc3BsYXk6IG5vbmV9DQouaW1wb3dlckJveCAuc3RhdHVzIHt0ZXh0LWFsaWduOiBjZW50ZXI7fSANCg==",
+        });
         if (!obj) {
-          console.error('wx-error')
+          console.error("wx-error");
         }
-      }
-      
+      };
     },
 
     // getParams: function () {
@@ -184,19 +195,21 @@ export default {
       let _this = this;
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$axios.post("/login", _this.loginForm).then(function (resp) {
-              console.log(resp)
-            if (resp.data.code === 10000) {
-              // let { success, token } = resp.data;
-              // console.log(success);
-                sessionStorage.setItem('username', _this.loginForm.name)
-                sessionStorage.setItem('token', resp.data.token);
-                sessionStorage.setItem('usertype', resp.data.usertype);
+          this.$axios
+            .post("/login", _this.loginForm)
+            .then(function (resp) {
+              console.log(resp);
+              if (resp.data.code === 10000) {
+                // let { success, token } = resp.data;
+                // console.log(success);
+                sessionStorage.setItem("username", _this.loginForm.name);
+                sessionStorage.setItem("token", resp.data.token);
+                sessionStorage.setItem("usertype", resp.data.usertype);
                 console.log("loginning....");
-                _this.$router.push({ path: "/"});
+                _this.$router.push({ path: "/" });
                 if (resp.data.usertype === 0) {
-                  _this.$store.commit('setDialogFormVisible');
-                  _this.$store.commit('setDialogFormEmail', {data: resp});
+                  _this.$store.commit("setDialogFormVisible");
+                  _this.$store.commit("setDialogFormEmail", { data: resp });
                 }
                 // _this.$alert(
                 //   "【" + _this.loginForm.name + "】添加成功" + resp.data,
@@ -209,22 +222,19 @@ export default {
                 //   }
                 // );
                 // _this.$router.push({path: "addZip"})
-              // if (token) {
-              // }
-            }
-            else if (resp.data.code === 10001) {
-              _this.$message.error("用户名或密码错误，请重新输入！");
-            }
-            else if (resp.data.code === 11001) {
-              _this.$message.error("验证码错误，请重新输入！");
-            }
-            else {
-              _this.$message.error("登录失败！");
-            }
-          })
-          .catch(function (error) {
-              console.log(error)
-          });
+                // if (token) {
+                // }
+              } else if (resp.data.code === 10001) {
+                _this.$message.error("用户名或密码错误，请重新输入！");
+              } else if (resp.data.code === 11001) {
+                _this.$message.error("验证码错误，请重新输入！");
+              } else {
+                _this.$message.error("登录失败！");
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
 
           // alert('validate');
         } else {
@@ -277,10 +287,18 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.impowerBox .title {display: none;}
-.impowerBox .info {display: none;}
-.status_icon {display: none}
-.impowerBox .status {text-align: center;} 
+.impowerBox .title {
+  display: none;
+}
+.impowerBox .info {
+  display: none;
+}
+.status_icon {
+  display: none;
+}
+.impowerBox .status {
+  text-align: center;
+}
 .loginbox {
   display: flex;
   position: absolute;
@@ -292,7 +310,7 @@ export default {
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 #4e655d;
 }
 .loginbox-in {
-  background-color: rgb(225,225,230);
+  background-color: rgb(225, 225, 230);
   width: 280px;
   opacity: 0.7;
 }
@@ -323,7 +341,7 @@ export default {
   margin-top: -10px;
   font-weight: bold;
   font-size: 30px;
-  color: rgb(22,115,156);
+  color: rgb(22, 115, 156);
 }
 /* .title:hover {
   font-size: 21px;
@@ -394,11 +412,11 @@ input:-webkit-autofill::first-line {
   font-size: 12px;
   text-decoration: none;
   position: absolute;
-  margin-left: 152px;
-  margin-top: 174px;
+  margin-left: 20%;
+  margin-top: -2.5%;
 }
 .login_btn {
-  background-color: rgb(122,177,242); /* Green */
+  background-color: rgb(122, 177, 242); /* Green */
   border: none;
   color: #fafafa;
   padding: 5px 74px;
@@ -415,7 +433,7 @@ input:-webkit-autofill::first-line {
   box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24),
     0 17px 50px 0 rgba(0, 0, 0, 0.19);
   cursor: pointer;
-  background-color: #5F82D0;
+  background-color: #5f82d0;
   transition: all 0.2s ease-in;
 }
 
@@ -491,5 +509,19 @@ input:-webkit-autofill::first-line {
 
 /deep/ .el-input__inner {
   background-color: #ffffff;
+}
+
+@media screen and (max-width: 600px) {
+  .background {
+    display: none;
+  }
+
+  .loginbox {
+    width: 280px;
+  }
+  .log-box-text {
+    margin-left: 60%;
+    margin-top: -7%;
+  }
 }
 </style>
