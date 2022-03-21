@@ -2,8 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import ProductManage from "../views/ProductManage";
-import Add from "../views/Add";
-import Update from "../views/Update";
 import Bar from "../views/Bar";
 import Pie from "../views/Pie";
 import AddZip from "../views/AddZip"
@@ -38,11 +36,6 @@ const routes = [{
                 component: Welcome
             },
             {
-                path: '/add',
-                name: '添加商品',
-                component: Add
-            },
-            {
                 path: '/addZip',
                 name: '添加作品',
                 component: AddZip
@@ -51,11 +44,6 @@ const routes = [{
                 path: '/mutilAdd',
                 name: '批量上传',
                 component: MutilAdd
-            },
-            {
-                path: '/update',
-                name: '修改商品',
-                component: Update
             },
             {
                 path: '/bar',

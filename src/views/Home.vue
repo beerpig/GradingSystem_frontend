@@ -12,25 +12,34 @@
       <el-col :span="6" class="userinfo">
         <el-dropdown trigger="hover">
           <span class="el-dropdown-link userinfo-inner" style="">
-            <div style="display: inline;">
+            <div style="display: inline"></div>
+            <div style="display: inline">
+              <span
+                style="
+                  font-size: 16px;
+                  color: #fff;
+                  float: left;
+                  margin-right: 100px;
+                  margin-top: 10px;
+                "
+                >{{ welcomeUser }}
+              </span>
+              <br />
+              <span @click="setEmail" style="float: left">{{
+                sysUserName
+              }}</span>
             </div>
             <div style="display: inline">
-              <span style="font-size: 16px; color: #fff;float: left; margin-right:100px; margin-top: 10px">{{welcomeUser}}
-              </span>
-              <br/>
-              <span @click="setEmail" style="float:left">{{sysUserName}}</span>
-            </div>
-            <div style="display: inline;">
               <img
-              src="https://s1.ax1x.com/2018/02/08/93yKtU.jpg"
-              style="
-                width: 40px;
-                height: 40px;
-                border-radius: 20px;
-                margin: -30px 0px -5px 20px;
-                vertical-align: middle;
-              "
-            />
+                src="https://s1.ax1x.com/2018/02/08/93yKtU.jpg"
+                style="
+                  width: 40px;
+                  height: 40px;
+                  border-radius: 20px;
+                  margin: -30px 0px -5px 20px;
+                  vertical-align: middle;
+                "
+              />
             </div>
           </span>
 
@@ -81,26 +90,27 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="sendPwd('pwdForm')">确认修改</el-button>
+        <el-button type="primary" @click="sendPwd('pwdForm')"
+          >确认修改</el-button
+        >
       </div>
     </el-dialog>
-    <el-container>
-      <el-aside width="200px" style="background-color: #fff">
-        <el-menu :default-active="$route.path" router :default-openeds="openeds">
+    <el-container class="el-container">
+      <el-aside
+        :width="isCollapse ? '66px' : '200px'"
+        style="background-color: #fff"
+      >
+        <el-menu
+          :default-active="$route.path"
+          router
+          :default-openeds="openeds"
+          :collapse="isCollapse"
+        >
           <el-submenu index="0" style="text-align: left">
             <template slot="title"
-              ><i class="el-icon-goods"></i>项目评分</template
+              ><i class="el-icon-goods"></i
+              ><span slot="title">项目评分</span></template
             >
-            <!-- <el-menu-item index="/productManage">
-              <div style="position: relative;left: 20px;">
-                <i class="el-icon-s-unfold"></i>提交管理
-              </div>
-            </el-menu-item> -->
-            <!-- <el-menu-item index="/add">
-              <div style="position: relative;left: 20px;">
-                <i class="el-icon-circle-plus"></i>添加商品
-              </div>
-            </el-menu-item> -->
             <el-menu-item index="/addZip">
               <div style="position: relative; left: 20px">
                 <i class="el-icon-circle-plus"></i>添加作品
@@ -196,7 +206,11 @@
 
       <!-- <el-input :value="dialogFormVisible"></el-input> -->
     </el-container>
-    <el-footer>远见（无锡）大数据科技有限公司 2021-2022 © ALL Rights Reserved</el-footer>
+    <el-footer class="footer"
+      ><div class="footer-copyright">
+        远见（无锡）大数据科技有限公司 2021-2022 © ALL Rights Reserved
+      </div></el-footer
+    >
   </el-container>
 </template>
 
@@ -225,8 +239,7 @@ export default {
     var validatePass = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入密码"));
-      }
-      else {
+      } else {
         // if (this.registerForm.confirmPwd !== "") {
         //   this.$refs.registerForm.validateField("pwd");
         // }
@@ -252,10 +265,12 @@ export default {
       }
     };
     return {
-      openeds: ['1'],
+      screenWidth: document.body.clientWidth,
+      isCollapse: false,
+      openeds: ["0"],
       uniqueOpened: false,
       sysUserName: "",
-      welcomeUser: "欢迎，" + sessionStorage.getItem('username'),
+      welcomeUser: "欢迎，" + sessionStorage.getItem("username"),
       dialogFormVisible: this.$store.state.toDialogFormVisible,
       dialogFormEmail: this.$store.state.toDialogFormEmail,
       dialogPasswordFormVisible: false,
@@ -327,6 +342,24 @@ export default {
     } else {
       this.sysUserName = "未验证邮箱，点击验证";
     }
+  },
+  watch: {
+    screenWidth(val) {
+      this.screenWidth = val;
+      if (this.screenWidth < 1000) {
+        this.isCollapse = true;
+      } else {
+        this.isCollapse = false;
+      }
+    },
+  },
+  mounted() {
+    this.screenWidth = document.body.clientWidth;
+    window.onresize = () => {
+      return (() => {
+        this.screenWidth = document.body.clientWidth;
+      })();
+    };
   },
   methods: {
     setEmail() {
@@ -423,44 +456,16 @@ export default {
 </script>
 
 <style>
-.welcome {
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  height: 100%;
-  margin-top: 100px;
-}
-.welcome .content {
-  margin-top: 130px;
-}
-.welcome .content .sub-title {
-  font-size: 30px;
-  line-height: 42px;
-  color: #333;
-  margin-left: -355px;
-}
-.welcome .content .title {
-  font-size: 40px;
-  line-height: 62px;
-  color: #409eff;
-}
-.welcome .content .desc {
-  text-align: right;
-  font-size: 14px;
-  color: #999;
-}
-.welcome .img {
-  margin-left: 105px;
-  background-image: url("./img/welcome.png");
-  width: 371px;
-  height: 438px;
-}
 .home_container {
   height: 100%;
   position: absolute;
   top: 0px;
   left: 0px;
   width: 100%;
+}
+
+.el-container {
+  display: flex;
 }
 
 .el-header {
@@ -486,7 +491,11 @@ export default {
   background-color: #449aff;
   color: #fff;
   font-size: 22px;
-  line-height: 60px;
+  line-height: 30px;
+  display: flex;
+  justify-content: space-around;
+  align-content: center;
+  flex-wrap: wrap;
 }
 
 .home_title {
@@ -514,5 +523,31 @@ export default {
 .userinfo-inner {
   cursor: pointer;
   color: #fff;
+}
+
+@media (min-width: 300px) and (max-width: 1000px) {
+  .home_title {
+    display: none;
+  }
+  .el-dialog {
+    display: flex;
+    flex-direction: column;
+    margin: 0 !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+    /*height:600px;*/
+    max-height: calc(100% - 30px);
+    max-width: calc(100% - 30px);
+  }
+  .el-dialog .el-dialog__body {
+    flex: 1;
+    overflow: auto;
+  }
+  /* .userinfo {
+    display: none;
+  } */
 }
 </style>

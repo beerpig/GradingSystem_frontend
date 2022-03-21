@@ -6,11 +6,14 @@
           v-for="(p, index) in plan"
           :name="index"
           :title="p.name"
+          :key="index"
           style=""
         >
-          <div style="margin-left: 0px">
+          <div style="margin-left: 0px" class="score-show">
             <span style="font-size: 30px">score : </span>
-            <span :style="scoreComputed(p.msg)" style="margin-left: 280px">{{ p.msg }}</span>
+            <span :style="scoreComputed(p.msg)" style="">{{
+              p.msg
+            }}</span>
           </div>
           <div style="font-size: 18px">评分画像：</div>
           <div id="word-img">
@@ -24,6 +27,9 @@
               </div>
             </el-image>
           </div>
+          <div>
+            <el-button type="primary" @click="downloadFile">下载文件</el-button>
+          </div>
           <!-- <span v-for="item in dic.SCORE" style="font-size: 36px; color: red">
           {{ item }}
         </span> -->
@@ -34,6 +40,8 @@
 </template>
 
 <script>
+import fileDownload from "js-file-download";
+
 export default {
   created() {
     console.log("collapse receive:" + this.dic);
@@ -86,6 +94,29 @@ export default {
     }
   },
   methods: {
+    downloadFile() {
+      this.$axios
+        ({
+          url: "/download/code",
+          method: "post",
+          headers: {
+            "Content-Type": "application/json; application/octet-stream",
+          },
+          responseType: "blob",
+        })
+        .then((resp) => {
+          const blob = new Blob([resp.data]);
+          const link = document.createElement("a");
+          link.download = "file_name.pdf"; // a标签添加属性
+          link.style.display = "none";
+          link.href = URL.createObjectURL(blob);
+          document.body.appendChild(link);
+          link.click(); // 执行下载
+          URL.revokeObjectURL(link.href); // 释放 bolb 对象
+          document.body.removeChild(link); // 下载完成移除元素
+        });
+    },
+
     handleChange(val) {
       console.log(val);
     },
@@ -93,6 +124,11 @@ export default {
 };
 </script>
 <style lang='less' scoped>
+.score-show {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .el-collapse-item__content {
   padding-bottom: 100px;
 }
