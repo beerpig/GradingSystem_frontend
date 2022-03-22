@@ -1,58 +1,61 @@
 <template>
   <el-container class="home_container">
     <el-header>
+        
       <el-link
         type="primary"
         :underline="false"
         class="home_title"
         @click="jumpAddZip"
         style="font-size: 30px; color: #fff"
-        >远见元智能科创项目评价系统</el-link
+        >
+        <img
+          src="./../assets/logo.png"
+          style="
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            vertical-align: middle;
+          "
+        /> <span class="home_title_span">远见元智能科创项目评价系统</span></el-link
       >
-      <el-col :span="6" class="userinfo">
-        <el-dropdown trigger="hover">
-          <span class="el-dropdown-link userinfo-inner" style="">
-            <div style="display: inline"></div>
-            <div style="display: inline">
-              <span
-                style="
-                  font-size: 16px;
-                  color: #fff;
-                  float: left;
-                  margin-right: 100px;
-                  margin-top: 10px;
-                "
-                >{{ welcomeUser }}
-              </span>
-              <br />
-              <span @click="setEmail" style="float: left">{{
-                sysUserName
-              }}</span>
-            </div>
-            <div style="display: inline">
-              <img
-                src="https://s1.ax1x.com/2018/02/08/93yKtU.jpg"
-                style="
-                  width: 40px;
-                  height: 40px;
-                  border-radius: 20px;
-                  margin: -30px 0px -5px 20px;
-                  vertical-align: middle;
-                "
-              />
-            </div>
-          </span>
+      <el-dropdown trigger="hover" class="userinfo">
+        <div class="el-dropdown-link userinfo-inner">
+          <div>
+            <span
+              style="
+                font-size: 16px;
+                color: #fff;
+                margin-right: 10px;
+                margin-top: 10px;
+              "
+              >{{ welcomeUser }}
+            </span>
+            <br />
+            <span @click="setEmail" style="float: left">{{ sysUserName }}</span>
+          </div>
+          <div class="img-display">
+            <img
+              src="https://s1.ax1x.com/2018/02/08/93yKtU.jpg"
+              style="
+                width: 40px;
+                height: 40px;
+                border-radius: 20px;
+                vertical-align: middle;
+              "
+            />
+          </div>
+        </div>
 
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item @click.native="dialogPasswordFormVisible = true"
-              >修改密码</el-dropdown-item
-            >
-            <el-dropdown-item divided @click.native="logout"
-              >退出登录</el-dropdown-item
-            >
-          </el-dropdown-menu>
-        </el-dropdown>
-      </el-col>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item @click.native="dialogPasswordFormVisible = true"
+            >修改密码</el-dropdown-item
+          >
+          <el-dropdown-item divided @click.native="logout"
+            >退出登录</el-dropdown-item
+          >
+        </el-dropdown-menu>
+      </el-dropdown>
     </el-header>
     <el-dialog title="修改密码" :visible.sync="dialogPasswordFormVisible">
       <el-form :model="pwdForm" ref="pwdForm" :rules="fieldRules">
@@ -346,6 +349,7 @@ export default {
   watch: {
     screenWidth(val) {
       this.screenWidth = val;
+
       if (this.screenWidth < 1000) {
         this.isCollapse = true;
       } else {
@@ -464,6 +468,8 @@ export default {
   width: 100%;
 }
 
+
+
 .el-container {
   display: flex;
 }
@@ -498,12 +504,6 @@ export default {
   flex-wrap: wrap;
 }
 
-.home_title {
-  color: #fff;
-  font-size: 22px;
-  display: inline;
-}
-
 .home_userinfo {
   color: #fff;
   cursor: pointer;
@@ -517,16 +517,21 @@ export default {
 .userinfo {
   text-align: right;
   padding-right: 35px;
-  float: right;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .userinfo-inner {
   cursor: pointer;
   color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @media (min-width: 300px) and (max-width: 1000px) {
-  .home_title {
+  .home_title_span {
     display: none;
   }
   .el-dialog {
@@ -545,6 +550,9 @@ export default {
   .el-dialog .el-dialog__body {
     flex: 1;
     overflow: auto;
+  }
+  .img-display {
+    display: none;
   }
   /* .userinfo {
     display: none;
