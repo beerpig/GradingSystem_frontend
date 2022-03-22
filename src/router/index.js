@@ -13,7 +13,8 @@ import Homepage from "../views/Homepage"
 import SlideCaptcha from "../views/SlideCaptcha"
 import Welcome from "../views/Welcome"
 import Forget from "../views/Forget"
-import MutilAdd from "../views/MutilADD"
+import MutilAdd from "../views/MutilAdd"
+import History from "../views/History"
 
 
 
@@ -63,6 +64,10 @@ const routes = [{
             {
                 path: '/memu',
                 component: Memu
+            },
+            {
+                path: '/history',
+                component: History
             }
         ]
     },

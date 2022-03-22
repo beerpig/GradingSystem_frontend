@@ -127,6 +127,11 @@
               </div>
             </el-menu-item>
           </el-submenu>
+          <el-menu-item index="/history" v-if="userType === '2'" style="text-align: left">
+            <div>
+              <i class="el-icon-finished"></i>上传记录
+            </div>
+          </el-menu-item>
 
           <!-- <el-submenu :index="1">
             <template slot="title"
@@ -270,6 +275,7 @@ export default {
       openeds: ["0"],
       uniqueOpened: false,
       sysUserName: "",
+      userType: "0",
       welcomeUser: "欢迎，" + sessionStorage.getItem("username"),
       dialogFormVisible: this.$store.state.toDialogFormVisible,
       dialogFormEmail: this.$store.state.toDialogFormEmail,
@@ -336,8 +342,11 @@ export default {
   created() {
     var user = sessionStorage.getItem("username");
     var usertype = sessionStorage.getItem("usertype");
+    this.userType = usertype;
     console.log("usertype=>", usertype);
-    if (usertype === "1") {
+    if (usertype === "2") {
+      this.sysUserName = "评委";
+    } else if (usertype === "1") {
       this.sysUserName = "已验证";
     } else {
       this.sysUserName = "未验证邮箱，点击验证";
