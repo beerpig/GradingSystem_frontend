@@ -3,7 +3,7 @@
     <div class="container">
       <div class="addZujian"></div>
       <div class="zujianContent">
-          <br />
+        <br />
         <!-- Vue提供了 component ,来展示对应名称的组件 -->
         <!-- component 是一个占位符, :is 属性,可以用来指定要展示的组件的名称 -->
         <component
@@ -24,12 +24,12 @@
       </div>
 
       <div
-        style="float: right; display: inline-block;"
+        style="float: right; display: inline-block"
         v-if="fileList.length > 0"
       >
         <el-checkbox v-model="isAgree">同意并接受</el-checkbox>
         <el-link type="primary" @click="showDialog()" style="font-size: 18px"
-          ><span style="padding-right: 250px">元智能科创项目评价系统服务协议</span></el-link
+          >元智能科创项目评价系统服务协议</el-link
         >
         <el-dialog
           title=""
@@ -137,8 +137,11 @@
             >
           </span>
         </el-dialog>
-        <el-button type="primary" @click="mutilHandler"
-          >上传评分<i class="el-icon-upload el-icon--right"></i
+        <el-button
+          type="primary"
+          @click="mutilHandler"
+          :disabled="isUploadTextDisable"
+          >上传文件<i class="el-icon-upload el-icon--right"></i
         ></el-button>
       </div>
     </div>
@@ -156,6 +159,7 @@ export default {
       num: 0,
       isAgree: false,
       dialogVisible: false,
+      isUploadTextDisable: false,
     };
   },
   components: {
@@ -226,26 +230,47 @@ export default {
         return;
       }
       if (this.isAgree === false) {
-          this.$message.error("请同意并接收左侧服务协议！");
-          return;
+        this.$message.error("请同意并接收左侧服务协议！");
+        return;
       }
       for (var i = 0; i < this.fileList.length; i++) {
-        console.log(i);
         this.formData.append("files", this.fileList[i].file);
         this.formData.append("planName", this.fileList[i].planName);
       }
       console.log("mutil=>", this.formData.getAll("files"));
       console.log("mutil=>", this.formData.getAll("planName"));
-      this.comName = [];
-      this.fileList = [];
+
+      this.$message.success("结果评审中，请稍等....");
+      this.isUploadTextDisable = true;
+
+
       this.$axios
         .post("/handler", this.formData, {
           headers: { "Content-Type": "multipart/form-data" },
         })
-        .then((resp) => {
-          console.log("mutilHandler");
+        .then((response) => {
+          if (response) {
+            if (response.data.code === 10000) {
+              this.$message.success("导入成功");
+              this.isUploadTextDisable = false;
+              this.comName = [];
+              this.fileList = [];
+              var dataStr = JSON.stringify(response.data);
+              console.log("dataStr=>", dataStr);
+              // console.log("dataStr[0]=>", dataStr[0]);
+              sessionStorage.setItem("scoredata", dataStr);
+              this.$router.push({
+                name: "查看评分",
+                params: { responses: response },
+              });
+            } else if (response.data.code === 11100) {
+              this.$message.error("文件不合法，请重新上传！");
+            } else if (response.data.code === 11111) {
+              this.$message.error("抱谦，您上传的文档无法正确识别！");
+            }
+          }
+          // this.formData = new FormData();
         });
-      this.formData = new FormData();
     },
   },
 };

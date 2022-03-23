@@ -1,26 +1,25 @@
 <template>
   <div class="home">
-      <!-- <el-checkbox style="display: inline; float: left; padding-right: 20px"></el-checkbox> -->
-    <el-tag type="success" style="display: inline; float: left">{{tags[idx]}}</el-tag>
-    <div class="container" style="text-align: right;">
-        <el-button
-          type="danger"
-          icon="el-icon-delete"
-          circle
-          @click="del"
-        ></el-button>
-      </div>
+    <!-- <el-checkbox style="display: inline; float: left; padding-right: 20px"></el-checkbox> -->
+    <!-- <el-tag type="success" style="display: inline; float: left">{{tags[idx]}}</el-tag> -->
+
     <el-form
       :inline="false"
       ref="form2"
       :rules="rules2"
       :model="form2"
       label-width="100px"
-      style="padding: 30px 0"
     >
-      
       <el-form-item label="项目名称" prop="planName">
         <el-input v-model="form2.planName" style="width: 80%"></el-input>
+        <div class="container" style="display: inline; float: right">
+          <el-button
+            type="danger"
+            icon="el-icon-delete"
+            circle
+            @click="del"
+          ></el-button>
+        </div>
       </el-form-item>
       <el-form-item label="选取文件" prop="fileList" style="text-align: left">
         <el-upload
@@ -49,8 +48,8 @@
       </el-form-item>
     </el-form>
 
-    <div class="tableLine"><span class="midText">分割线</span></div>
-    <br />
+    <!-- <div class="tableLine"><span class="midText">分割线</span></div> -->
+    <!-- <br /> -->
   </div>
 </template>
 <script>
@@ -200,5 +199,8 @@ export default {
   background-color: #ffffff;
   padding: 0 15px;
   transform: translateX(-50%) translateY(-50%);
+}
+.el-form {
+  margin-bottom: 0px;
 }
 </style>

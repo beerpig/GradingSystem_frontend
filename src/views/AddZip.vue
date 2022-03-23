@@ -7,7 +7,6 @@
       :model="form2"
       label-width="100px"
       style="padding: 30px 0"
-      
     >
       <!-- <el-form-item label="导入方式" prop="importType">
         <el-select v-model="form2.importType" placeholder="请选择导入方式">
@@ -168,7 +167,8 @@
         <!-- <el-button
           type="primary"
           @click="openFullScreen1"
-          v-loading.fullscreen.lock="fullscreenLoading">
+          v-loading.fullscreen.lock="fullscreenLoading"
+          >
           指令方式
         </el-button> -->
         
@@ -193,7 +193,7 @@ export default {
       dialogVisible: false,
       importContent: "导入",
       isImportContentDisable: false,
-      // fullscreanLoading: false,
+      fullscreenLoading: false,
       rules2: {
         fileList: [{ required: true, message: "请选择文件", trigger: "blur" }],
       },
@@ -348,10 +348,10 @@ export default {
             let files = [];
             let formData = new FormData();
             // 解决 this.$refs.newupload.submit() 不走拦截器的bug
-            for (var i = 0; i < this.form2.fileList.length; i ++) {
+            for (var i = 0; i < this.form2.fileList.length; i++) {
               let file = this.$refs.newupload.uploadFiles.pop().raw;
               // files.push(file);
-              formData.append('files', file);
+              formData.append("files", file);
             }
             // let file = this.$refs.newupload.uploadFiles.pop().raw;
             // let formData = new FormData();

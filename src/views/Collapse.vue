@@ -28,7 +28,7 @@
             </el-image>
           </div>
           <div>
-            <el-button type="primary" @click="downloadFile">下载文件</el-button>
+            <el-button type="primary" @click="downloadFile(p.zip_file)">下载文件</el-button>
           </div>
           <!-- <span v-for="item in dic.SCORE" style="font-size: 36px; color: red">
           {{ item }}
@@ -87,18 +87,18 @@ export default {
       console.log("this.scoredata=>", this.scoredata);
       var scoredataJson = JSON.parse(this.scoredata);
       console.log("scoredataJson=>", scoredataJson);
-      console.log("scoredataJson.plan=>", scoredataJson.plan);
+      // console.log("scoredataJson.plan=>", scoredataJson.plan);
       //   this.dic = scoredataJson.msg;
       //   this.pic = scoredataJson.pic;
       this.plan = scoredataJson.plan;
     }
   },
   methods: {
-    downloadFile() {
+    downloadFile(url_) {
       this.$axios
         ({
-          url: "/download/code",
-          method: "post",
+          url: "/download/" + url_,
+          method: "get",
           headers: {
             "Content-Type": "application/json; application/octet-stream",
           },
@@ -107,7 +107,7 @@ export default {
         .then((resp) => {
           const blob = new Blob([resp.data]);
           const link = document.createElement("a");
-          link.download = "file_name.pdf"; // a标签添加属性
+          link.download = "file.zip"; // a标签添加属性
           link.style.display = "none";
           link.href = URL.createObjectURL(blob);
           document.body.appendChild(link);
