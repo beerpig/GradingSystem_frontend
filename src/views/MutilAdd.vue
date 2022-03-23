@@ -143,6 +143,14 @@
           :disabled="isUploadTextDisable"
           >上传文件<i class="el-icon-upload el-icon--right"></i
         ></el-button>
+        <div v-show="progressFlag" class="head-img">
+          <el-progress
+            :text-inside="true"
+            :stroke-width="14"
+            :percentage="progressPercent"
+            status="success"
+          ></el-progress>
+        </div>
       </div>
     </div>
   </div>
@@ -160,6 +168,8 @@ export default {
       isAgree: false,
       dialogVisible: false,
       isUploadTextDisable: false,
+      progressFlag: false,
+      progressPercent: 0,
     };
   },
   components: {
@@ -242,17 +252,22 @@ export default {
 
       this.$message.success("结果评审中，请稍等....");
       this.isUploadTextDisable = true;
-
-
+      var that = this;
+      that.progressFlag = true;
       this.$axios
         .post("/handler", this.formData, {
           headers: { "Content-Type": "multipart/form-data" },
+          onUploadProgress: ProgressEvent => {
+            that.progressPercent = ((ProgressEvent.loaded / ProgressEvent.total) * 100) | 0;
+          }
         })
         .then((response) => {
           if (response) {
             if (response.data.code === 10000) {
               this.$message.success("导入成功");
               this.isUploadTextDisable = false;
+              this.progressFlag = false;
+              this.progressPercent = 0;
               this.comName = [];
               this.fileList = [];
               var dataStr = JSON.stringify(response.data);

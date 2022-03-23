@@ -27,9 +27,9 @@
               </div>
             </el-image>
           </div>
-          <div>
+          <!-- <div>
             <el-button type="primary" @click="downloadFile(p.zip_file)">下载文件</el-button>
-          </div>
+          </div> -->
           <!-- <span v-for="item in dic.SCORE" style="font-size: 36px; color: red">
           {{ item }}
         </span> -->
