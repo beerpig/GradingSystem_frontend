@@ -1,6 +1,12 @@
 <template>
   <div class="home">
-    <div class="container">
+    <div
+      class="container"
+      v-loading="loading"
+      element-loading-text="文件解析中"
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(0, 0, 0, 0.1)"
+    >
       <div class="addZujian"></div>
       <div class="zujianContent">
         <br />
@@ -170,6 +176,7 @@ export default {
       isUploadTextDisable: false,
       progressFlag: false,
       progressPercent: 0,
+      loading: false,
     };
   },
   components: {
@@ -250,16 +257,20 @@ export default {
       console.log("mutil=>", this.formData.getAll("files"));
       console.log("mutil=>", this.formData.getAll("planName"));
 
-      this.$message.success("结果评审中，请稍等....");
       this.isUploadTextDisable = true;
       var that = this;
       that.progressFlag = true;
       this.$axios
         .post("/handler", this.formData, {
           headers: { "Content-Type": "multipart/form-data" },
-          onUploadProgress: ProgressEvent => {
-            that.progressPercent = ((ProgressEvent.loaded / ProgressEvent.total) * 100) | 0;
-          }
+          onUploadProgress: (ProgressEvent) => {
+            that.progressPercent =
+              ((ProgressEvent.loaded / ProgressEvent.total) * 100) | 0;
+            if (that.progressPercent >= 100) {
+              that.$message.success("文件上传成功，请耐心等待解析...");
+              that.loading = true;
+            }
+          },
         })
         .then((response) => {
           if (response) {
@@ -268,6 +279,7 @@ export default {
               this.isUploadTextDisable = false;
               this.progressFlag = false;
               this.progressPercent = 0;
+              this.loading = false;
               this.comName = [];
               this.fileList = [];
               var dataStr = JSON.stringify(response.data);

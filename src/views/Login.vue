@@ -51,6 +51,7 @@
                   size="small"
                   style="font-size: 14px; width: 102px"
                   placeholder="输入验证码"
+                  @keyup.enter.native="loginF('loginForm')"
                 ></el-input>
               </el-form-item>
               <el-form-item
