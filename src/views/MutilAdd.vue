@@ -182,6 +182,9 @@ export default {
   components: {
     SubAdd,
   },
+  mounted() {
+    this.zujian();
+  },
   methods: {
     showDialog() {
       this.dialogVisible = true;
@@ -276,12 +279,7 @@ export default {
           if (response) {
             if (response.data.code === 10000) {
               this.$message.success("导入成功");
-              this.isUploadTextDisable = false;
-              this.progressFlag = false;
-              this.progressPercent = 0;
-              this.loading = false;
-              this.comName = [];
-              this.fileList = [];
+
               var dataStr = JSON.stringify(response.data);
               console.log("dataStr=>", dataStr);
               // console.log("dataStr[0]=>", dataStr[0]);
@@ -296,6 +294,12 @@ export default {
               this.$message.error("抱谦，您上传的文档无法正确识别！");
             }
           }
+          this.isUploadTextDisable = false;
+          this.progressFlag = false;
+          this.progressPercent = 0;
+          this.loading = false;
+          this.comName = [];
+          this.fileList = [];
           // this.formData = new FormData();
         });
     },

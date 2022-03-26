@@ -1,5 +1,9 @@
 <template>
-  <div style="margin-top: 60px; margin-left: 80px; width: 600px">
+  <div style="margin-top: 60px; margin-left: 80px; width: 600px"
+      v-loading="loading"
+      element-loading-text="文件解析中"
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(0, 0, 0, 0)">
     <el-form
       :inline="false"
       ref="form2"
@@ -198,6 +202,7 @@ export default {
         fileList: [{ required: true, message: "请选择文件", trigger: "blur" }],
       },
       action: "/handler",
+      loading: false,
       // centerDialogVisible: false,
     };
   },
@@ -313,6 +318,7 @@ export default {
       this.$refs["newupload"].clearFiles();
       this.importContent = "导入";
       this.isImportContentDisable = false;
+      this.loading = false;
     },
     axiosMethod() {
       this.$axios.post("/tokenAvailable").then((resp) => {
@@ -366,6 +372,7 @@ export default {
               this.$message.success("结果评审中，请稍等....");
               this.importContent = "评审中";
               this.isImportContentDisable = true;
+              this.loading = true;
               this.$axios.post("/handler", formData).then((resp) => {
                 // if (resp.data.code === 10000) {
                 //   //触发组件的action

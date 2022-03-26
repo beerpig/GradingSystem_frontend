@@ -10,7 +10,7 @@
       :model="form2"
       label-width="100px"
     >
-      <el-form-item label="项目名称" prop="planName">
+      <el-form-item :label="'项目 '+tags[idx]+' 名称'" prop="planName">
         <el-input v-model="form2.planName" style="width: 80%"></el-input>
         <div class="container" style="display: inline; float: right">
           <el-button
@@ -56,7 +56,7 @@
 export default {
   data() {
     return {
-      tags: ["项目一", "项目二", "项目三", "项目四", "项目五"],
+      tags: ["1", "2", "3", "4", "5"],
       form2: {
         fileList: [],
         idx: "",

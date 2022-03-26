@@ -9,18 +9,17 @@
           :key="index"
           style=""
         >
-          <div style="margin-left: 0px" class="score-show">
+          <div class="score-show">
             <span style="font-size: 30px">score : </span>
-            <span :style="scoreComputed(p.msg)" style="">{{
+            <span :style="scoreComputed(p.msg)" class="msg-item">{{
               p.msg
             }}</span>
           </div>
           <div style="font-size: 18px">评分画像：</div>
-          <div id="word-img">
+          <div class="word-img">
             <el-image
               :src="'data:image/png;base64,' + p.pic"
               :fit="fit"
-              style="text-align: center"
             >
               <div slot="error" class="image-slot">
                 <i class="el-icon-picture-outline"></i>
@@ -126,11 +125,19 @@ export default {
 <style lang='less' scoped>
 .score-show {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 }
 .el-collapse-item__content {
   padding-bottom: 100px;
+}
+.word-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.msg-item {
+  margin-left: 20rem;
 }
 /deep/ .el-collapse-item__content {
   text-align: left;
