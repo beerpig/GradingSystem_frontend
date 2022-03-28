@@ -3,8 +3,8 @@
 import Vue from 'vue'
 // import axios from 'axios'
 import instance from './http'
-// import ElementUI from 'element-ui'
-// import 'element-ui/lib/theme-chalk/index.css'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 import App from './App'
 import router from './router'
 import store from './store/store'
@@ -17,7 +17,7 @@ import './mock'
 
 Vue.prototype.$axios = instance
 Vue.config.productionTip = false
-Vue.use(SlideVerify)
+Vue.use(SlideVerify).use(ElementUI)
 
 
 // Vue.use(SlideVerify)

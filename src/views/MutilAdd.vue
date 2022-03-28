@@ -250,7 +250,7 @@ export default {
         return;
       }
       if (this.isAgree === false) {
-        this.$message.error("请同意并接收左侧服务协议！");
+        this.$message.error("请同意并接受左侧服务协议！");
         return;
       }
       for (var i = 0; i < this.fileList.length; i++) {
