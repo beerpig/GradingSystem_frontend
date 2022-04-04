@@ -10,7 +10,7 @@
             <el-table-column prop="ip" label="IP 地址" />
             <el-table-column label="文件">
               <template slot-scope="scope">
-                <el-button size="mini">下载</el-button>
+                <el-button size="mini" @click="download(scope.row.no)">下载</el-button>
               </template>
             </el-table-column>
             <el-table-column label="评分">
@@ -58,6 +58,19 @@ export default {
     ).then((resp) => {
       this.uploadHistory = resp.data.records;
     });
+  },
+  methods: {
+    download(id) {
+      this.$axios.get(`download_by_no/${id}`, { responseType: 'blob' })
+        .then((response) => {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', 'file.zip');
+          document.body.appendChild(link);
+          link.click();
+        });
+    },
   },
 };
 </script>
