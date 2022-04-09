@@ -135,7 +135,7 @@
               <i class="el-icon-finished"></i>
               {{ userType === '3' ? "上传记录" : "手动评价" }}
               <el-badge
-                v-if="userType === '2' || userType === '4'"
+                v-if="(userType === '2' || userType === '4') && notCommentedCount !== 0"
                 :value="notCommentedCount"
                 :max="99"
                 style="bottom: 2px; margin-left: 0.3rem;"
@@ -150,6 +150,11 @@
           <el-menu-item index="/specifyBP" v-if="userType === '3'" style="text-align: left">
             <div>
               <i class="el-icon-circle-plus"></i>指定待评语 BP
+            </div>
+          </el-menu-item>
+          <el-menu-item index="/consultantApplication" v-if="userType === '3'" style="text-align: left">
+            <div>
+              <i class="el-icon-finished"></i>顾问申请
             </div>
           </el-menu-item>
 

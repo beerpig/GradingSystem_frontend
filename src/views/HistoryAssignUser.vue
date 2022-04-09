@@ -38,9 +38,12 @@ export default {
   methods: {
     refresh() {
       this.$axios.get("/users_by_type/2")
-        .then((resp) => {
-        this.allUsers = resp.data.users;
-      });
+        .then((resp1) => {
+          this.$axios.get("/users_by_type/4")
+          .then((resp2) => {
+            this.allUsers = resp1.data.users.concat(resp2.data.users);
+          });
+        });
       this.$axios.get(`/assigned_users/${this.id}`)
         .then((resp) => {
         this.assignedUsers = resp.data.users;

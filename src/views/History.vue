@@ -28,7 +28,7 @@
                 <el-button size="mini" @click="assign(scope.row.no)">选择顾问</el-button>
               </template>
             </el-table-column>
-            <el-table-column label="人工评分" align="center" v-if="userType === '2'">
+            <el-table-column label="人工评分" align="center" v-if="userType === '2' | userType === '4'">
               <template slot-scope="scope">
                 <el-row type="flex" align="middle">
                   <el-col :span="24">

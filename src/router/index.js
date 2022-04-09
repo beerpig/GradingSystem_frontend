@@ -18,6 +18,8 @@ import History from "../views/History"
 import HistoryAssignUser from "../views/HistoryAssignUser"
 import ApplyConsultant from "../views/ApplyConsultant"
 import SpecifyBP from "../views/SpecifyBP"
+import ConsultantApplicationList from "../views/ConsultantApplicationList"
+import ConsultantApplication from "../views/ConsultantApplication"
 
 
 
@@ -84,6 +86,15 @@ const routes = [{
             {
                 path: '/specifyBP',
                 component: SpecifyBP,
+            },
+            {
+                path: '/consultantApplication',
+                component: ConsultantApplicationList,
+            },
+            {
+                path: '/consultantApplication/:id',
+                component: ConsultantApplication,
+                props: true
             }
         ]
     },
