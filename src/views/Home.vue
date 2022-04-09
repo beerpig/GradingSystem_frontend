@@ -130,9 +130,16 @@
               </div>
             </el-menu-item>
           </el-submenu>
-          <el-menu-item index="/history" v-if="userType === '2'" style="text-align: left">
+          <el-menu-item index="/history" v-if="userType === '2' || userType === '3'" style="text-align: left">
             <div>
-              <i class="el-icon-finished"></i>上传记录
+              <i class="el-icon-finished"></i>
+              {{ userType === '2' ? "手动评价" : "上传记录" }}
+              <el-badge
+                v-if="userType === '2'"
+                :value="notCommentedCount"
+                :max="99"
+                style="bottom: 2px; margin-left: 0.3rem;"
+              />
             </div>
           </el-menu-item>
 
@@ -283,6 +290,7 @@ export default {
       dialogFormVisible: this.$store.state.toDialogFormVisible,
       dialogFormEmail: this.$store.state.toDialogFormEmail,
       dialogPasswordFormVisible: false,
+      notCommentedCount: 0,
       // dialogFormVisible: true,
       form: {
         email: this.$store.state.toDialogFormEmail,
@@ -347,8 +355,10 @@ export default {
     var usertype = sessionStorage.getItem("usertype");
     this.userType = usertype;
     console.log("usertype=>", usertype);
-    if (usertype === "2") {
-      this.sysUserName = "评委";
+    if (usertype === "3") {
+      this.sysUserName = "管理员";
+    } else if (usertype === "2") {
+      this.sysUserName = "顾问";
     } else if (usertype === "1") {
       this.sysUserName = "已验证";
     } else {
@@ -373,6 +383,9 @@ export default {
         this.screenWidth = document.body.clientWidth;
       })();
     };
+    this.$axios.get("/notComment").then((resp) => {
+      this.notCommentedCount = resp.data.count;
+    });
   },
   methods: {
     setEmail() {

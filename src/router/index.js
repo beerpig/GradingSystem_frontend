@@ -15,6 +15,7 @@ import Welcome from "../views/Welcome"
 import Forget from "../views/Forget"
 import MutilAdd from "../views/MutilAdd"
 import History from "../views/History"
+import HistoryAssignUser from "../views/HistoryAssignUser"
 
 
 
@@ -68,6 +69,11 @@ const routes = [{
             {
                 path: '/history',
                 component: History
+            },
+            {
+                path: '/historyAssignUser/:id',
+                component: HistoryAssignUser,
+                props: true
             }
         ]
     },
