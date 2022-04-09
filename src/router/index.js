@@ -16,6 +16,8 @@ import Forget from "../views/Forget"
 import MutilAdd from "../views/MutilAdd"
 import History from "../views/History"
 import HistoryAssignUser from "../views/HistoryAssignUser"
+import ApplyConsultant from "../views/ApplyConsultant"
+import SpecifyBP from "../views/SpecifyBP"
 
 
 
@@ -74,6 +76,14 @@ const routes = [{
                 path: '/historyAssignUser/:id',
                 component: HistoryAssignUser,
                 props: true
+            },
+            {
+                path: '/applyConsultant',
+                component: ApplyConsultant,
+            },
+            {
+                path: '/specifyBP',
+                component: SpecifyBP,
             }
         ]
     },

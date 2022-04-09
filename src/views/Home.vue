@@ -130,16 +130,26 @@
               </div>
             </el-menu-item>
           </el-submenu>
-          <el-menu-item index="/history" v-if="userType === '2' || userType === '3'" style="text-align: left">
+          <el-menu-item index="/history" v-if="userType === '2' || userType === '3' || userType === '4'" style="text-align: left">
             <div>
               <i class="el-icon-finished"></i>
-              {{ userType === '2' ? "手动评价" : "上传记录" }}
+              {{ userType === '3' ? "上传记录" : "手动评价" }}
               <el-badge
-                v-if="userType === '2'"
+                v-if="userType === '2' || userType === '4'"
                 :value="notCommentedCount"
                 :max="99"
                 style="bottom: 2px; margin-left: 0.3rem;"
               />
+            </div>
+          </el-menu-item>
+          <el-menu-item index="/applyConsultant" v-if="userType === '1'" style="text-align: left">
+            <div>
+              <i class="el-icon-circle-plus"></i>成为顾问
+            </div>
+          </el-menu-item>
+          <el-menu-item index="/specifyBP" v-if="userType === '3'" style="text-align: left">
+            <div>
+              <i class="el-icon-circle-plus"></i>指定待评语 BP
             </div>
           </el-menu-item>
 
@@ -355,7 +365,9 @@ export default {
     var usertype = sessionStorage.getItem("usertype");
     this.userType = usertype;
     console.log("usertype=>", usertype);
-    if (usertype === "3") {
+    if (usertype === "4") {
+      this.sysUserName = "已申请成为顾问";
+    } else if (usertype === "3") {
       this.sysUserName = "管理员";
     } else if (usertype === "2") {
       this.sysUserName = "顾问";

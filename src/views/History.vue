@@ -23,7 +23,7 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column label="分配" width="100" align="center" v-if="userType === '3'">
+            <el-table-column label="分配" width="130" align="center" v-if="userType === '3'">
               <template slot-scope="scope">
                 <el-button size="mini" @click="assign(scope.row.no)">选择顾问</el-button>
               </template>
