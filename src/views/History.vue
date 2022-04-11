@@ -4,18 +4,54 @@
       <el-row>
         <el-col>
           <el-table :data="uploadHistory" stripe border>
-            <el-table-column :index="recordIndex" type="index" width="80" align="center" v-if="userType === '3'" />
-            <el-table-column prop="upload_time" label="时间" width="250" align="center" v-if="userType === '3'"/>
-            <el-table-column prop="user_name" label="用户名" :width="userType === '3' ? undefined : 130" v-if="userType === '3'" />
-            <el-table-column prop="ip" label="IP 地址" width="130" align="center" v-if="userType === '3'" />
+            <el-table-column
+              :index="recordIndex"
+              type="index"
+              width="80"
+              align="center"
+              v-if="userType === '3'"
+            />
+            <el-table-column
+              prop="upload_time"
+              label="时间"
+              width="250"
+              align="center"
+              v-if="userType === '3'"
+            />
+            <el-table-column
+              prop="user_name"
+              label="用户名"
+              :width="userType === '3' ? undefined : 130"
+              v-if="userType === '3'"
+            />
+            <el-table-column
+              prop="ip"
+              label="IP 地址"
+              width="130"
+              align="center"
+              v-if="userType === '3'"
+            />
             <el-table-column label="文件" width="100" align="center">
               <template slot-scope="scope">
-                <el-button size="mini" @click="download(scope.row.no)">下载</el-button>
+                <el-button size="small" @click="download(scope.row.no)"
+                  >下载</el-button
+                >
               </template>
             </el-table-column>
-            <el-table-column label="评分" width="130" align="center" v-if="userType === '3'">
+            <el-table-column
+              label="评分"
+              width="130"
+              align="center"
+              v-if="userType === '3'"
+            >
               <template slot-scope="scope">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                  "
+                >
                   <span>{{ scope.row.score }}</span>
                   <el-button size="mini" style="margin-left: 0.3rem">
                     查看
@@ -23,18 +59,29 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column label="分配" width="130" align="center" v-if="userType === '3'">
+            <el-table-column
+              label="分配"
+              width="130"
+              align="center"
+              v-if="userType === '3'"
+            >
               <template slot-scope="scope">
-                <el-button size="mini" @click="assign(scope.row.no)">选择顾问</el-button>
+                <el-button size="mini" @click="assign(scope.row.no)"
+                  >选择顾问</el-button
+                >
               </template>
             </el-table-column>
-            <el-table-column label="人工评分" align="center" v-if="userType === '2' | userType === '4'">
+            <el-table-column
+              label="顾问评价及打分"
+              align="center"
+              v-if="(userType === '2') | (userType === '4')"
+            >
               <template slot-scope="scope">
                 <el-row type="flex" align="middle">
                   <el-col :span="24">
                     <el-input
                       type="textarea"
-                      placeholder="手动评语"
+                      placeholder="请根据左侧商业计划书给出您的评语（300～500字）"
                       :autosize="{ minRows: 3 }"
                       v-model="scope.row.comment"
                     />
@@ -44,10 +91,15 @@
                   type="flex"
                   align="middle"
                   justify="end"
-                  style="margin-top: 0.5rem;"
+                  style="margin-top: 0.5rem"
                 >
+                  <span>评分：</span>
                   <el-col :span="4">
-                    <el-input type="number" placeholder="手动评分" v-model="scope.row.score" />
+                    <el-input
+                      type="number"
+                      placeholder="70"
+                      v-model="scope.row.score"
+                    />
                   </el-col>
                   <el-col :span="3">
                     <el-button
@@ -62,7 +114,7 @@
               </template>
             </el-table-column>
           </el-table>
-      </el-col>
+        </el-col>
       </el-row>
     </el-main>
   </el-container>
@@ -73,28 +125,30 @@ export default {
   data() {
     return {
       uploadHistory: [],
-      userType: '0',
-    }
+      userType: "0",
+    };
   },
   mounted() {
     this.userType = sessionStorage.getItem("usertype");
-    this.$axios.get("/historyRecord", {
-      params: {
-        username: sessionStorage.getItem("username"),
-      },
-    }
-    ).then((resp) => {
-      this.uploadHistory = resp.data.records;
-    });
+    this.$axios
+      .get("/historyRecord", {
+        params: {
+          username: sessionStorage.getItem("username"),
+        },
+      })
+      .then((resp) => {
+        this.uploadHistory = resp.data.records;
+      });
   },
   methods: {
     download(id) {
-      this.$axios.get(`download_by_no/${id}`, { responseType: 'blob' })
+      this.$axios
+        .get(`download_by_no/${id}`, { responseType: "blob" })
         .then((response) => {
           const url = window.URL.createObjectURL(new Blob([response.data]));
-          const link = document.createElement('a');
+          const link = document.createElement("a");
           link.href = url;
-          link.setAttribute('download', 'file.zip');
+          link.setAttribute("download", "file.zip");
           document.body.appendChild(link);
           link.click();
         });
@@ -106,11 +160,11 @@ export default {
       this.$router.push(`/historyAssignUser/${id}`);
     },
     submit(row) {
-      this.$axios
-        .post(
-          `/comment/${row.no}`,
-          { score: row.score, comment: row.comment},
-        );
+      this.$axios.post(`/comment/${row.no}`, {
+        score: row.score,
+        comment: row.comment,
+      });
+      this.$message.success("提交成功");
     },
   },
 };

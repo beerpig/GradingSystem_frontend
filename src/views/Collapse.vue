@@ -17,24 +17,37 @@
           </div>
           <div style="font-size: 18px">评分画像：</div>
           <div class="word-img">
-            <el-image
-              :src="'data:image/png;base64,' + p.pic"
-              :fit="fit"
-            >
+            <el-image :src="'data:image/png;base64,' + p.pic" :fit="fit">
               <div slot="error" class="image-slot">
                 <i class="el-icon-picture-outline"></i>
               </div>
             </el-image>
           </div>
-          <!-- <div>
-            <el-button type="primary" @click="downloadFile(p.zip_file)">下载文件</el-button>
-          </div> -->
+          <div>
+            <button
+              v-if="usertype === '3'"
+              type="primary"
+              @click="downloadFile(p.zip_file)"
+              style="border: none; background-color: #fff; cursor: pointer"
+            >
+              下载文件
+            </button>
+          </div>
           <!-- <span v-for="item in dic.SCORE" style="font-size: 36px; color: red">
           {{ item }}
         </span> -->
         </el-collapse-item>
       </div>
     </el-collapse>
+    <!-- <div>
+      <button
+        v-if="usertype === '3'"
+        type="primary"
+        @click="downloadFile(p.zip_file)"
+        style="border:none; background-color: #fff; cursor: pointer"
+        >下载文件</button
+      >
+    </div> -->
   </div>
 </template>
 
@@ -65,6 +78,7 @@ export default {
       // pic: this.$route.params.responses.data.wordcloud,
       pic: "",
       plan: [],
+      usertype: "",
       // dic :{
       // 	SCORE: {
       // 		AI: 86.0,
@@ -80,6 +94,7 @@ export default {
   created() {
     if (sessionStorage.getItem("scoredata")) {
       console.log("created");
+      this.usertype = sessionStorage.getItem("usertype");
       //   this.dic = sessionStorage.getItem("collapsedata");
       //   this.pic = sessionStorage.getItem("pic");
       this.scoredata = sessionStorage.getItem("scoredata");
@@ -94,26 +109,24 @@ export default {
   },
   methods: {
     downloadFile(url_) {
-      this.$axios
-        ({
-          url: "/download/" + url_,
-          method: "get",
-          headers: {
-            "Content-Type": "application/json; application/octet-stream",
-          },
-          responseType: "blob",
-        })
-        .then((resp) => {
-          const blob = new Blob([resp.data]);
-          const link = document.createElement("a");
-          link.download = "file.zip"; // a标签添加属性
-          link.style.display = "none";
-          link.href = URL.createObjectURL(blob);
-          document.body.appendChild(link);
-          link.click(); // 执行下载
-          URL.revokeObjectURL(link.href); // 释放 bolb 对象
-          document.body.removeChild(link); // 下载完成移除元素
-        });
+      this.$axios({
+        url: "/download/" + url_,
+        method: "get",
+        headers: {
+          "Content-Type": "application/json; application/octet-stream",
+        },
+        responseType: "blob",
+      }).then((resp) => {
+        const blob = new Blob([resp.data]);
+        const link = document.createElement("a");
+        link.download = "file.zip"; // a标签添加属性
+        link.style.display = "none";
+        link.href = URL.createObjectURL(blob);
+        document.body.appendChild(link);
+        link.click(); // 执行下载
+        URL.revokeObjectURL(link.href); // 释放 bolb 对象
+        document.body.removeChild(link); // 下载完成移除元素
+      });
     },
 
     handleChange(val) {

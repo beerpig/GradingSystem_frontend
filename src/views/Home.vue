@@ -158,21 +158,7 @@
             </div>
           </el-menu-item>
 
-          <!-- <el-submenu :index="1">
-            <template slot="title"
-              ><i class="el-icon-finished"></i>数据统计</template
-            >
-            <el-menu-item index="/bar">
-              <div style="position: relative; left: 20px">
-                <i class="el-icon-s-data"></i>柱状图
-              </div>
-            </el-menu-item>
-            <el-menu-item index="/pie">
-              <div style="position: relative; left: 20px">
-                <i class="el-icon-s-marketing"></i>饼图
-              </div>
-            </el-menu-item>
-          </el-submenu> -->
+          
         </el-menu>
       </el-aside>
 
@@ -406,8 +392,7 @@ export default {
   },
   methods: {
     setEmail() {
-      let _this = this;
-      if (sessionStorage.getItem("usertype") === "1") {
+      if (sessionStorage.getItem("usertype") !== "0") {
         return;
       }
       this.$axios

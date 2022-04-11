@@ -3,7 +3,7 @@
     <el-main>
       <el-row>
         <el-col>
-          <el-form label-width="100px" ref="form" :model="form">
+          <el-form label-width="100px" ref="form" :model="form" :rules="fieldRules">
             <el-form-item label="姓名" required>
               <el-col :span="6">
                 <el-input v-model="form.name" @input="changed" />
@@ -11,7 +11,13 @@
             </el-form-item>
             <el-form-item label="性别" required>
               <el-col :span="3">
-                <el-input v-model="form.gender" @input="changed" />
+                <el-cascader
+                  v-model="form.gender"
+                  :options="options"
+                  @change="handleChange"
+                ></el-cascader>
+
+                <!-- <el-input v-model="form.gender" @input="changed" /> -->
               </el-col>
             </el-form-item>
             <el-form-item label="工作单位" required>
@@ -21,7 +27,13 @@
             </el-form-item>
             <el-form-item label="出生年月" required>
               <el-col :span="8">
-                <el-input v-model="form.birthday" @input="changed" />
+                <el-date-picker
+                  v-model="form.birthday"
+                  type="date"
+                  placeholder="选择日期"
+                >
+                </el-date-picker>
+                <!-- <el-input v-model="form.birthday" @input="changed" /> -->
               </el-col>
             </el-form-item>
             <el-form-item label="联系地址" required>
@@ -29,7 +41,7 @@
                 <el-input v-model="form.address" @input="changed" />
               </el-col>
             </el-form-item>
-            <el-form-item label="手机号码" required>
+            <el-form-item label="手机号码" required prop="phoneNumber">
               <el-col :span="8">
                 <el-input v-model="form.phoneNumber" @input="changed" />
               </el-col>
@@ -55,10 +67,18 @@
               </el-col>
             </el-form-item>
             <el-form-item label="主要业绩">
-              <el-input v-model="form.performance" type="textarea" @input="changed" />
+              <el-input
+                v-model="form.performance"
+                type="textarea"
+                @input="changed"
+              />
             </el-form-item>
             <el-form-item label="主要社会兼职">
-              <el-input v-model="form.partTime" type="textarea" @input="changed" />
+              <el-input
+                v-model="form.partTime"
+                type="textarea"
+                @input="changed"
+              />
             </el-form-item>
           </el-form>
           <el-button @click="submit">提交</el-button>
@@ -72,7 +92,30 @@
 <script>
 export default {
   data() {
+    var validatePhone = (rule, value, callback) => {
+      if (/^1(3\d|4[5-9]|5[0-35-9]|6[2567]|7[0-8]|8\d|9[0-35-9])\d{8}$/.test(value) == false) {
+        callback(new Error("手机号格式错误"));
+      } else {
+        callback();
+      }
+    };
     return {
+      options: [
+        {
+          value: "男",
+          label: "男",
+        },
+        {
+          value: "女",
+          label: "女",
+        },
+      ],
+      fieldRules: {
+        phoneNumber: [
+          { required: true, message: "请输入手机号", trigger: "blur" },
+          { validator: validatePhone, trigger: "blur", required: true },
+        ],
+      },
       form: {
         name: "",
         gender: "",
@@ -87,7 +130,7 @@ export default {
         performance: "",
         partTime: "",
       },
-    }
+    };
   },
   mounted() {
     this.userType = sessionStorage.getItem("usertype");
@@ -98,6 +141,10 @@ export default {
     }
   },
   methods: {
+    handleChange(value) {
+      console.log("value", value);
+      console.log("this.form.gender", ...this.form.gender);
+    },
     changed() {
       sessionStorage.setItem("applyConsultant", JSON.stringify(this.form));
     },
@@ -106,7 +153,9 @@ export default {
         if (!valid) {
           return;
         }
-        this.$axios.post(`/applyConsultant`, { form: JSON.stringify(this.form) });
+        this.$axios.post(`/applyConsultant`, {
+          form: JSON.stringify(this.form),
+        });
       });
     },
     clear() {
@@ -131,4 +180,7 @@ export default {
 </script>
 
 <style>
+.el-cascader-menu {
+  height: 80px;
+}
 </style>
