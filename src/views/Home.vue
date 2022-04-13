@@ -141,6 +141,10 @@
                 style="bottom: 2px; margin-left: 0.3rem;"
               />
             </div>
+            <div v-if="userType === '2'" @click="downloadCertificate">
+              <i class="el-icon-download"></i>
+              下载证书
+            </div>
           </el-menu-item>
           <el-menu-item index="/applyConsultant" v-if="userType === '1'" style="text-align: left">
             <div>
@@ -154,7 +158,7 @@
           </el-menu-item>
           <el-menu-item index="/consultantApplication" v-if="userType === '3'" style="text-align: left">
             <div>
-              <i class="el-icon-finished"></i>顾问申请
+              <i class="el-icon-finished"></i>审核顾问申请
             </div>
           </el-menu-item>
 
@@ -478,6 +482,20 @@ export default {
       sessionStorage.removeItem("username");
       sessionStorage.removeItem("token");
       this.$router.push({ path: "/login" });
+    },
+    downloadCertificate() {
+      const user = sessionStorage.getItem('username');
+
+      this.$axios
+        .get(`authorization/generate/getfile/${user}`, { responseType: "blob" })
+        .then((response) => {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "certificate.png");
+          document.body.appendChild(link);
+          link.click();
+        });
     },
   },
 };

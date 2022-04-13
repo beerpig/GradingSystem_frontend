@@ -26,11 +26,17 @@
           <div>
             <button
               v-if="usertype === '3'"
+              class="download"
               type="primary"
               @click="downloadFile(p.zip_file)"
-              style="border: none; background-color: #fff; cursor: pointer"
+              style="
+                border: none;
+                background-color: #fff;
+                cursor: pointer;
+                font-size: 18px;
+              "
             >
-              下载文件
+              评价标注
             </button>
           </div>
           <!-- <span v-for="item in dic.SCORE" style="font-size: 36px; color: red">
@@ -39,15 +45,6 @@
         </el-collapse-item>
       </div>
     </el-collapse>
-    <!-- <div>
-      <button
-        v-if="usertype === '3'"
-        type="primary"
-        @click="downloadFile(p.zip_file)"
-        style="border:none; background-color: #fff; cursor: pointer"
-        >下载文件</button
-      >
-    </div> -->
   </div>
 </template>
 
@@ -151,6 +148,11 @@ export default {
 }
 .msg-item {
   margin-left: 20rem;
+}
+
+.download:hover {
+  text-decoration: underline;
+  color: blue;
 }
 /deep/ .el-collapse-item__content {
   text-align: left;

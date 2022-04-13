@@ -33,9 +33,13 @@
             />
             <el-table-column label="文件" width="100" align="center">
               <template slot-scope="scope">
-                <el-button size="small" @click="download(scope.row.no)"
-                  >下载</el-button
+                <button
+                  class="download_bt"
+                  @click="download(scope.row.no)"
+                  style="border: none; background-color: #fff; font-size: 18px cursor: pointer"
                 >
+                  下载商业<br/>计划书
+                </button>
               </template>
             </el-table-column>
             <el-table-column
@@ -129,18 +133,21 @@ export default {
     };
   },
   mounted() {
-    this.userType = sessionStorage.getItem("usertype");
-    this.$axios
-      .get("/historyRecord", {
-        params: {
-          username: sessionStorage.getItem("username"),
-        },
-      })
-      .then((resp) => {
-        this.uploadHistory = resp.data.records;
-      });
+    this.refresh();
   },
   methods: {
+    refresh() {
+      this.userType = sessionStorage.getItem("usertype");
+      this.$axios
+        .get("/historyRecord", {
+          params: {
+            username: sessionStorage.getItem("username"),
+          },
+        })
+        .then((resp) => {
+          this.uploadHistory = resp.data.records;
+        });
+    },
     download(id) {
       this.$axios
         .get(`download_by_no/${id}`, { responseType: "blob" })
@@ -160,15 +167,23 @@ export default {
       this.$router.push(`/historyAssignUser/${id}`);
     },
     submit(row) {
-      this.$axios.post(`/comment/${row.no}`, {
-        score: row.score,
-        comment: row.comment,
-      });
-      this.$message.success("提交成功");
+      this.$axios
+        .post(`/comment/${row.no}`, {
+          score: row.score,
+          comment: row.comment,
+        })
+        .then(() => {
+          this.$message.success("提交成功");
+          this.refresh();
+        });
     },
   },
 };
 </script>
 
 <style>
+.download_bt:hover {
+  text-decoration: underline;
+  color: blue;
+}
 </style>
