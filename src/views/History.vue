@@ -36,9 +36,9 @@
                 <button
                   class="download_bt"
                   @click="download(scope.row.no)"
-                  style="border: none; background-color: #fff; font-size: 18px cursor: pointer"
+                  style="border: none; background-color: #fff; font-size: 18px; color: #606266; cursor: pointer;"
                 >
-                  下载商业<br/>计划书
+                  下载<br/>商业<br/>计划书
                 </button>
               </template>
             </el-table-column>

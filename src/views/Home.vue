@@ -148,7 +148,7 @@
           </el-menu-item>
           <el-menu-item index="/applyConsultant" v-if="userType === '1'" style="text-align: left">
             <div>
-              <i class="el-icon-circle-plus"></i>成为顾问
+              <i class="el-icon-circle-plus"></i>创业顾问
             </div>
           </el-menu-item>
           <el-menu-item index="/specifyBP" v-if="userType === '3'" style="text-align: left">
@@ -365,7 +365,7 @@ export default {
     } else if (usertype === "3") {
       this.sysUserName = "管理员";
     } else if (usertype === "2") {
-      this.sysUserName = "顾问";
+      this.sysUserName = "创业顾问";
     } else if (usertype === "1") {
       this.sysUserName = "已验证";
     } else {

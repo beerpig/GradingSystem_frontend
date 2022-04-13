@@ -23,22 +23,23 @@
               </div>
             </el-image>
           </div>
-          <div>
-            <button
-              v-if="usertype === '3'"
-              class="download"
-              type="primary"
-              @click="downloadFile(p.zip_file)"
-              style="
-                border: none;
-                background-color: #fff;
-                cursor: pointer;
-                font-size: 18px;
-              "
-            >
-              评价标注
-            </button>
-          </div>
+          <br/>
+          <button
+            v-if="usertype === '3'"
+            class="download"
+            type="primary"
+            @click="downloadFile(p.zip_file)"
+            style="
+              border: none;
+              background-color: #fff;
+              cursor: pointer;
+              font-size: 18px;
+              text-decoration: underline;
+              margin-left: -7px;
+            "
+          >
+            下载评价标注
+          </button>
           <!-- <span v-for="item in dic.SCORE" style="font-size: 36px; color: red">
           {{ item }}
         </span> -->
@@ -49,8 +50,6 @@
 </template>
 
 <script>
-import fileDownload from "js-file-download";
-
 export default {
   created() {
     console.log("collapse receive:" + this.dic);
@@ -151,7 +150,6 @@ export default {
 }
 
 .download:hover {
-  text-decoration: underline;
   color: blue;
 }
 /deep/ .el-collapse-item__content {
