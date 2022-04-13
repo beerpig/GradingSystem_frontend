@@ -153,9 +153,13 @@ export default {
         if (!valid) {
           return;
         }
-        this.$axios.post(`/applyConsultant`, {
-          form: JSON.stringify(this.form),
-        });
+        this.$axios
+          .post(`/applyConsultant`, {
+            form: JSON.stringify(this.form),
+          })
+          .then(() => {
+            this.$router.push("/");
+          });
       });
     },
     clear() {
