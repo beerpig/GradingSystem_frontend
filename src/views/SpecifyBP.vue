@@ -3,8 +3,9 @@
     <el-main>
       <el-row>
         <el-col>
-          <el-button @click="submit">提交</el-button>
-          <el-table :data="uploadHistory" stripe border style="margin-top: 1rem;">
+          <el-button @click="toEdit" v-if="!isEditing">编辑</el-button>
+          <el-button @click="submit" v-if="isEditing">提交</el-button>
+          <el-table :data="uploadHistory.filter((u) => isEditing || u.isWaiting)" stripe border style="margin-top: 1rem;">
             <el-table-column :index="recordIndex" type="index" width="80" align="center" />
             <el-table-column prop="upload_time" label="时间" width="250" align="center" />
             <el-table-column prop="user_name" label="用户名" />
@@ -42,6 +43,7 @@ export default {
     return {
       uploadHistory: [],
       userType: '0',
+      isEditing: false,
     }
   },
   mounted() {
@@ -71,7 +73,11 @@ export default {
       return this.uploadHistory[index].no;
     },
     submit() {
+      this.isEditing = false;
       this.$axios.post(`/specifyBP`, { bps: this.uploadHistory.filter((r) => r.isWaiting).map((r) => r.no) });
+    },
+    toEdit() {
+      this.isEditing = true;
     },
   },
 };
