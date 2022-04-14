@@ -10,7 +10,11 @@
               width="80"
               align="center"
               v-if="userType === '3'"
-            />
+            >
+              <template slot-scope="scope">
+                {{ scope.row.no }}
+              </template>
+            </el-table-column>
             <el-table-column
               prop="upload_time"
               label="时间"
@@ -159,9 +163,6 @@ export default {
           document.body.appendChild(link);
           link.click();
         });
-    },
-    recordIndex(index) {
-      return this.uploadHistory[index].no;
     },
     assign(id) {
       this.$router.push(`/historyAssignUser/${id}`);
