@@ -37,10 +37,26 @@
             />
             <el-table-column label="文件" width="100" align="center">
               <template slot-scope="scope">
+                <el-button @click="download(scope.row.no)" v-if="userType === '3'" size="small">
+                  下载
+                </el-button>
                 <button
                   class="download_bt"
                   @click="download(scope.row.no)"
-                  style="border: none; background-color: #fff; font-size: 18px; color: #606266; cursor: pointer;"
+                  style="
+                    border: none;
+                    background-color: #fff;
+                    font-size: 18px;
+                    color: #606266;
+                    cursor: pointer;
+                    position: absolute;
+                    top: 0;
+                    left: 50%;
+                    margin-top: 12px;
+                    transform: translateX(-50%);
+                    white-space: nowrap;
+                  "
+                  v-else
                 >
                   下载<br/>商业<br/>计划书
                 </button>

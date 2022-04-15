@@ -159,6 +159,7 @@ export default {
           })
           .then(() => {
             this.$router.push("/");
+            sessionStorage.setItem("usertype", "4");
           });
       });
     },

@@ -355,23 +355,6 @@ export default {
   components: {
     HelloWorld,
   },
-  created() {
-    var user = sessionStorage.getItem("username");
-    var usertype = sessionStorage.getItem("usertype");
-    this.userType = usertype;
-    console.log("usertype=>", usertype);
-    if (usertype === "4") {
-      this.sysUserName = "已申请成为顾问";
-    } else if (usertype === "3") {
-      this.sysUserName = "管理员";
-    } else if (usertype === "2") {
-      this.sysUserName = "创业顾问";
-    } else if (usertype === "1") {
-      this.sysUserName = "已验证";
-    } else {
-      this.sysUserName = "未验证邮箱，点击验证";
-    }
-  },
   watch: {
     screenWidth(val) {
       this.screenWidth = val;
@@ -381,6 +364,9 @@ export default {
       } else {
         this.isCollapse = false;
       }
+    },
+    $route() {
+      this.refresh();
     },
   },
   mounted() {
@@ -393,8 +379,26 @@ export default {
     this.$axios.get("/notComment").then((resp) => {
       this.notCommentedCount = resp.data.count;
     });
+    this.refresh();
   },
   methods: {
+    refresh() {
+      var user = sessionStorage.getItem("username");
+      var usertype = sessionStorage.getItem("usertype");
+      this.userType = usertype;
+      console.log("usertype=>", usertype);
+      if (usertype === "4") {
+        this.sysUserName = "已申请成为顾问";
+      } else if (usertype === "3") {
+        this.sysUserName = "管理员";
+      } else if (usertype === "2") {
+        this.sysUserName = "创业顾问";
+      } else if (usertype === "1") {
+        this.sysUserName = "已验证";
+      } else {
+        this.sysUserName = "未验证邮箱，点击验证";
+      }
+    },
     setEmail() {
       if (sessionStorage.getItem("usertype") !== "0") {
         return;
