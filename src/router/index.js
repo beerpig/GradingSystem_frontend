@@ -20,6 +20,7 @@ import ApplyConsultant from "../views/ApplyConsultant"
 import SpecifyBP from "../views/SpecifyBP"
 import ConsultantApplicationList from "../views/ConsultantApplicationList"
 import ConsultantApplication from "../views/ConsultantApplication"
+import CertificateDownload from "../views/CertificateDownload"
 
 
 
@@ -94,6 +95,11 @@ const routes = [{
             {
                 path: '/consultantApplication/:id',
                 component: ConsultantApplication,
+                props: true
+            },
+            {
+                path: '/certificateDownload',
+                component: CertificateDownload,
                 props: true
             }
         ]

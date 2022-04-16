@@ -101,22 +101,22 @@
                   style="font-size: 14px; width: 108px; float: left"
                   placeholder="输入验证码"
                 ></el-input>
-                <button
-                  type="primary"
-                  class="register_btn"
-                  @click="sendEmail('registerForm')"
-                  style="display: inline; float: right; margin-top: 4px"
-                >
-                  发送验证码
-                </button>
               </el-form-item>
+
               <el-form-item
                 style="display: inline-block !important; margin-top: 5px"
               >
               </el-form-item>
             </div>
           </el-form>
-
+          <button
+            type="primary"
+            class="register_btn"
+            @click="sendEmail('registerForm')"
+            style="display: inline; float: right; position: absolute; left: 168px; bottom: 65px"
+          >
+            发送验证码
+          </button>
           <br />
           <!-- <button
             type="primary"
@@ -128,12 +128,10 @@
           <button
             type="primary"
             class="returnLogin"
-            @click="toRegister"
-            style="
-              display: inline;
-            "
+            @click="toLogin"
+            style="display: inline"
           >
-            没账号？请点击注册
+            点击返回登录
           </button>
           <button
             type="primary"
@@ -313,8 +311,8 @@ export default {
     this.get_captcha_img();
   },
   methods: {
-    toRegister() {
-      this.$router.push("/register");
+    toLogin() {
+      this.$router.push("/login");
     },
     updatePass(formName) {
       let _this = this;
@@ -337,10 +335,13 @@ export default {
     },
     sendEmail(formName) {
       let _this = this;
-      this.$refs[formName].validateField("email", (valid) => {
-        if (valid !== "邮箱格式错误") {
-          this.$message.success("邮箱发送中...");
-          this.$axios
+      this.$refs[formName].validateField('email', (valid) => {
+        console.log("valid", valid);
+        if (valid === "请输入邮箱" || valid === "邮箱格式错误") {
+          return;
+        } else {
+          _this.$message.success("邮箱验证码发送中...");
+          _this.$axios
             .get("/sendMail", {
               params: {
                 email: _this.registerForm.email,
@@ -349,10 +350,10 @@ export default {
             .then((resp) => {
               if (resp.data.code === 11010) {
                 _this.$message.success("发送邮箱验证码成功！");
+              } else {
+                _this.$message.error("请输入正确邮箱地址！");
               }
             });
-        } else {
-          this.$message.error("请输入正确邮箱地址！");
         }
       });
     },
@@ -600,7 +601,6 @@ input:-webkit-autofill::first-line {
   font-size: 12px;
   text-decoration: underline;
   display: flex;
-  margin-left: 25px;
   outline: none;
 }
 

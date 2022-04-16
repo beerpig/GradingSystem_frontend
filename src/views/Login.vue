@@ -101,7 +101,7 @@
         <!-- </form> -->
         <!-- 右侧的注册盒子 -->
         <div class="background">
-          <div class="title">远见元智能科创顶目评价系统</div>
+          <div class="title">远见元智能科创项目评价系统</div>
         </div>
       </div>
     </div>

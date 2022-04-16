@@ -1,14 +1,13 @@
 <template>
   <el-container class="home_container">
     <el-header>
-        
       <el-link
         type="primary"
         :underline="false"
         class="home_title"
         @click="jumpAddZip"
         style="font-size: 30px; color: #fff"
-        >
+      >
         <img
           src="./../assets/logo.png"
           style="
@@ -17,7 +16,8 @@
             border-radius: 20px;
             vertical-align: middle;
           "
-        /> <span class="home_title_span">远见元智能科创项目评价系统</span></el-link
+        />
+        <span class="home_title_span">远见元智能科创项目评价系统</span></el-link
       >
       <el-dropdown trigger="hover" class="userinfo">
         <div class="el-dropdown-link userinfo-inner">
@@ -130,39 +130,58 @@
               </div>
             </el-menu-item>
           </el-submenu>
-          <el-menu-item index="/history" v-if="userType === '2' || userType === '3' || userType === '4'" style="text-align: left">
+          <el-menu-item
+            index="/history"
+            v-if="userType === '2' || userType === '3' || userType === '4'"
+            style="text-align: left"
+          >
             <div>
               <i class="el-icon-finished"></i>
-              {{ userType === '3' ? "上传记录" : "手动评价" }}
+              {{ userType === "3" ? "上传记录" : "邀请评价" }}
               <el-badge
-                v-if="(userType === '2' || userType === '4') && notCommentedCount !== 0"
+                v-if="
+                  (userType === '2' || userType === '4') &&
+                  notCommentedCount !== 0
+                "
                 :value="notCommentedCount"
                 :max="99"
-                style="bottom: 2px; margin-left: 0.3rem;"
+                style="bottom: 2px; margin-left: 0.3rem"
               />
             </div>
-            <div v-if="userType === '2'" @click="downloadCertificate">
+            <!-- <div v-if="userType === '2'" @click="downloadCertificate">
               <i class="el-icon-download"></i>
-              下载证书
-            </div>
+              证书下载
+            </div> -->
           </el-menu-item>
-          <el-menu-item index="/applyConsultant" v-if="userType === '1'" style="text-align: left">
-            <div>
-              <i class="el-icon-circle-plus"></i>创业顾问
-            </div>
+          <el-menu-item
+            index="/certificateDownload"
+            v-if="userType === '2'"
+            style="text-align: left"
+          >
+            <i class="el-icon-download"></i>
+            证书下载
           </el-menu-item>
-          <el-menu-item index="/specifyBP" v-if="userType === '3'" style="text-align: left">
-            <div>
-              <i class="el-icon-circle-plus"></i>指定待评语 BP
-            </div>
+          <el-menu-item
+            index="/applyConsultant"
+            v-if="userType === '1'"
+            style="text-align: left"
+          >
+            <div><i class="el-icon-circle-plus"></i>创业顾问</div>
           </el-menu-item>
-          <el-menu-item index="/consultantApplication" v-if="userType === '3'" style="text-align: left">
-            <div>
-              <i class="el-icon-finished"></i>审核顾问申请
-            </div>
+          <el-menu-item
+            index="/specifyBP"
+            v-if="userType === '3'"
+            style="text-align: left"
+          >
+            <div><i class="el-icon-circle-plus"></i>待评BP列表</div>
           </el-menu-item>
-
-          
+          <el-menu-item
+            index="/consultantApplication"
+            v-if="userType === '3'"
+            style="text-align: left"
+          >
+            <div><i class="el-icon-finished"></i>审核顾问申请</div>
+          </el-menu-item>
         </el-menu>
       </el-aside>
 
@@ -487,20 +506,6 @@ export default {
       sessionStorage.removeItem("token");
       this.$router.push({ path: "/login" });
     },
-    downloadCertificate() {
-      const user = sessionStorage.getItem('username');
-
-      this.$axios
-        .get(`authorization/generate/getfile/${user}`, { responseType: "blob" })
-        .then((response) => {
-          const url = window.URL.createObjectURL(new Blob([response.data]));
-          const link = document.createElement("a");
-          link.href = url;
-          link.setAttribute("download", "certificate.png");
-          document.body.appendChild(link);
-          link.click();
-        });
-    },
   },
 };
 </script>
@@ -513,8 +518,6 @@ export default {
   left: 0px;
   width: 100%;
 }
-
-
 
 .el-container {
   display: flex;
