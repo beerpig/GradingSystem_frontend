@@ -5,8 +5,7 @@
         <el-col>
           <el-table :data="uploadHistory" stripe border>
             <el-table-column
-              :index="recordIndex"
-              type="index"
+              label="id"
               width="80"
               align="center"
               v-if="userType === '3'"
@@ -25,6 +24,7 @@
             <el-table-column
               prop="user_name"
               label="用户名"
+              align="center"
               :width="userType === '3' ? undefined : 130"
               v-if="userType === '3'"
             />
@@ -191,6 +191,7 @@ export default {
         })
         .then(() => {
           this.$message.success("提交成功");
+          this.$router.go(0);
           this.refresh();
         });
     },
