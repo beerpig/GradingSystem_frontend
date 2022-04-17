@@ -395,9 +395,6 @@ export default {
         this.screenWidth = document.body.clientWidth;
       })();
     };
-    this.$axios.get("/notComment").then((resp) => {
-      this.notCommentedCount = resp.data.count;
-    });
     this.refresh();
   },
   methods: {
@@ -417,6 +414,9 @@ export default {
       } else {
         this.sysUserName = "未验证邮箱，点击验证";
       }
+      this.$axios.get("/notComment").then((resp) => {
+        this.notCommentedCount = resp.data.count;
+      });
     },
     setEmail() {
       if (sessionStorage.getItem("usertype") !== "0") {

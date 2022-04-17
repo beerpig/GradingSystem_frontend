@@ -6,9 +6,18 @@
           <el-button @click="toEdit" v-if="!isEditing">编辑</el-button>
           <el-button @click="submit" v-if="isEditing">提交</el-button>
           <el-table :data="uploadHistory.filter((u) => isEditing || u.isWaiting)" stripe border style="margin-top: 1rem;">
-            <el-table-column :index="recordIndex" type="index" width="80" align="center" />
+            <el-table-column
+              label="id"
+              width="80"
+              align="center"
+              v-if="userType === '3'"
+            >
+              <template slot-scope="scope">
+                {{ scope.row.no }}
+              </template>
+            </el-table-column>
             <el-table-column prop="upload_time" label="时间" width="250" align="center" />
-            <el-table-column prop="user_name" label="用户名" />
+            <el-table-column prop="user_name" label="用户名" align="center" />
             <el-table-column prop="ip" label="IP 地址" width="130" align="center" />
             <el-table-column label="文件" width="100" align="center">
               <template slot-scope="scope">
