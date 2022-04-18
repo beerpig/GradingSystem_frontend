@@ -13,10 +13,12 @@
 </template>
 
 <script>
+import { saveAs } from "file-saver";
+
 export default {
   data() {
     return {
-        certBase64:``,
+      certBase64: ``,
     };
   },
   created() {
@@ -35,7 +37,7 @@ export default {
         this.$axios
           .get(`authorization/generate/getCertPic/${user}`)
           .then((response) => {
-            console.log('response',response);
+            console.log("response", response);
             if (response) {
               this.certBase64 = response.data.cert;
             }
@@ -44,17 +46,31 @@ export default {
     },
     downloadCertificate() {
       const user = sessionStorage.getItem("username");
-
-      this.$axios
-        .get(`authorization/generate/getfile/${user}`, { responseType: "blob" })
-        .then((response) => {
-          const url = window.URL.createObjectURL(new Blob([response.data]));
-          const link = document.createElement("a");
-          link.href = url;
-          link.setAttribute("download", "certificate.png");
-          document.body.appendChild(link);
-          link.click();
-        });
+      
+      this.$axios({
+          method: 'get',
+          url: `authorization/generate/getfile/${user}`,
+          responseType: 'blob'
+      }).then( res => {
+          if (res.data) {
+              let blob = new Blob([res.data], {
+                  type: "image/png"
+              });
+              saveAs(blob, 'certification');
+          }
+      }).catch( error => {
+          console.log('error',error);
+      })
+      //   this.$axios
+      //     .get(`authorization/generate/getfile/${user}`, { responseType: "blob" })
+      //     .then((response) => {
+      //       const url = window.URL.createObjectURL(new Blob([response.data]));
+      //       const link = document.createElement("a");
+      //       link.href = url;
+      //       link.setAttribute("download", "certificate.png");
+      //       document.body.appendChild(link);
+      //       link.click();
+      //     });
     },
   },
 };

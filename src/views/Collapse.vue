@@ -23,12 +23,12 @@
               </div>
             </el-image>
           </div>
-          <br/>
+          <br />
           <button
             v-if="usertype === '3'"
             class="download"
             type="primary"
-            @click="downloadFile(p.zip_file)"
+            @click="downloadTest(p.zip_file)"
             style="
               border: none;
               background-color: #fff;
@@ -46,10 +46,14 @@
         </el-collapse-item>
       </div>
     </el-collapse>
+    <el-button @click="downloadTest('test')">下载测试</el-button>
   </div>
 </template>
 
 <script>
+import { saveAs } from "file-saver";
+const streamSaver = require("streamsaver");
+
 export default {
   created() {
     console.log("collapse receive:" + this.dic);
@@ -104,6 +108,53 @@ export default {
     }
   },
   methods: {
+    downloadTest(url_) {
+      this.$axios({
+        method: 'post',
+        url: '/download/' + url_,
+        responseType: 'arraybuffer'
+      }).then( res => {
+        console.log('res',res);
+        if (res.data) {
+          let blob = new Blob([res.data], {
+            type:"application/zip"});
+            saveAs(blob, 'file');
+          }
+      }).catch( error => {
+        console.log('error',error);
+      })
+      // const url = "/download/" + url_;
+
+      // fetch(url, {
+      //   method: "POST",
+      //   headers: {
+      //     'Content-type': 'application/json; application/octet-stream'
+      //   }
+      // }).then((res) => {
+      //   const fileStream = streamSaver.createWriteStream("file.pdf");
+      //   const readableStream = res.body;
+
+      //   // more optimized
+      //   if (window.WritableStream && readableStream.pipeTo) {
+      //     return readableStream
+      //       .pipeTo(fileStream)
+      //       .then(() => console.log("done writing"));
+      //   }
+      //   window.writer = fileStream.getWriter();
+
+      //   const reader = res.body.getReader();
+      //   const pump = () =>
+      //     reader
+      //       .read()
+      //       .then((res) =>
+      //         res.done
+      //           ? window.writer.close()
+      //           : window.writer.write(res.value).then(pump)
+      //       );
+
+      //   pump();
+      // });
+    },
     downloadFile(url_) {
       this.$axios({
         url: "/download/" + url_,

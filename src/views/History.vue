@@ -169,16 +169,30 @@ export default {
         });
     },
     download(id) {
-      this.$axios
-        .get(`download_by_no/${id}`, { responseType: "blob" })
-        .then((response) => {
-          const url = window.URL.createObjectURL(new Blob([response.data]));
-          const link = document.createElement("a");
-          link.href = url;
-          link.setAttribute("download", "file.zip");
-          document.body.appendChild(link);
-          link.click();
-        });
+      this.$axios({
+          method: 'get',
+          url: `download_by_no/${id}`,
+          responseType: 'blob'
+      }).then( res => {
+          if (res.data) {
+              let blob = new Blob([res.data], {
+                  type: "application/zip"
+              });
+              saveAs(blob, 'file');
+          }
+      }).catch( error => {
+          console.log('error',error);
+      })
+      // this.$axios
+      //   .get(`download_by_no/${id}`, { responseType: "blob" })
+      //   .then((response) => {
+      //     const url = window.URL.createObjectURL(new Blob([response.data]));
+      //     const link = document.createElement("a");
+      //     link.href = url;
+      //     link.setAttribute("download", "file.zip");
+      //     document.body.appendChild(link);
+      //     link.click();
+      //   });
     },
     assign(id) {
       this.$router.push(`/historyAssignUser/${id}`);
@@ -194,6 +208,7 @@ export default {
           this.$router.go(0);
           this.refresh();
         });
+      this.$router.go(0);
     },
   },
 };
