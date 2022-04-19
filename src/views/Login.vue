@@ -148,6 +148,7 @@ export default {
   },
   mounted() {
     this.get_captcha_img();
+    this.loginForm.name = sessionStorage.getItem("username") ? sessionStorage.getItem("username") : "";
   },
   methods: {
     get_captcha_img() {

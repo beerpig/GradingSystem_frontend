@@ -350,7 +350,7 @@ export default {
             } else if (resp.data.code === 10011) {
               this.$message.error("注册失败，验证码错误！");
             } else if (resp.data.code === 11000) {
-              this.$message.error("注册失败，手机号！");
+              this.$message.error("注册失败，该邮箱已被注册！");
             } else {
               this.$message.error("注册失败！");
             }

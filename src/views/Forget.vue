@@ -11,19 +11,18 @@
             :rules="fieldRules"
             :inline="true"
           >
-            <div class="userbox">
-              <!-- <el-form-item label="用户名" prop="username"> -->
-              <span class="iconfont">&#xe817;</span>
-
-              <el-form-item prop="name">
+            <br />
+            <div class="pwdbox">
+              <span class="iconfont">&#xe812;</span>
+              <el-form-item prop="email">
                 <el-input
-                  class="user"
-                  id="user"
-                  v-model="registerForm.name"
-                  placeholder="用户名"
+                  class="email"
+                  id="email"
+                  v-model="registerForm.email"
                   size="small"
                   style="font-size: 14px; width: 193px"
-                />
+                  placeholder="输入邮箱"
+                ></el-input>
               </el-form-item>
             </div>
             <br />
@@ -56,33 +55,17 @@
                 ></el-input>
               </el-form-item>
             </div>
-
             <br />
-
-            <!-- <div class="pwdbox">
-              <span class="iconfont">&#xe79a;</span>
-              <el-form-item prop="phone">
-                <el-input
-                  class="phone"
-                  id="phone_num"
-                  v-model="registerForm.phone"
-                  size="small"
-                  style="font-size: 14px; width: 188px"
-                  placeholder="输入手机号"
-                ></el-input>
-              </el-form-item>
-            </div> -->
             <div class="pwdbox">
-              <span class="iconfont">&#xe812;</span>
-              <el-form-item prop="email">
-                <el-input
-                  class="email"
-                  id="email"
-                  v-model="registerForm.email"
+              <span class="iconfont">&#xe7e9;</span>
+              <el-form-item>
+                <el-button
                   size="small"
-                  style="font-size: 14px; width: 193px"
-                  placeholder="输入邮箱"
-                ></el-input>
+                  @click="sendEmail('registerForm')"
+                  :disabled="canClick"
+                >
+                  {{ content }}
+                </el-button>
               </el-form-item>
             </div>
 
@@ -98,7 +81,7 @@
                   id="captcha_slide"
                   v-model="registerForm.code"
                   size="small"
-                  style="font-size: 14px; width: 108px; float: left"
+                  style="font-size: 14px; width: 115px"
                   placeholder="输入验证码"
                 ></el-input>
               </el-form-item>
@@ -109,38 +92,25 @@
               </el-form-item>
             </div>
           </el-form>
-          <button
-            type="primary"
-            class="register_btn"
-            @click="sendEmail('registerForm')"
-            style="display: inline; float: right; position: absolute; left: 168px; bottom: 65px"
-          >
-            发送验证码
-          </button>
           <br />
-          <!-- <button
-            type="primary"
-            class="register_btn"
-            @click="get_captcha('registerForm')"
-          >
-            {{ content }}
-          </button> -->
-          <button
-            type="primary"
-            class="returnLogin"
-            @click="toLogin"
-            style="display: inline"
-          >
-            点击返回登录
-          </button>
-          <button
-            type="primary"
-            class="register_btn"
-            @click="updatePass('registerForm')"
-            style="float: right; width: 85px; margin-right: 22px"
-          >
-            确定
-          </button>
+          <div class="bts">
+            <button
+              type="primary"
+              class="register_btn"
+              @click="updatePass('registerForm')"
+              style="width: 85px"
+            >
+              确定
+            </button>
+            <button
+              type="primary"
+              class="returnLogin"
+              @click="toLogin"
+              style="display: inline"
+            >
+              点击返回登录
+            </button>
+          </div>
         </div>
 
         <!-- 右侧的注册盒子 -->
@@ -243,11 +213,10 @@ export default {
     };
     return {
       captcha_img: "",
-      content: "获取验证码",
+      content: "点击发送验证码",
       totalTime: 60,
-      canClick: true,
+      canClick: false,
       display: true,
-
       dialogbuttonVisible: false,
       puzzleImgList: [],
       text: "向右滑",
@@ -321,7 +290,12 @@ export default {
           this.$axios.post("/updatePass", _this.registerForm).then((resp) => {
             if (resp) {
               if (resp.data.code === 11101) {
-                _this.$message.success("密码设置成功!");
+                _this.$message.success(
+                  "用户 " + resp.data.username + " 密码设置成功!"
+                );
+                sessionStorage.setItem("username", username);
+                setTimeout(() => {
+                }, 3000);
                 _this.$router.push({ path: "/login" });
               } else if (resp.data.code === 11110) {
                 _this.$message.error("用户名或邮箱错误！");
@@ -335,9 +309,13 @@ export default {
     },
     sendEmail(formName) {
       let _this = this;
-      this.$refs[formName].validateField('email', (valid) => {
+      this.$refs[formName].validateField("email", (valid) => {
         console.log("valid", valid);
-        if (valid === "请输入邮箱" || valid === "邮箱格式错误") {
+        if (
+          valid === "请输入邮箱" ||
+          valid === "邮箱格式错误" ||
+          !_this.canClick
+        ) {
           return;
         } else {
           _this.$message.success("邮箱验证码发送中...");
@@ -350,6 +328,17 @@ export default {
             .then((resp) => {
               if (resp.data.code === 11010) {
                 _this.$message.success("发送邮箱验证码成功！");
+                _this.canClick = true;
+                let timer = window.setInterval(() => {
+                  _this.totalTime--;
+                  _this.content = _this.totalTime + " s后重新发送";
+                  if (_this.totalTime < 0) {
+                    window.clearInterval(timer);
+                    _this.content = "重新发送验证码";
+                    _this.totalTime = 60;
+                    _this.canClick = false;
+                  }
+                }, 1000);
               } else {
                 _this.$message.error("请输入正确邮箱地址！");
               }
@@ -392,7 +381,7 @@ export default {
             } else if (resp.data.code === 10011) {
               this.$message.error("注册失败，验证码错误！");
             } else if (resp.data.code === 11000) {
-              this.$message.error("注册失败，手机号！");
+              this.$message.error("注册失败，该邮箱已被注册！");
             } else {
               this.$message.error("注册失败！");
             }
@@ -600,7 +589,6 @@ input:-webkit-autofill::first-line {
   color: #4e655d;
   font-size: 12px;
   text-decoration: underline;
-  display: flex;
   outline: none;
 }
 
@@ -672,6 +660,11 @@ input:-webkit-autofill::first-line {
     margin-left: 60%;
     margin-top: -7%;
   }
+}
+.bts {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 /deep/ .el-input__inner {
